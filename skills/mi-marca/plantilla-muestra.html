@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{nombre}} · Mi marca</title>
+<!-- Sustituye los espacios del nombre de la fuente por "+" en la URL (ej. Playfair+Display) -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family={{tipografia_titulos}}:wght@400;700&family={{tipografia_texto}}:wght@400;600&display=swap">
+<style>
+  :root {
+    --principal: {{color_principal}};
+    --secundario: {{color_secundario}};
+    --acento: {{color_acento}};
+    --titulos: "{{tipografia_titulos}}", Georgia, serif;
+    --texto: "{{tipografia_texto}}", system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; }
+  body { font-family: var(--texto); background: var(--secundario); color: #1b1b1b; line-height: 1.6; }
+  .hero { background: var(--principal); color: #fff; padding: 64px 24px; text-align: center; }
+  .hero img.logo { max-height: 64px; margin-bottom: 24px; }
+  .hero img.foto { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 4px solid var(--acento); margin-bottom: 16px; }
+  h1, h2 { font-family: var(--titulos); line-height: 1.15; }
+  h1 { font-size: clamp(2rem, 6vw, 3.4rem); }
+  .hero p { opacity: .85; margin-top: 8px; }
+  .boton { display: inline-block; margin-top: 28px; background: var(--acento); color: #fff; padding: 14px 28px; border-radius: 8px; font-weight: 600; text-decoration: none; }
+  main { max-width: 880px; margin: 0 auto; padding: 48px 16px; }
+  h2 { color: var(--principal); font-size: 1.8rem; margin-bottom: 16px; }
+  .paleta { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; margin-bottom: 48px; }
+  .color { border-radius: 12px; overflow: hidden; background: #fff; box-shadow: 0 2px 12px rgba(0,0,0,.06); }
+  .color div { height: 96px; }
+  .color span { display: block; padding: 10px 12px; font-size: .9rem; }
+  .tarjeta { background: #fff; border-radius: 12px; padding: 24px; box-shadow: 0 2px 12px rgba(0,0,0,.06); margin-bottom: 24px; }
+  .tarjeta small { color: #666; }
+  footer { text-align: center; padding: 32px 16px; color: #666; font-size: .9rem; }
+</style>
+</head>
+<body>
+  <section class="hero">
+    <img class="logo" src="{{logo}}" alt="Logo de {{agencia}}">
+    <br>
+    <img class="foto" src="{{foto}}" alt="{{nombre}}">
+    <h1>{{nombre}}</h1>
+    <p>{{agencia}} · {{zona}}</p>
+    <a class="boton" href="https://wa.me/{{whatsapp_sin_mas}}">Escríbeme por WhatsApp</a>
+  </section>
+  <main>
+    <h2>Mis colores</h2>
+    <div class="paleta">
+      <div class="color"><div style="background:var(--principal)"></div><span>Principal · {{color_principal}}</span></div>
+      <div class="color"><div style="background:var(--secundario)"></div><span>Secundario · {{color_secundario}}</span></div>
+      <div class="color"><div style="background:var(--acento)"></div><span>Acento · {{color_acento}}</span></div>
+    </div>
+    <h2>Mis tipografías</h2>
+    <div class="tarjeta">
+      <h2 style="margin:0">Tu casa merece venderse bien</h2>
+      <small>Títulos: {{tipografia_titulos}}</small>
+      <p style="margin-top:16px">Te ayudo a fijar el precio correcto, a enseñar tu vivienda como se merece y a negociar con compradores de verdad.</p>
+      <small>Texto: {{tipografia_texto}}</small>
+    </div>
+    <h2>Mi tono</h2>
+    <div class="tarjeta"><p><strong>{{tono}}</strong></p></div>
+  </main>
+  <footer>{{nombre}} · {{telefono}} · {{email}}</footer>
+</body>
+</html>
