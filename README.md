@@ -14,6 +14,7 @@ No hace falta saber programar. Le hablas a Claude como a un compañero de oficin
 | **presentacion-scroll** | Webs de presentación de scroll inmersivo (paralaje, cifras que cuentan, galerías) con tu estilo: preséntate a un propietario, tu servicio, un inmueble o tu zona. | «Hazme una presentación de scroll para presentarme a un propietario» · «Cambia mi estilo» |
 | **landing-propietario** | Le das el link del portal (o fotos y datos) y te hace la landing para enseñársela al propietario: fotos, plano 3D si hay plano, puntos fuertes, plan de marketing, calendario de 90 días y botón de WhatsApp. | «Hazme la landing para el propietario con este link de Idealista: …» |
 | **plano-3d** | Convierte el plano 2D de una vivienda en una maqueta 3D interactiva para web, con botón para amueblarla en estilo nórdico o moderno. | «Pasa este plano a 3D» (y adjuntas el plano) |
+| **edificio-interactivo** | Para obra nueva y promotoras: la foto del edificio (real, render o hecha con IA) con cada planta clicable. Al pulsar una planta, la foto se acerca con una animación y se abre la vivienda en 3D, con precios, disponibilidad por puerta, 6 estilos de muebles (nórdico, moderno, japandi, art déco, mediterráneo) y fotos realistas de cada estilo. | «Hazme el edificio interactivo de esta promoción» (y adjuntas la foto y los planos) |
 | **copywriter-inmobiliario** | Anuncios de portal, posts y carruseles de Instagram, guiones de reel listos para teleprompter, WhatsApp y emails a propietarios, respuestas a objeciones, tu bio y el texto de tu landing. | «Hazme el anuncio de Idealista de este piso: 3 dormitorios, 85 m²…» · «Un propietario me dice que mi comisión es muy alta, ¿qué le contesto?» |
 | **informe-valoracion** | Pegas los testigos (comparables) y te hace el informe de precio para el propietario: €/m², homogeneización, 3 precios (salida, cierre, mínimo), riesgo de sobrevalorar y plan de venta. Listo para PDF. Orientativo, no es una tasación oficial. | «Valora este piso: 92 m², 3 hab., 3.º con ascensor… y estos son los testigos: [pegar]» |
 | **equipo-inmobiliario** | Para encargos grandes: Claude dirige un equipo (estratega, revisor y los especialistas que hagan falta: analista de mercado, copywriter, diseñador, community manager, captación…) que trabaja en paralelo, te consulta solo lo importante y te entrega todo en una carpeta con un informe. | «Prepara la captación de este piso» · «Monta mi plan de contenidos del mes» |
@@ -54,7 +55,7 @@ Los nombres de los menús pueden cambiar con las actualizaciones de Claude: si n
 
 Se abrirá el panel de plugins: confirma la instalación. Si te lo pide, ejecuta `/reload-plugins` o cierra y vuelve a abrir Claude Code. Listo.
 
-> **¿Solo quieres una skill?** Instala por separado `mi-marca`, `presentacion-scroll`, `landing-propietario`, `plano-3d`, `copywriter-inmobiliario`, `informe-valoracion` o `equipo-inmobiliario`, por ejemplo:
+> **¿Solo quieres una skill?** Instala por separado `mi-marca`, `presentacion-scroll`, `landing-propietario`, `plano-3d`, `edificio-interactivo`, `copywriter-inmobiliario`, `informe-valoracion` o `equipo-inmobiliario`, por ejemplo:
 > `/plugin install copywriter-inmobiliario@skills-agente-inmobiliario`
 > (No instales a la vez el pack completo y skills sueltas: las tendrías repetidas.)
 

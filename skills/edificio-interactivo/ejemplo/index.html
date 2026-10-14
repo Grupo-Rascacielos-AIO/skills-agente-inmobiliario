@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Torre Áurea · ejemplo</title>
+<meta name="description" content="Experiencia interactiva: elige planta, entra en la vivienda en 3D y amuéblala en el estilo que quieras.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --carbon:#0b0a09;--carbon2:#14120f;--crema:#f5efe8;--oro:#e2c08a;--oro2:#b8925a;--gris:rgba(245,239,232,.56);
+  --linea:rgba(245,239,232,.12);--ok:#7fd1a3;--res:#f0b35a;--ven:#ef6b6b;--coral:#fa5659;
+  --serif:'Instrument Serif',Georgia,serif;--sans:Inter,system-ui,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:var(--carbon);color:var(--crema);font-family:var(--sans);-webkit-font-smoothing:antialiased;overflow:hidden}
+button{font-family:inherit;color:inherit;cursor:pointer}
+[hidden]{display:none!important}
+
+/* ---------- Loader ---------- */
+#loader{position:fixed;inset:0;z-index:100;background:var(--carbon);display:grid;place-items:center}
+#loader .l-in{text-align:center}
+#loader .l-k{font-size:11px;letter-spacing:.42em;text-transform:uppercase;color:var(--oro);font-weight:600}
+#loader .l-t{font-family:var(--serif);font-size:clamp(48px,8vw,110px);line-height:1;margin:14px 0 26px;font-style:italic}
+#loader .l-bar{width:min(320px,60vw);height:1px;background:var(--linea);margin:0 auto;position:relative;overflow:hidden}
+#loader .l-bar i{position:absolute;inset:0;background:var(--oro);transform-origin:left;transform:scaleX(0)}
+#loader .l-n{margin-top:14px;font-size:12px;color:var(--gris);font-variant-numeric:tabular-nums;letter-spacing:.2em}
+
+/* ---------- Vista torre ---------- */
+#torre-view{position:fixed;inset:0;overflow:hidden}
+.bg{position:absolute;inset:-40px;background:center/cover;filter:blur(38px) brightness(.38) saturate(1.2);transform:scale(1.1)}
+.bg-grad{position:absolute;inset:0;background:radial-gradient(ellipse 60% 80% at 30% 50%,transparent 0%,rgba(11,10,9,.55) 70%),linear-gradient(90deg,rgba(11,10,9,0) 35%,rgba(11,10,9,.85) 70%)}
+#stage{position:absolute;top:0;left:min(max(3vw,calc(34vw - 37.3vh)),calc(55vw - 74.7vh));height:100vh;height:100dvh;aspect-ratio:3584/4800;transform-origin:50% 50%;will-change:transform}
+#stage img{position:absolute;inset:0;width:100%;height:100%;display:block;user-select:none;-webkit-user-drag:none;box-shadow:0 0 120px rgba(0,0,0,.6)}
+#stage .vign{position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(11,10,9,.35),transparent 12%,transparent 88%,rgba(11,10,9,.65))}
+#pisos{position:absolute;inset:0;width:100%;height:100%}
+#pisos .f{fill:var(--oro);fill-opacity:0;stroke:var(--oro);stroke-opacity:0;stroke-width:5;cursor:pointer;transition:fill-opacity .25s,stroke-opacity .25s}
+#pisos .f:hover,#pisos .f.hov{fill-opacity:.28;stroke-opacity:1}
+#pisos.disp .f.d-ok{fill:var(--ok);fill-opacity:.2;stroke:var(--ok);stroke-opacity:.5}
+#pisos.disp .f.d-res{fill:var(--res);fill-opacity:.22;stroke:var(--res);stroke-opacity:.5}
+#pisos.disp .f.d-ven{fill:var(--ven);fill-opacity:.25;stroke:var(--ven);stroke-opacity:.5}
+#pisos.disp .f:hover{fill-opacity:.45;stroke-opacity:1}
+#pisos .scan{fill:url(#gScan);pointer-events:none;opacity:0}
+.tag{position:absolute;left:64.6%;transform:translate(0,-50%);display:flex;align-items:center;gap:0;pointer-events:none;opacity:0;transition:opacity .2s;white-space:nowrap}
+.tag i{display:block;width:clamp(30px,5vw,80px);height:1px;background:var(--oro)}
+.tag b{font-size:12px;letter-spacing:.24em;text-transform:uppercase;font-weight:700;background:var(--oro);color:var(--carbon);padding:7px 12px;border-radius:99px}
+.tag.on{opacity:1}
+
+#panel{position:absolute;right:0;top:0;bottom:0;width:min(560px,44vw);padding:6vh 4.5vw 5vh 2vw;display:flex;flex-direction:column;justify-content:center;gap:28px}
+.k{font-size:11px;letter-spacing:.38em;text-transform:uppercase;color:var(--oro);font-weight:600}
+h1{font-family:var(--serif);font-weight:400;font-size:clamp(56px,7.4vw,124px);line-height:.9;letter-spacing:-.01em}
+h1 em{font-style:italic;color:var(--oro)}
+.lead{font-size:clamp(15px,1.15vw,18px);line-height:1.55;color:var(--gris);max-width:440px}
+.stats{display:grid;grid-template-columns:repeat(var(--n,4),auto);gap:22px;border-top:1px solid var(--linea);border-bottom:1px solid var(--linea);padding:18px 0}
+.stats div b{display:block;font-family:var(--serif);font-size:clamp(28px,2.6vw,42px);font-weight:400;line-height:1}
+.stats div span{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--gris)}
+#hover-card{min-height:118px;border:1px solid var(--linea);border-radius:18px;padding:18px 20px;background:rgba(20,18,15,.55);backdrop-filter:blur(10px);position:relative;overflow:hidden}
+#hover-card .hc-empty{display:flex;align-items:center;gap:14px;color:var(--gris);font-size:14px;height:80px}
+.pulse{width:12px;height:12px;border-radius:50%;background:var(--oro);box-shadow:0 0 0 0 rgba(226,192,138,.6);animation:pl 1.8s infinite}
+@keyframes pl{70%{box-shadow:0 0 0 14px rgba(226,192,138,0)}100%{box-shadow:0 0 0 0 rgba(226,192,138,0)}}
+.hc-top{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.hc-top b{font-family:var(--serif);font-size:34px;font-weight:400;line-height:1}
+.hc-top span{font-size:12px;color:var(--oro);letter-spacing:.2em;text-transform:uppercase;font-weight:600}
+.hc-sub{margin-top:6px;color:var(--gris);font-size:14px}
+.hc-doors{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
+.door{display:flex;align-items:center;gap:8px;font-size:12.5px;border:1px solid var(--linea);border-radius:99px;padding:6px 11px}
+.dot{width:8px;height:8px;border-radius:50%}
+.dot.ok{background:var(--ok)}.dot.res{background:var(--res)}.dot.ven{background:var(--ven)}
+.row-btns{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.btn{border:1px solid var(--linea);background:rgba(245,239,232,.05);border-radius:99px;padding:11px 18px;font-size:13px;font-weight:600;transition:background .2s,border-color .2s,color .2s}
+.btn:hover{border-color:rgba(245,239,232,.35)}
+.btn.on{background:var(--crema);color:var(--carbon);border-color:var(--crema)}
+.btn.gold{background:var(--oro);color:var(--carbon);border-color:var(--oro)}
+.legend{display:flex;gap:14px;font-size:12px;color:var(--gris)}
+.legend span{display:flex;align-items:center;gap:6px}
+.foot{position:absolute;left:24px;bottom:18px;font-size:11px;color:rgba(245,239,232,.38);letter-spacing:.06em;z-index:3}
+
+/* ---------- Transición ---------- */
+#beam{position:fixed;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--oro),#fff,var(--oro),transparent);box-shadow:0 0 30px 6px rgba(226,192,138,.55);transform:scaleX(0);z-index:40;pointer-events:none;opacity:0}
+
+/* ---------- Vista planta ---------- */
+#planta-view{position:fixed;inset:0;z-index:30;background:radial-gradient(ellipse 70% 70% at 38% 50%,#2a231c 0%,#0f0d0b 60%,#080706 100%);clip-path:inset(50% 0 50% 0);visibility:hidden;display:grid;grid-template-columns:1fr min(440px,34vw)}
+#pv-3d{position:relative;overflow:hidden;cursor:grab}
+#pv-3d:active{cursor:grabbing}
+#pv-3d canvas{display:block;width:100%!important;height:100%!important}
+.m3-labels{position:absolute;inset:0;pointer-events:none;transition:opacity .4s}
+.m3-lb{position:absolute;left:0;top:0;white-space:nowrap;background:rgba(14,12,10,.78);backdrop-filter:blur(6px);border:1px solid rgba(245,239,232,.14);border-radius:10px;padding:6px 10px;text-align:center;font-size:12px;line-height:1.2}
+.m3-lb b{display:block;font-weight:700;font-size:12.5px}
+.m3-lb span{color:rgba(245,239,232,.6);font-size:11px}
+.m3-lb.on{background:var(--oro);border-color:var(--oro);color:var(--carbon)}
+.m3-lb.on span{color:rgba(11,10,9,.7)}
+.pv-top{position:absolute;top:22px;left:24px;right:24px;display:flex;justify-content:space-between;align-items:center;gap:12px;z-index:3;pointer-events:none}
+.pv-top>*{pointer-events:auto}
+.pv-nav{display:flex;gap:8px;align-items:center}
+.pv-nav .btn{backdrop-filter:blur(8px);background:rgba(14,12,10,.55)}
+.pv-floor{font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:var(--gris);padding:0 8px}
+.pv-bottom{position:absolute;left:50%;bottom:22px;transform:translateX(-50%);display:flex;gap:6px;z-index:3;background:rgba(14,12,10,.6);backdrop-filter:blur(10px);border:1px solid var(--linea);border-radius:99px;padding:6px}
+.pv-bottom button{border:0;background:transparent;border-radius:99px;padding:9px 14px;font-size:12.5px;font-weight:600}
+.pv-bottom button.on{background:var(--crema);color:var(--carbon)}
+.pv-big{position:absolute;left:28px;bottom:84px;z-index:2;pointer-events:none}
+.pv-big .k{display:block;margin-bottom:6px}
+.pv-big b{font-family:var(--serif);font-weight:400;font-size:clamp(64px,8vw,140px);line-height:.85;display:block;color:rgba(245,239,232,.92)}
+.pv-big span{font-family:var(--serif);font-style:italic;font-size:clamp(22px,2vw,32px);color:var(--oro)}
+#toast{position:absolute;top:84px;left:50%;transform:translate(-50%,-10px);background:var(--oro);color:var(--carbon);font-weight:700;font-size:13px;padding:10px 18px;border-radius:99px;opacity:0;z-index:4;pointer-events:none;transition:opacity .3s,transform .3s;white-space:nowrap}
+#toast.on{opacity:1;transform:translate(-50%,0)}
+
+#pv-side{border-left:1px solid var(--linea);background:rgba(11,10,9,.72);backdrop-filter:blur(14px);padding:28px 28px 28px;overflow-y:auto;display:flex;flex-direction:column;gap:22px}
+.sd-h .k{display:block;margin-bottom:8px}
+.sd-h h2{font-family:var(--serif);font-weight:400;font-size:44px;line-height:.95}
+.sd-h h2 em{color:var(--oro)}
+.sd-h p{color:var(--gris);font-size:14px;margin-top:8px}
+.specs{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.specs div{border:1px solid var(--linea);border-radius:14px;padding:12px 10px;text-align:center}
+.specs b{display:block;font-family:var(--serif);font-size:28px;font-weight:400;line-height:1}
+.specs span{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--gris)}
+.precio{display:grid;gap:8px}
+.precio .pr{display:flex;justify-content:space-between;align-items:center;border:1px solid var(--linea);border-radius:14px;padding:12px 14px;font-size:14px}
+.precio .pr strong{font-family:var(--serif);font-size:24px;font-weight:400}
+.precio .pr em{font-style:normal;font-size:12px;color:var(--gris);display:flex;align-items:center;gap:6px}
+.sec-t{font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--gris);font-weight:600;margin-bottom:10px}
+.estilos{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.est{border:1px solid var(--linea);background:rgba(245,239,232,.03);border-radius:14px;padding:10px;text-align:left;transition:border-color .2s,background .2s,transform .2s}
+.est:hover{transform:translateY(-2px);border-color:rgba(245,239,232,.3)}
+.est.on{border-color:var(--oro);background:rgba(226,192,138,.12)}
+.est .sw{display:flex;height:26px;border-radius:8px;overflow:hidden;margin-bottom:8px}
+.est .sw i{flex:1}
+.est b{display:block;font-size:13px;font-weight:700}
+.est span{font-size:11px;color:var(--gris)}
+.fotos{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.fotos button{position:relative;border:0;padding:0;border-radius:14px;overflow:hidden;aspect-ratio:16/10;background:#111}
+.fotos button.wide{grid-column:1/-1;aspect-ratio:16/8}
+.fotos img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .8s}
+.fotos button:hover img{transform:scale(1.06)}
+.fotos button span{position:absolute;left:10px;bottom:9px;font-size:11.5px;font-weight:700;background:rgba(11,10,9,.65);backdrop-filter:blur(6px);padding:5px 9px;border-radius:99px}
+.fotos-note{font-size:11.5px;color:rgba(245,239,232,.4);margin-top:8px}
+.cta{display:flex;gap:8px}
+.cta .btn{flex:1;text-align:center;padding:14px}
+
+/* ---------- Lightbox ---------- */
+#lb{position:fixed;inset:0;z-index:60;background:rgba(5,5,4,.96);display:grid;place-items:center;opacity:0;visibility:hidden;transition:opacity .4s,visibility .4s}
+#lb{pointer-events:none}#lb.on{opacity:1;visibility:visible;pointer-events:auto}
+#lb .lb-img{position:absolute;inset:0;overflow:hidden}
+#lb img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;transition:opacity .6s}
+#lb.on img.kb{animation:kb 14s ease-out forwards}
+@keyframes kb{from{transform:scale(1)}to{transform:scale(1.08)}}
+#lb .lb-cap{position:absolute;left:28px;bottom:26px;z-index:2}
+#lb .lb-cap b{font-family:var(--serif);font-size:40px;font-weight:400;display:block;line-height:1}
+#lb .lb-cap span{font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:var(--oro)}
+#lb .lb-x,#lb .lb-p,#lb .lb-n{position:absolute;z-index:2;width:52px;height:52px;border-radius:50%;border:1px solid var(--linea);background:rgba(14,12,10,.6);backdrop-filter:blur(6px);font-size:24px}
+#lb .lb-x{top:22px;right:22px}
+#lb .lb-p{left:22px;top:50%;transform:translateY(-50%)}
+#lb .lb-n{right:22px;top:50%;transform:translateY(-50%)}
+#lb .lb-badge{position:absolute;top:28px;left:28px;z-index:2;font-size:11px;letter-spacing:.24em;text-transform:uppercase;background:rgba(14,12,10,.6);border:1px solid var(--linea);padding:8px 12px;border-radius:99px;color:var(--gris)}
+
+/* ---------- Responsive ---------- */
+@media (max-width:900px){
+  html,body{overflow:auto}
+  #torre-view{position:relative;min-height:100vh}
+  #stage{position:relative;left:auto;margin:0 auto;height:72vh;display:block}
+  #panel{position:relative;width:auto;padding:28px 16px 60px;gap:20px}
+  .bg-grad{background:linear-gradient(180deg,transparent 30%,rgba(11,10,9,.9) 75%)}
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .tag{display:none}
+  #planta-view{grid-template-columns:1fr;grid-template-rows:58vh auto;overflow-y:auto}
+  #pv-side{border-left:0;border-top:1px solid var(--linea)}
+  .pv-big{display:none}
+  .pv-bottom{bottom:12px;max-width:calc(100% - 24px);overflow-x:auto}
+  .pv-floor{display:none}
+  .foot{position:relative;left:auto;bottom:auto;padding:0 16px 24px}
+  .m3-lb{padding:3px 6px}.m3-lb b{font-size:10px}.m3-lb span{display:none}
+  .pv-bottom button{white-space:nowrap;padding:8px 10px;font-size:11.5px}
+}
+</style>
+</head>
+<body>
+
+<div id="loader"><div class="l-in">
+  <div class="l-k" data-c="antetitulo"></div>
+  <div class="l-t" data-c="nombre"></div>
+  <div class="l-bar"><i></i></div>
+  <div class="l-n">000</div>
+</div></div>
+
+<main id="torre-view">
+  <div class="bg"></div><div class="bg-grad"></div>
+  <div id="stage">
+    <img alt="" draggable="false">
+    <div class="vign"></div>
+    <svg id="pisos" preserveAspectRatio="none">
+      <defs><linearGradient id="gScan" x1="0" x2="1"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".5" stop-color="#fff" stop-opacity=".9"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient></defs>
+    </svg>
+    <div class="tag" id="tag"><i></i><b>Planta 14</b></div>
+  </div>
+
+  <section id="panel">
+    <div>
+      <div class="k" data-c="antetitulo"></div>
+      <h1 data-c="titulo"></h1>
+    </div>
+    <p class="lead" data-c="texto"></p>
+    <div class="stats"></div>
+    <div id="hover-card"><div class="hc-empty"><div class="pulse"></div>Pasa el ratón por la fachada y pulsa una planta para entrar</div></div>
+    <div class="row-btns">
+      <button class="btn" id="btn-disp">◐ Ver disponibilidad</button>
+      <div class="legend" id="legend" hidden><span><i class="dot ok"></i>Disponible</span><span><i class="dot res"></i>Reservada</span><span><i class="dot ven"></i>Vendida</span></div>
+    </div>
+  </section>
+  <div class="foot" data-c="pie"></div>
+</main>
+
+<div id="beam"></div>
+
+<section id="planta-view" aria-hidden="true">
+  <div id="pv-3d">
+    <div class="pv-top">
+      <div class="pv-nav">
+        <button class="btn" id="pv-back">← Edificio</button>
+      </div>
+      <div class="pv-nav">
+        <button class="btn" id="pv-down" title="Planta inferior">↓</button>
+        <span class="pv-floor" id="pv-floor">Planta 14 / 22</span>
+        <button class="btn" id="pv-up" title="Planta superior">↑</button>
+      </div>
+    </div>
+    <div class="pv-big"><span class="k">Planta</span><b id="pv-num">14</b><span id="pv-tipo">Residencia Grand</span></div>
+    <div id="toast"></div>
+    <div class="pv-bottom">
+      <button data-v="maqueta" class="on">Maqueta</button>
+      <button data-v="aerea">Plano cenital</button>
+      <button data-v="baja">A ras de suelo</button>
+      <button data-giro class="on">↻ Girar</button>
+      <button data-et class="on">Etiquetas</button>
+    </div>
+  </div>
+  <aside id="pv-side">
+    <div class="sd-h">
+      <span class="k" id="sd-k">Planta 14 · Tipo B</span>
+      <h2 id="sd-t">Residencia <em>Grand</em></h2>
+      <p id="sd-s">3 dormitorios + estudio · 2 baños</p>
+    </div>
+    <div class="specs" id="specs"></div>
+    <div class="precio" id="precio"></div>
+    <div>
+      <div class="sec-t">Amuéblala a tu estilo</div>
+      <div class="estilos" id="estilos"></div>
+    </div>
+    <div>
+      <div class="sec-t" id="fotos-t">Así se vive · Nórdico</div>
+      <div class="fotos" id="fotos"></div>
+      <div class="fotos-note" data-c="notaFotos"></div>
+    </div>
+    <div class="cta"><button class="btn gold" id="btn-pres">⛶ Pantalla completa</button></div>
+  </aside>
+</section>
+
+<div id="lb" aria-hidden="true">
+  <div class="lb-img"><img alt=""></div>
+  <div class="lb-badge">Render hiperrealista · IA</div>
+  <div class="lb-cap"><span></span><b></b></div>
+  <button class="lb-x" aria-label="Cerrar">✕</button>
+  <button class="lb-p" aria-label="Anterior">‹</button>
+  <button class="lb-n" aria-label="Siguiente">›</button>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/environments/RoomEnvironment.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/geometries/RoundedBoxGeometry.js"></script>
+<!-- Lo propio de cada edificio: config.js (foto, plantas, precios, fotos) y tipos.js (planos de las viviendas) -->
+<script src="config.js?v=1"></script>
+<script src="tipos.js?v=1"></script>
+<script src="../plantilla/motor3d.js?v=1"></script>
+<script src="../plantilla/app.js?v=1"></script>
+</body>
+</html>

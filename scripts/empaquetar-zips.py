@@ -14,6 +14,7 @@ CORTAS = {
     "plano-3d": "Convierte el plano 2D de una vivienda en una maqueta 3D interactiva para web, con muebles nórdicos o modernos. «Pasa este plano a 3D».",
     "copywriter-inmobiliario": "Copywriter para agentes inmobiliarios: anuncios de portal, posts, guiones de reel, WhatsApp y emails a propietarios, objeciones. «Escríbeme el anuncio de este piso».",
     "informe-valoracion": "Informe de valoración para el propietario a partir de testigos: €/m², homogeneización y 3 precios con estrategia. Orientativo, no tasación. «Valora este piso con estos testigos».",
+    "edificio-interactivo": "Convierte la foto de un edificio de obra nueva en una web: cada planta se pulsa y abre su vivienda en 3D con 6 estilos, precios y fotos. Para promotoras. «Hazme el edificio interactivo».",
     "equipo-inmobiliario": "Organiza un equipo de especialistas (estratega, copy, diseño, mercado, revisor) para tareas grandes del negocio. «Prepara la captación de este piso con el equipo».",
 }
 FUERA = {".DS_Store", "_capturas", "node_modules"}
@@ -35,3 +36,9 @@ for nombre, corta in CORTAS.items():
             else:
                 z.write(f, arc)
     print(f"{nombre}.zip  {(salida / f'{nombre}.zip').stat().st_size // 1024} KB")
+
+# Pack con todos los ZIP dentro (para descargar de una vez)
+with zipfile.ZipFile(salida / "todas-las-skills.zip", "w", zipfile.ZIP_DEFLATED) as z:
+    for nombre in CORTAS:
+        z.write(salida / f"{nombre}.zip", f"{nombre}.zip")
+print(f"todas-las-skills.zip  {(salida / 'todas-las-skills.zip').stat().st_size // 1024} KB")

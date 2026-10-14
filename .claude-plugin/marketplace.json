@@ -1,6 +1,6 @@
 {
   "name": "skills-agente-inmobiliario",
-  "description": "Skills de Claude Code para agentes inmobiliarios: tu marca, presentaciones, landing de propietario, planos 3D, copywriting, informe de valoración y un equipo de agentes que trabaja en paralelo.",
+  "description": "Skills de Claude Code para agentes inmobiliarios: tu marca, presentaciones, landing de propietario, planos 3D, edificios interactivos de obra nueva, copywriting, informe de valoración y un equipo de agentes que trabaja en paralelo.",
   "owner": {
     "name": "Skills Agente Inmobiliario"
   },
@@ -10,7 +10,7 @@
       "displayName": "Agente inmobiliario (pack completo)",
       "source": "./",
       "description": "Todas las skills del repositorio en un solo plugin. La opción recomendada.",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "category": "inmobiliaria",
       "tags": [
         "inmobiliaria",
@@ -57,6 +57,16 @@
         "./skills/plano-3d"
       ],
       "description": "Convierte un plano en una vista 3D para anuncios y presentaciones.",
+      "version": "1.0.0",
+      "category": "inmobiliaria"
+    },
+    {
+      "name": "edificio-interactivo",
+      "source": "./",
+      "skills": [
+        "./skills/edificio-interactivo"
+      ],
+      "description": "Web de obra nueva: la fachada del edificio con cada planta clicable, la vivienda en 3D con 6 estilos de muebles, precios, disponibilidad y fotos.",
       "version": "1.0.0",
       "category": "inmobiliaria"
     },
