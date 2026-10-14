@@ -1,6 +1,6 @@
 {
   "name": "skills-agente-inmobiliario",
-  "description": "Skills de Claude Code para agentes inmobiliarios: tu marca, copywriting, landing de propietario, planos 3D y un equipo de agentes que trabaja en paralelo.",
+  "description": "Skills de Claude Code para agentes inmobiliarios: tu marca, presentaciones, landing de propietario, planos 3D, copywriting, informe de valoración y un equipo de agentes que trabaja en paralelo.",
   "owner": {
     "name": "Skills Agente Inmobiliario"
   },
@@ -12,36 +12,40 @@
       "description": "Todas las skills del repositorio en un solo plugin. La opción recomendada.",
       "version": "1.0.0",
       "category": "inmobiliaria",
-      "tags": ["inmobiliaria", "marketing", "copywriting", "captacion", "espanol"]
+      "tags": [
+        "inmobiliaria",
+        "marketing",
+        "copywriting",
+        "captacion",
+        "espanol"
+      ]
     },
     {
       "name": "mi-marca",
       "source": "./",
-      "skills": ["./skills/mi-marca"],
+      "skills": [
+        "./skills/mi-marca"
+      ],
       "description": "Configura tu marca personal (colores, tipografía, tono, contacto) una sola vez. Las demás skills la leen.",
       "version": "1.0.0",
       "category": "inmobiliaria"
     },
     {
-      "name": "copywriter-inmobiliario",
+      "name": "presentacion-scroll",
       "source": "./",
-      "skills": ["./skills/copywriter-inmobiliario"],
-      "description": "Anuncios de portal, posts, carruseles, guiones de reel, mensajes a propietarios y respuestas a objeciones.",
-      "version": "1.0.0",
-      "category": "inmobiliaria"
-    },
-    {
-      "name": "equipo-inmobiliario",
-      "source": "./",
-      "skills": ["./skills/equipo-inmobiliario"],
-      "description": "Para encargos grandes: Claude monta un equipo de subagentes (estrategia, copy, diseño, mercado, revisión) y te entrega todo junto.",
+      "skills": [
+        "./skills/presentacion-scroll"
+      ],
+      "description": "Presentaciones web en scroll con tu marca.",
       "version": "1.0.0",
       "category": "inmobiliaria"
     },
     {
       "name": "landing-propietario",
       "source": "./",
-      "skills": ["./skills/landing-propietario"],
+      "skills": [
+        "./skills/landing-propietario"
+      ],
       "description": "Landing para captar propietarios que quieren vender, con tu marca.",
       "version": "1.0.0",
       "category": "inmobiliaria"
@@ -49,8 +53,40 @@
     {
       "name": "plano-3d",
       "source": "./",
-      "skills": ["./skills/plano-3d"],
+      "skills": [
+        "./skills/plano-3d"
+      ],
       "description": "Convierte un plano en una vista 3D para anuncios y presentaciones.",
+      "version": "1.0.0",
+      "category": "inmobiliaria"
+    },
+    {
+      "name": "copywriter-inmobiliario",
+      "source": "./",
+      "skills": [
+        "./skills/copywriter-inmobiliario"
+      ],
+      "description": "Anuncios de portal, posts, carruseles, guiones de reel, mensajes a propietarios y respuestas a objeciones.",
+      "version": "1.0.0",
+      "category": "inmobiliaria"
+    },
+    {
+      "name": "informe-valoracion",
+      "source": "./",
+      "skills": [
+        "./skills/informe-valoracion"
+      ],
+      "description": "Informe de valoración para el propietario, con tu marca.",
+      "version": "1.0.0",
+      "category": "inmobiliaria"
+    },
+    {
+      "name": "equipo-inmobiliario",
+      "source": "./",
+      "skills": [
+        "./skills/equipo-inmobiliario"
+      ],
+      "description": "Para encargos grandes: Claude monta un equipo de subagentes (estrategia, copy, diseño, mercado, revisión) y te entrega todo junto.",
       "version": "1.0.0",
       "category": "inmobiliaria"
     }

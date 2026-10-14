@@ -9,8 +9,8 @@ Escribe textos que hacen que **propietarios** te confíen su casa y que **compra
 
 ## Antes de escribir: lee la marca
 
-1. Si existe `~/.claude/mi-marca-inmobiliaria.md`, léelo y usa `nombre`, `agencia`, `zona`, `telefono`, `whatsapp` y sobre todo `tono` (cercano / profesional / premium).
-2. Si no existe, escribe en tono **profesional** con huecos `[tu nombre]`, `[tu teléfono]`, y al final sugiere: «Si me dices tu marca una vez (skill `mi-marca`), firmo todo con tus datos y tu tono».
+1. Si existe `~/.claude/mi-marca-inmobiliaria.md`, léelo y usa `nombre`, `agencia`, `zona`, `telefono`, `whatsapp`, `estilo` y sobre todo `tono` (cercano / profesional / premium).
+2. Si no existe, **lanza primero el flujo de la skill `mi-marca`** («Antes de escribir, configuremos tu marca: son 2 minutos y luego todo sale con tu nombre y tu tono»). Si el agente dice que ahora no, escribe en tono **profesional** con huecos `[tu nombre]`, `[tu teléfono]`.
 3. **Nunca inventes** datos del inmueble (metros, precio, certificado energético, año) ni testimonios. Si faltan, pregunta o deja `[huecos]`.
 
 ## Brief mínimo (pregunta solo lo que falte)
