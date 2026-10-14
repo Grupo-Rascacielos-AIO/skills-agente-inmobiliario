@@ -45,7 +45,7 @@ referencias:
 - Colores siempre en hex de 6 cifras y entre comillas: `"#1F3A5F"`.
 - `logo` y `foto`: ruta absoluta a un archivo local (`/Users/ana/marca/logo.png`) o URL pública. Vacío si no tiene.
 - `tono`: uno de `cercano`, `profesional` o `premium`.
-- `estilo`: el estilo visual elegido, con su nombre y una frase. Ej.: `editorial elegante — serifas grandes, mucho blanco, fotos protagonistas`.
+- `estilo`: empieza SIEMPRE por una palabra clave que leen las plantillas (`elegante`, `moderno`, `minimalista` o `calido`), seguida de una frase. Ej.: `elegante — editorial, serifas grandes, mucho blanco, fotos protagonistas`. Equivalencias de los mockups: editorial → `elegante`, moderno minimal → `moderno`, cálido cercano → `calido`.
 - `referencias` (opcional): de dónde salió la marca (su web, su Instagram, el mockup elegido). Ej.: `https://www.ejemplo.com, @usuario`.
 - `whatsapp`: con prefijo internacional y sin espacios (`+34600111222`).
 - Si un dato no lo tiene, déjalo vacío. Nunca inventes datos.
@@ -148,3 +148,12 @@ Genera `mi-marca-muestra.html` en la carpeta actual a partir de [plantilla-muest
 - Guardar colores sin `#` o sin comillas.
 - En la vía B, enseñar los 3 diseños con «Nombre Apellido»: usa sus datos reales para que se vea a sí mismo.
 - En la vía C, copiar logotipos o fotos de terceros: solo se usa material del propio agente.
+
+## Si usas la app de Claude (sin Claude Code)
+
+En la app de Claude (web, escritorio o móvil) no se puede escribir en `~/.claude/`. Entonces:
+
+1. Haz el mismo flujo (A, B o C). Los mockups de la vía B se entregan como archivos HTML para descargar y abrir.
+2. Al final, genera el archivo `mi-marca-inmobiliaria.md` con el formato exacto de arriba y entrégalo para **descargar**.
+3. Dile al agente: «Crea un Proyecto en Claude llamado *Mi negocio inmobiliario*, sube este archivo a su conocimiento y trabaja siempre dentro de ese Proyecto. Así no tendrás que repetir tu marca». Si no usa Proyectos, que adjunte el archivo al empezar cada chat.
+4. Logo y foto: en la app no hay rutas locales; pídele que los adjunte al chat o que dé una URL pública.

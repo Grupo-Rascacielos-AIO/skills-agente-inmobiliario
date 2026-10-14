@@ -1,0 +1,110 @@
+{
+  "marca": {
+    "nombre": "Inés Albiol",
+    "agencia": "Albiol Casas",
+    "telefono": "+34 611 204 318",
+    "whatsapp": "+34611204318",
+    "email": "ines@albiolcasas.example",
+    "zona": "L'Alqueria Blanca, Valencia",
+    "color_principal": "#1F3D36",
+    "color_secundario": "#EEF0EB",
+    "color_acento": "#C99A2E",
+    "tipografia_titulos": "Newsreader",
+    "tipografia_texto": "Hanken Grotesk",
+    "logo": "",
+    "foto": "",
+    "tono": "profesional"
+  },
+  "informe": {
+    "fecha": "14 de octubre de 2026",
+    "referencia": "VAL-2026-047",
+    "preparado_para": "Marta y Joaquín Navarro",
+    "validez": "Válido tres meses: después conviene revisarlo con los cierres nuevos."
+  },
+  "vivienda": {
+    "direccion": "Calle de los Naranjos Viejos, 14",
+    "puerta": "3.º B",
+    "barrio": "L'Alqueria Blanca",
+    "ciudad": "Valencia",
+    "tipo": "Piso",
+    "m2_construidos": 92,
+    "m2_utiles": 78,
+    "habitaciones": 3,
+    "banos": 2,
+    "planta": 3,
+    "plantas_edificio": 6,
+    "ascensor": true,
+    "exterior": true,
+    "orientacion": "Sureste",
+    "estado": "Buen estado, cocina original",
+    "anio": 1978,
+    "extras": ["Balcón a la calle", "Trastero en planta baja", "Aire acondicionado", "Carpintería de aluminio con climalit", "Comunidad con rampa"],
+    "descripcion": "Piso luminoso con salón a la calle y las tres habitaciones exteriores. Los baños se reformaron en 2017; la cocina es la original y es lo que un comprador querrá actualizar. Edificio cuidado, con ascensor hasta planta baja sin escalones.",
+    "foto_portada": "",
+    "fotos": []
+  },
+  "zona": {
+    "texto": "L'Alqueria Blanca es un barrio residencial de calles cortas y comercio de proximidad, muy buscado por familias que quieren colegio y parque a pie sin pagar el precio del centro. La demanda supera a la oferta en pisos de tres habitaciones con ascensor.",
+    "puntos": [
+      {"dato": "4 min", "texto": "a pie del colegio público y del instituto"},
+      {"dato": "6 min", "texto": "a pie de la parada de metro y dos líneas de autobús"},
+      {"dato": "300 m", "texto": "del parque lineal y el mercado municipal"},
+      {"dato": "15 min", "texto": "en bici al centro por el carril del cauce"}
+    ],
+    "imagen_mapa": ""
+  },
+  "testigos": [
+    {"id": "T1", "direccion": "C/ Torre de la Alqueria, 8", "fuente": "Venta propia", "situacion": "vendido", "precio": 268000, "m2": 88, "habitaciones": 3, "banos": 2, "planta": "2.ª con ascensor", "estado": "Reformado 2023", "dias": 41, "bajadas": 0, "precio_inicial": null, "distancia_m": 180, "rumbo": 35,
+     "coef": {"estado": 0.93, "planta": 1, "exterior": 1, "terraza": 1, "garaje": 1, "antiguedad": 1, "otros": 1}, "nota": "Cocina y suelos nuevos"},
+    {"id": "T2", "direccion": "C/ Mestre Ferrandis, 22", "fuente": "Notario, vía colaborador", "situacion": "vendido", "precio": 262000, "m2": 95, "habitaciones": 3, "banos": 1, "planta": "4.ª con ascensor", "estado": "Buen estado", "dias": 58, "bajadas": 0, "precio_inicial": null, "distancia_m": 320, "rumbo": 110,
+     "coef": {"estado": 1, "planta": 1, "exterior": 1, "terraza": 1, "garaje": 1, "antiguedad": 1, "otros": 1.02}, "nota": "Un solo baño"},
+    {"id": "T3", "direccion": "C/ dels Tarongers Vells, 31", "fuente": "Idealista", "situacion": "en_venta", "precio": 229000, "m2": 90, "habitaciones": 3, "banos": 2, "planta": "3.ª sin ascensor", "estado": "Buen estado", "dias": 64, "bajadas": 0, "precio_inicial": null, "distancia_m": 140, "rumbo": 250,
+     "coef": {"estado": 1, "planta": 1.1, "exterior": 1, "terraza": 1, "garaje": 1, "antiguedad": 1, "otros": 1}, "nota": "Misma calle, sin ascensor"},
+    {"id": "T4", "direccion": "Av. del Riu Blanc, 5", "fuente": "Fotocasa", "situacion": "en_venta", "precio": 335000, "m2": 98, "habitaciones": 3, "banos": 2, "planta": "5.ª con ascensor", "estado": "Reformado", "dias": 23, "bajadas": 0, "precio_inicial": null, "distancia_m": 520, "rumbo": 15,
+     "coef": {"estado": 0.93, "planta": 1, "exterior": 1, "terraza": 0.97, "garaje": 0.94, "antiguedad": 1, "otros": 1}, "nota": "Terraza de 12 m² y plaza de garaje incluida"},
+    {"id": "T5", "direccion": "C/ Sénia Vella, 3", "fuente": "Idealista", "situacion": "en_venta", "precio": 189000, "m2": 86, "habitaciones": 3, "banos": 1, "planta": "Bajo interior", "estado": "A reformar", "dias": 64, "bajadas": 0, "precio_inicial": null, "distancia_m": 410, "rumbo": 205,
+     "coef": {"estado": 1.12, "planta": 1.06, "exterior": 1.04, "terraza": 1, "garaje": 1, "antiguedad": 1, "otros": 1}, "nota": "Necesita reforma integral"},
+    {"id": "T6", "direccion": "C/ del Pintor Llorenç, 17", "fuente": "Idealista", "situacion": "en_venta", "precio": 289000, "m2": 94, "habitaciones": 3, "banos": 2, "planta": "3.ª con ascensor", "estado": "Buen estado", "dias": 132, "bajadas": 2, "precio_inicial": 315000, "distancia_m": 260, "rumbo": 300,
+     "coef": {"estado": 1, "planta": 1, "exterior": 1, "terraza": 1, "garaje": 1, "antiguedad": 1, "otros": 1}, "nota": "El más parecido al tuyo: salió caro"},
+    {"id": "T7", "direccion": "Plaça de l'Era, 2", "fuente": "Venta propia", "situacion": "vendido", "precio": 259000, "m2": 91, "habitaciones": 3, "banos": 2, "planta": "6.ª con ascensor", "estado": "Buen estado", "dias": 47, "bajadas": 0, "precio_inicial": null, "distancia_m": 610, "rumbo": 140,
+     "coef": {"estado": 1, "planta": 0.98, "exterior": 1, "terraza": 1, "garaje": 1, "antiguedad": 1, "otros": 1}, "nota": "Vistas despejadas"},
+    {"id": "T8", "direccion": "C/ Camí de la Sèquia, 40", "fuente": "Fotocasa", "situacion": "en_venta", "precio": 395000, "m2": 105, "habitaciones": 4, "banos": 2, "planta": "Ático con ascensor", "estado": "Reformado", "dias": 18, "bajadas": 0, "precio_inicial": null, "distancia_m": 470, "rumbo": 330,
+     "coef": {"estado": 0.93, "planta": 0.94, "exterior": 1, "terraza": 0.86, "garaje": 1, "antiguedad": 1, "otros": 0.97}, "nota": "Terraza de 30 m²"}
+  ],
+  "parametros": {
+    "negociacion_en_venta": 0.95,
+    "negociacion_largo": 0.92,
+    "dias_largo": 90,
+    "peso_vendido": 2,
+    "ajuste_maximo": 0.25,
+    "desviacion_maxima": 0.15,
+    "margen_salida": 0.05,
+    "margen_minimo": 0.05
+  },
+  "textos": {
+    "resumen": "Tu piso vale hoy unos {cierre}. Si salimos a {salida}, lo normal es venderlo en dos o tres meses y cerrar cerca de ese valor.",
+    "explica_salida": "El precio que publicamos. Deja margen para negociar sin regalar nada y aparece en las búsquedas de hasta 270.000 €.",
+    "explica_cierre": "Lo que se está pagando de verdad por pisos como el tuyo en el barrio.",
+    "explica_minimo": "Nuestro suelo. Por debajo, mejor esperar a otra oferta.",
+    "riesgo_intro": "El precio de salida decide quién viene a ver la casa. Los compradores comparan con los mismos pisos que hemos visto nosotros, y un piso caro no se vende: se usa para que los demás parezcan baratos.",
+    "escenarios": [
+      {"sobre_salida": 0, "titulo": "Salir al precio recomendado", "texto": "Entras en las búsquedas de quien de verdad puede comprarlo. Visitas desde la primera semana y ofertas en firme en el primer mes.", "plazo": "45-75 días", "calor": 0.92},
+      {"sobre_salida": 0.08, "titulo": "Salir un 8 % por encima", "texto": "Pocas visitas, y las que vienen lo comparan con pisos reformados. Lo habitual es una primera bajada al mes o mes y medio.", "plazo": "4-6 meses", "calor": 0.45},
+      {"sobre_salida": 0.15, "titulo": "Salir un 15 % por encima", "texto": "El piso se quema: los portales lo marcan como antiguo y quien lo ve tras las bajadas piensa que algo falla. Se acaba vendiendo por debajo del valor.", "plazo": "Más de 9 meses", "calor": 0.15}
+    ],
+    "dato_real": {"cifra": "132 días", "texto": "lleva a la venta el piso más parecido al tuyo (T6, misma planta, a 260 m). Salió a 315.000 €, ya ha bajado dos veces y sigue sin vender. Los tres vendidos de la zona tardaron {dias_vendidos} días de media."},
+    "estrategia_intro": "Un plan cerrado para las primeras doce semanas, con una revisión del precio pactada de antemano para no improvisar.",
+    "estrategia": [
+      {"cuando": "Semana 1", "titulo": "Preparar la casa", "texto": "Fotografía profesional con luz de mañana, plano a escala y visita virtual. Retiramos objetos personales y damos un aire neutro a la cocina sin obras."},
+      {"cuando": "Semana 2", "titulo": "Lanzamiento a {salida}", "texto": "Primero a nuestra cartera de compradores que buscan 3 habitaciones con ascensor en el barrio; a los 5 días, publicación en todos los portales a la vez."},
+      {"cuando": "Semanas 2-4", "titulo": "Visitas agrupadas", "texto": "Concentramos las visitas en dos tardes por semana. Solo entran compradores con financiación revisada."},
+      {"cuando": "Día 30", "titulo": "Primera revisión", "texto": "Te enseñamos visitas, ofertas y lo que dicen los compradores. Si no hay ofertas serias, ajuste pactado al {cierre} redondeado a precio de portal."},
+      {"cuando": "Semanas 6-12", "titulo": "Negociación y arras", "texto": "Defendemos el precio con este mismo informe. Nada por debajo de {minimo} sin hablarlo antes contigo."}
+    ],
+    "siguiente_intro": "Con la casa preparada esta semana, podemos estar en el mercado antes de fin de mes, que es cuando más compradores se mueven en el barrio.",
+    "siguiente": [
+      {"titulo": "Firmamos el encargo de venta", "texto": "Media hora en tu casa o en la oficina. Revisamos juntos el plan, la documentación que hace falta (nota simple, certificado energético, IBI) y fijamos el día de las fotos."},
+      {"titulo": "¿Aún tienes dudas?", "texto": "Quedamos 20 minutos para repasar cualquier número de este informe. Sin compromiso: preferimos que decidas con todo claro."}
+    ]
+  }
+}

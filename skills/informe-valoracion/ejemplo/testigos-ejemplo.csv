@@ -1,0 +1,9 @@
+direccion,fuente,situacion,precio,m2,habitaciones,banos,planta,ascensor,estado,extras,dias,bajadas,precio_inicial,distancia_m,rumbo
+C/ Torre de la Alqueria 8,Venta propia,vendido,268000,88,3,2,2,si,Reformado 2023,,41,0,,180,35
+C/ Mestre Ferrandis 22,Notario vía colaborador,vendido,262000,95,3,1,4,si,Buen estado,,58,0,,320,110
+C/ dels Tarongers Vells 31,Idealista,en_venta,229000,90,3,2,3,no,Buen estado,,64,0,,140,250
+Av. del Riu Blanc 5,Fotocasa,en_venta,335000,98,3,2,5,si,Reformado,terraza 12 m² + garaje,23,0,,520,15
+C/ Sénia Vella 3,Idealista,en_venta,189000,86,3,1,0,si,A reformar,interior,64,0,,410,205
+C/ del Pintor Llorenç 17,Idealista,en_venta,289000,94,3,2,3,si,Buen estado,,132,2,315000,260,300
+Plaça de l'Era 2,Venta propia,vendido,259000,91,3,2,6,si,Buen estado,vistas,47,0,,610,140
+C/ Camí de la Sèquia 40,Fotocasa,en_venta,395000,105,4,2,ático,si,Reformado,terraza 30 m²,18,0,,470,330

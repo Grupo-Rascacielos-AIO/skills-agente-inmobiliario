@@ -11,21 +11,30 @@ No hace falta saber programar. Le hablas a Claude como a un compañero de oficin
 | Skill | Qué hace | Dile a Claude… |
 |---|---|---|
 | **mi-marca** | Configura tu marca una sola vez y todo lo demás sale «tuyo». Tres caminos: das tus colores y tipografía, eliges entre 3 diseños de muestra o la saca de tu Instagram o tu web. | «Configura mi marca» · «Saca mi marca de mi Instagram» · «Cambia mis colores» |
-| **presentacion-scroll** | Una presentación web de las que se recorren haciendo scroll, con tu marca. | «Hazme una presentación en scroll de [tema]» |
-| **landing-propietario** | Una página web para captar propietarios que quieren vender, con tu marca. | «Hazme una landing para captar propietarios en mi zona» |
-| **plano-3d** | Convierte el plano de un inmueble en una vista 3D para tus anuncios y presentaciones. | «Pásame este plano a 3D» |
+| **presentacion-scroll** | Webs de presentación de scroll inmersivo (paralaje, cifras que cuentan, galerías) con tu estilo: preséntate a un propietario, tu servicio, un inmueble o tu zona. | «Hazme una presentación de scroll para presentarme a un propietario» · «Cambia mi estilo» |
+| **landing-propietario** | Le das el link del portal (o fotos y datos) y te hace la landing para enseñársela al propietario: fotos, plano 3D si hay plano, puntos fuertes, plan de marketing, calendario de 90 días y botón de WhatsApp. | «Hazme la landing para el propietario con este link de Idealista: …» |
+| **plano-3d** | Convierte el plano 2D de una vivienda en una maqueta 3D interactiva para web, con botón para amueblarla en estilo nórdico o moderno. | «Pasa este plano a 3D» (y adjuntas el plano) |
 | **copywriter-inmobiliario** | Anuncios de portal, posts y carruseles de Instagram, guiones de reel listos para teleprompter, WhatsApp y emails a propietarios, respuestas a objeciones, tu bio y el texto de tu landing. | «Hazme el anuncio de Idealista de este piso: 3 dormitorios, 85 m²…» · «Un propietario me dice que mi comisión es muy alta, ¿qué le contesto?» |
-| **informe-valoracion** | El informe de valoración que entregas al propietario, con tu marca. | «Prepárame el informe de valoración de este piso» |
+| **informe-valoracion** | Pegas los testigos (comparables) y te hace el informe de precio para el propietario: €/m², homogeneización, 3 precios (salida, cierre, mínimo), riesgo de sobrevalorar y plan de venta. Listo para PDF. Orientativo, no es una tasación oficial. | «Valora este piso: 92 m², 3 hab., 3.º con ascensor… y estos son los testigos: [pegar]» |
 | **equipo-inmobiliario** | Para encargos grandes: Claude dirige un equipo (estratega, revisor y los especialistas que hagan falta: analista de mercado, copywriter, diseñador, community manager, captación…) que trabaja en paralelo, te consulta solo lo importante y te entrega todo en una carpeta con un informe. | «Prepara la captación de este piso» · «Monta mi plan de contenidos del mes» |
 
-<!-- TODO presentacion-scroll: revisar descripción y frase de ejemplo cuando el otro agente termine la skill -->
-<!-- TODO landing-propietario: revisar descripción y frase de ejemplo cuando el otro agente termine la skill -->
-<!-- TODO plano-3d: revisar descripción y frase de ejemplo cuando el otro agente termine la skill -->
-<!-- TODO informe-valoracion: revisar descripción y frase de ejemplo cuando el otro agente termine la skill -->
 
 ---
 
-## Instalación en 3 pasos
+## ¿No usas Claude Code? Úsalas en la app de Claude
+
+No necesitas terminal. Funciona en la app de Claude (web, escritorio o móvil):
+
+1. **Ajustes → Capacidades**: activa «Ejecución de código y creación de archivos».
+2. Descarga el ZIP de cada skill desde la página de [Releases](../../releases) de este repositorio o desde la web de descargas de tu formación. No los descomprimas.
+3. **Skills → «+» → Subir una skill** y elige un ZIP (uno por skill). Actívala.
+4. Crea un **Proyecto** llamado «Mi negocio inmobiliario» y dile: «Configura mi marca». Sube el archivo `mi-marca-inmobiliaria.md` que te devuelve al conocimiento del Proyecto y trabaja siempre dentro.
+
+Los nombres de los menús pueden cambiar con las actualizaciones de Claude: si no los ves, busca «Skills» o «Capacidades» en los ajustes.
+
+---
+
+## Instalación en Claude Code
 
 **Necesitas**: [Claude Code](https://claude.com/claude-code) instalado y una cuenta de Claude.
 

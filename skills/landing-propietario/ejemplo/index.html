@@ -1,0 +1,392 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Propuesta para vender tu casa</title>
+<!--
+  LANDING PARA EL PROPIETARIO · plantilla
+  - NO hace falta tocar este archivo: todo el contenido y la marca van en datos.js.
+  - Si hay plano: poner plano3d:true en datos.js y dejar plano-data.js + plano3d.js en esta carpeta.
+  - Las variables de color/tipografía salen de LANDING.marca (copiada de ~/.claude/mi-marca-inmobiliaria.md).
+-->
+<style>
+:root{
+  --p:#1f3a34;--s:#f3ede3;--a:#c8643b;--sobre-p:#fff;--sobre-a:#fff;--tinta:#1d1d1b;
+  --ft:Georgia,serif;--fx:system-ui,-apple-system,"Segoe UI",sans-serif;
+  --radio:22px;--max:1180px;
+  /* nombres que usa la sección del plano 3D */
+  --color-principal:var(--p);--color-secundario:var(--s);--color-acento:var(--a);--font-titulos:var(--ft);--font-texto:var(--fx);
+  --suave:color-mix(in srgb,var(--tinta) 62%,transparent);
+  --linea:color-mix(in srgb,var(--tinta) 12%,transparent);
+  --claro-linea:color-mix(in srgb,var(--sobre-p) 16%,transparent);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+html,body{margin:0;overflow-x:clip}
+body{font-family:var(--fx);color:var(--tinta);background:var(--s);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+a{color:inherit}
+h1,h2,h3{font-family:var(--ft);font-weight:600;line-height:1.06;margin:0;letter-spacing:-.01em}
+h2{font-size:clamp(32px,5vw,56px)}
+h2 em,h1 em{font-style:italic;color:var(--a)}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 20px}
+section{padding:104px 0;position:relative}
+.eyebrow{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--a);margin-bottom:14px}
+.sub{max-width:620px;color:var(--suave);font-size:18px;margin:16px 0 0}
+.oscuro{background:var(--p);color:var(--sobre-p)}
+.oscuro .sub{color:color-mix(in srgb,var(--sobre-p) 72%,transparent)}
+.blanco{background:#fff}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;font:600 16px/1 var(--fx);padding:17px 26px;border-radius:99px;text-decoration:none;border:0;cursor:pointer;min-height:52px;transition:transform .2s,box-shadow .2s}
+.btn:hover{transform:translateY(-2px);box-shadow:0 12px 30px -12px rgba(0,0,0,.4)}
+.btn-a{background:var(--a);color:var(--sobre-a)}
+.btn-borde{background:transparent;color:inherit;border:1.5px solid currentColor}
+.btn svg{width:20px;height:20px;flex:none}
+.rev{opacity:0;transform:translateY(24px);transition:opacity .8s ease,transform .8s ease}
+.rev.ok{opacity:1;transform:none}
+
+/* NAV */
+.nav{position:fixed;top:0;left:0;right:0;z-index:50;transition:background .3s,box-shadow .3s}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;height:72px}
+.nav .logo{display:flex;align-items:center;gap:10px;color:#fff;text-decoration:none;font-weight:700;min-width:0}
+.nav .logo img{height:34px;width:auto;max-width:180px;object-fit:contain}
+.nav .logo span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nav .btn{padding:11px 18px;min-height:42px;font-size:14px}
+.nav.solida{background:color-mix(in srgb,var(--p) 94%,transparent);backdrop-filter:blur(10px);box-shadow:0 6px 24px -12px rgba(0,0,0,.35)}
+
+/* HERO */
+.hero{min-height:100vh;min-height:100svh;display:flex;align-items:flex-end;padding:120px 0 64px;color:#fff;overflow:hidden}
+.hero-bg{position:absolute;inset:0;background-size:cover;background-position:center;transform:scale(1.06);animation:kb 18s ease-out forwards}
+@keyframes kb{to{transform:scale(1)}}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.45) 0%,rgba(0,0,0,0) 65%),linear-gradient(180deg,rgba(0,0,0,.3) 0%,rgba(0,0,0,.1) 35%,color-mix(in srgb,var(--p) 90%,transparent) 100%)}
+.hero .wrap{position:relative;z-index:1;width:100%}
+.hero .para{font-size:15px;font-weight:600;letter-spacing:.04em;opacity:.9}
+.hero h1{font-size:clamp(42px,7.4vw,96px);max-width:14ch;margin:14px 0 18px}
+.hero h1 em{color:#fff;opacity:.92}
+.hero p.lead{max-width:560px;font-size:19px;opacity:.88;margin:0 0 28px}
+.chips{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 30px;padding:0;list-style:none}
+.chips li{background:rgba(255,255,255,.14);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.22);padding:9px 15px;border-radius:99px;font-size:14px;font-weight:600}
+.hero .acciones{display:flex;gap:12px;flex-wrap:wrap}
+.hero .btn-borde{color:#fff}
+
+/* RESUMEN + GALERÍA */
+.resumen{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:56px;align-items:start}
+.datos{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;background:var(--linea);border:1px solid var(--linea);border-radius:var(--radio);overflow:hidden;margin-top:32px}
+.datos div{background:var(--s);padding:20px 22px}
+.datos b{display:block;font-family:var(--ft);font-size:30px;line-height:1.1}
+.datos div:last-child:nth-child(odd){grid-column:span 2}
+.datos span{font-size:13px;color:var(--suave);text-transform:uppercase;letter-spacing:.08em}
+.desc{color:var(--suave);margin-top:24px}
+.galeria{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));grid-auto-rows:120px;gap:10px}
+.galeria button{all:unset;cursor:zoom-in;border-radius:16px;overflow:hidden;position:relative;background:#ddd}
+.galeria button:focus-visible{outline:3px solid var(--a);outline-offset:2px}
+.galeria img{width:100%;height:100%;object-fit:cover;transition:transform .6s}
+.galeria button:hover img{transform:scale(1.05)}
+.galeria button span{position:absolute;left:10px;bottom:10px;background:rgba(0,0,0,.55);color:#fff;font-size:12px;font-weight:600;padding:5px 10px;border-radius:99px}
+.galeria button:nth-child(1){grid-column:span 6;grid-row:span 3}
+.galeria button:nth-child(n+2){grid-column:span var(--sd,2);grid-row:span 1}
+.lightbox{position:fixed;inset:0;z-index:100;background:rgba(10,10,10,.94);display:none;align-items:center;justify-content:center;padding:20px}
+.lightbox.on{display:flex}
+.lightbox img{max-height:84vh;border-radius:12px}
+.lightbox p{position:absolute;bottom:18px;left:0;right:0;text-align:center;color:#fff;font-size:14px;margin:0}
+.lightbox button{position:absolute;background:rgba(255,255,255,.12);border:0;color:#fff;width:48px;height:48px;border-radius:50%;font-size:24px;cursor:pointer}
+.lb-x{top:16px;right:16px}.lb-prev{left:12px;top:50%}.lb-next{right:12px;top:50%}
+
+/* PUNTOS FUERTES */
+.fuertes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:48px}
+.fuerte{background:#fff;border:1px solid var(--linea);border-radius:var(--radio);padding:28px}
+.fuerte .n{font-family:var(--ft);font-size:44px;line-height:1;color:var(--a)}
+.fuerte h3{font-size:23px;margin:14px 0 8px}
+.fuerte p{margin:0;color:var(--suave);font-size:16px}
+
+/* PLAN */
+.pilares{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:var(--claro-linea);border:1px solid var(--claro-linea);border-radius:var(--radio);overflow:hidden;margin-top:48px}
+.pilar{background:var(--p);padding:30px 28px}
+.pilar svg{width:34px;height:34px;color:var(--a)}
+.pilar h3{font-size:22px;margin:18px 0 8px}
+.pilar p{margin:0;font-size:15.5px;color:color-mix(in srgb,var(--sobre-p) 70%,transparent)}
+
+/* ANUNCIOS EN MÓVIL */
+.anuncios{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:40px;align-items:center}
+.movil{width:280px;border-radius:40px;background:#111;padding:12px;box-shadow:0 40px 80px -30px rgba(0,0,0,.45)}
+.pantalla{border-radius:30px;overflow:hidden;background:#fff;height:540px;display:flex;flex-direction:column;font-family:-apple-system,system-ui,sans-serif;color:#111}
+.barra-app{padding:14px 16px 10px;font-size:13px;font-weight:700;display:flex;justify-content:space-between;border-bottom:1px solid #eee}
+.ficha-img{height:210px;background-size:cover;background-position:center;position:relative}
+.ficha-img i{position:absolute;right:10px;bottom:10px;background:rgba(0,0,0,.6);color:#fff;font-style:normal;font-size:11px;padding:3px 8px;border-radius:6px}
+.ficha{padding:14px 16px;font-size:13px}
+.ficha .precio{font-size:22px;font-weight:800}
+.ficha .tags{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}
+.ficha .tags span{background:#f2f2f2;padding:4px 8px;border-radius:6px;font-size:11.5px}
+.ficha .linea{height:8px;background:#eee;border-radius:4px;margin:8px 0}
+.ficha .boton{margin-top:12px;background:var(--a);color:var(--sobre-a);text-align:center;font-weight:700;padding:11px;border-radius:10px}
+.post-top{display:flex;align-items:center;gap:8px;padding:12px 14px;font-size:12.5px;font-weight:700}
+.post-top i{width:28px;height:28px;border-radius:50%;background:var(--a);display:block}
+.post-img{aspect-ratio:4/5;background-size:cover;background-position:center;position:relative}
+.post-img b{position:absolute;left:14px;right:14px;bottom:14px;color:#fff;font-family:var(--ft);font-size:24px;line-height:1.05;text-shadow:0 2px 14px rgba(0,0,0,.5)}
+.post-pie{padding:10px 14px;font-size:12px;line-height:1.4}
+.post-cta{margin:0 14px;background:#f2f2f2;border-radius:8px;padding:9px 12px;font-size:12px;font-weight:700;display:flex;justify-content:space-between}
+
+/* CALENDARIO */
+.cal{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:48px;position:relative}
+.fase{background:#fff;border:1px solid var(--linea);border-radius:var(--radio);padding:30px 28px;position:relative;overflow:hidden}
+.fase::before{content:"";position:absolute;left:0;top:0;right:0;height:5px;background:var(--a);transform-origin:left;transform:scaleX(var(--k,.33))}
+.fase .dias{font-weight:700;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--a)}
+.fase h3{font-size:26px;margin:10px 0 14px}
+.fase ul{margin:0;padding:0;list-style:none}
+.fase li{padding:9px 0 9px 28px;border-top:1px solid var(--linea);position:relative;font-size:15.5px}
+.fase li::before{content:"";position:absolute;left:4px;top:17px;width:10px;height:10px;border-radius:50%;border:2px solid var(--a)}
+
+/* INFORME */
+.informe{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:56px;align-items:center}
+.panel{background:#fff;color:var(--tinta);border-radius:var(--radio);padding:26px;box-shadow:0 40px 80px -40px rgba(0,0,0,.5)}
+.panel-top{display:flex;justify-content:space-between;gap:10px;font-size:13px;color:var(--suave);margin-bottom:18px;flex-wrap:wrap}
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.kpi{background:color-mix(in srgb,var(--s) 70%,#fff);border-radius:14px;padding:14px 12px}
+.kpi b{display:block;font-family:var(--ft);font-size:28px;line-height:1.1}
+.kpi span{font-size:11.5px;color:var(--suave)}
+.barras{display:flex;align-items:flex-end;gap:8px;height:120px;margin:22px 0 8px;padding-bottom:4px;border-bottom:1px solid var(--linea)}
+.barras i{flex:1;background:var(--a);border-radius:6px 6px 0 0;opacity:.85;height:0;transition:height 1s cubic-bezier(.2,.7,.2,1)}
+.panel small{color:var(--suave);font-size:12px}
+.panel .nota{margin-top:14px;padding:12px 14px;border-radius:12px;background:color-mix(in srgb,var(--a) 10%,#fff);font-size:14px}
+
+/* AGENTE */
+.agente{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:56px;align-items:center}
+.agente .foto{border-radius:var(--radio);overflow:hidden;aspect-ratio:4/5;background:#ddd}
+.agente .foto img{width:100%;height:100%;object-fit:cover}
+.cifras{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:28px 0}
+.cifras div{border-top:2px solid var(--a);padding-top:12px}
+.cifras b{display:block;font-family:var(--ft);font-size:34px;line-height:1.1}
+.cifras span{font-size:14px;color:var(--suave)}
+.firma{font-family:var(--ft);font-style:italic;font-size:24px}
+
+/* CTA */
+.cta{text-align:center;padding:120px 0}
+.cta h2{max-width:16ch;margin:0 auto}
+.cta .sub{margin:18px auto 34px}
+.cta .acciones{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.cta .btn-borde{color:var(--sobre-p)}
+footer{background:var(--p);color:color-mix(in srgb,var(--sobre-p) 55%,transparent);font-size:13px;padding:28px 0 110px;border-top:1px solid var(--claro-linea)}
+footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.barra-movil{display:none}
+
+/* ===== VARIANTES POR ESTILO (campo «estilo» de la marca) ===== */
+/* elegante: el de por defecto (serif en títulos, cálido, esquinas suaves) */
+/* moderno: más contraste, esquinas rectas, títulos sin serifa y en mayúsculas pequeñas */
+body.estilo-moderno{--radio:6px}
+body.estilo-moderno h1,body.estilo-moderno h2{letter-spacing:-.03em;font-weight:700}
+body.estilo-moderno h2 em,body.estilo-moderno h1 em{font-style:normal}
+body.estilo-moderno .btn{border-radius:6px}
+body.estilo-moderno .hero::after{background:linear-gradient(180deg,rgba(0,0,0,.35),rgba(0,0,0,.15) 40%,rgba(0,0,0,.85))}
+/* minimalista: fondo blanco, mucho aire, sin sombras, acento solo en detalles */
+body.estilo-minimalista{background:#fff;--radio:14px}
+body.estilo-minimalista .fuerte,body.estilo-minimalista .fase{background:#fff;box-shadow:none}
+body.estilo-minimalista .blanco{background:var(--s)}
+body.estilo-minimalista section{padding:120px 0}
+body.estilo-minimalista h2 em,body.estilo-minimalista h1 em{color:inherit}
+body.estilo-minimalista .hero::after{background:linear-gradient(180deg,rgba(0,0,0,.1),rgba(0,0,0,0) 40%,rgba(0,0,0,.7))}
+/* calido / mediterraneo: tarjetas con el color secundario y esquinas muy redondas */
+body.estilo-calido{--radio:30px}
+body.estilo-calido .fuerte,body.estilo-calido .fase{background:color-mix(in srgb,var(--s) 60%,#fff);border-color:transparent}
+body.estilo-calido .btn{border-radius:99px}
+
+@media(max-width:900px){
+  section{padding:80px 0}
+  .resumen,.informe,.agente{grid-template-columns:minmax(0,1fr);gap:36px}
+  .fuertes,.pilares,.cal{grid-template-columns:minmax(0,1fr)}
+  .anuncios{grid-template-columns:minmax(0,1fr);justify-items:center;text-align:left}
+  .anuncios>div:first-child{justify-self:stretch}
+  .agente .foto{max-width:420px}
+}
+@media(max-width:640px){
+  body{font-size:16px}
+  .wrap{padding:0 16px}
+  .nav .wrap{height:62px}
+  .nav .btn{display:none}
+  .hero{padding:100px 0 40px}
+  .hero p.lead{font-size:17px}
+  .hero .acciones .btn{flex:1 1 100%}
+  .galeria{grid-auto-rows:92px;gap:8px}
+  .galeria button:nth-child(n+2){grid-column:span var(--sm,3)}
+  .datos b{font-size:24px}
+  .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .cifras b{font-size:26px}
+  .movil{width:min(280px,100%)}
+  .cta .acciones .btn{flex:1 1 100%}
+  .barra-movil{display:flex;gap:8px;position:fixed;left:0;right:0;bottom:0;z-index:60;padding:10px 12px calc(10px + env(safe-area-inset-bottom));background:color-mix(in srgb,var(--p) 96%,transparent);backdrop-filter:blur(10px);transform:translateY(110%);transition:transform .35s}
+  .barra-movil.on{transform:none}
+  .barra-movil .btn{flex:1;padding:14px 10px;min-height:48px;font-size:15px}
+  .barra-movil .btn-borde{color:var(--sobre-p)}
+}
+@media(prefers-reduced-motion:reduce){.rev{opacity:1;transform:none;transition:none}.hero-bg{animation:none;transform:none}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script src="datos.js"></script>
+<script>
+(function () {
+  const L = window.LANDING, M = L.marca || {}, I = L.inmueble || {};
+  const esc = s => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  // texto con *énfasis* → <em>
+  const em = s => esc(s).replace(/\*(.+?)\*/g, '<em>$1</em>');
+
+  // ---------- Marca → variables CSS ----------
+  const root = document.documentElement.style;
+  const lum = hex => { const h = (hex || '#000').replace('#', ''); const [r, g, b] = [0, 2, 4].map(i => parseInt(h.substr(i, 2), 16) / 255).map(c => c <= .03928 ? c / 12.92 : Math.pow((c + .055) / 1.055, 2.4)); return .2126 * r + .7152 * g + .0722 * b; };
+  if (M.color_principal) root.setProperty('--p', M.color_principal);
+  if (M.color_secundario) root.setProperty('--s', M.color_secundario);
+  if (M.color_acento) root.setProperty('--a', M.color_acento);
+  root.setProperty('--sobre-p', lum(M.color_principal || '#1f3a34') > .35 ? '#161616' : '#ffffff');
+  root.setProperty('--sobre-a', lum(M.color_acento || '#c8643b') > .45 ? '#161616' : '#ffffff');
+  root.setProperty('--tinta', lum(M.color_principal || '#1f3a34') < .12 ? (M.color_principal || '#1d1d1b') : '#1d1d1b');
+  const fuentes = [M.tipografia_titulos, M.tipografia_texto].filter(Boolean);
+  if (fuentes.length) {
+    const l = document.createElement('link'); l.rel = 'stylesheet';
+    l.href = 'https://fonts.googleapis.com/css2?' + [...new Set(fuentes)].map(f => 'family=' + encodeURIComponent(f).replace(/%20/g, '+') + ':ital,wght@0,400;0,600;0,700;1,400;1,600').join('&') + '&display=swap';
+    document.head.appendChild(l);
+    if (M.tipografia_titulos) root.setProperty('--ft', `"${M.tipografia_titulos}",Georgia,serif`);
+    if (M.tipografia_texto) root.setProperty('--fx', `"${M.tipografia_texto}",system-ui,sans-serif`);
+  }
+  const estilo = (M.estilo || 'elegante').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').split(/[\s,]/)[0];
+  document.body.classList.add('estilo-' + estilo);
+  if (L.titulo) document.title = L.titulo;
+
+  // ---------- Iconos ----------
+  const IC = {
+    camara: '<path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="4"/>',
+    sofa: '<path d="M4 11V8a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3"/><path d="M2 12a2 2 0 0 1 4 0v2h12v-2a2 2 0 0 1 4 0v6H2z"/><path d="M5 18v2M19 18v2"/>',
+    megafono: '<path d="M3 10v4h4l7 4V6L7 10z"/><path d="M17 9a4 4 0 0 1 0 6M7 14l1 5h3"/>',
+    personas: '<circle cx="9" cy="8" r="3.5"/><path d="M2 20c0-4 3-6 7-6s7 2 7 6"/><circle cx="17" cy="9" r="2.5"/><path d="M17 14c3 0 5 2 5 5"/>',
+    puerta: '<path d="M5 21V4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v17"/><path d="M3 21h18"/><circle cx="15" cy="12" r="1"/>',
+    informe: '<path d="M4 20V4h16v16z"/><path d="M8 16v-4M12 16V8M16 16v-6"/>',
+    cubo: '<path d="M12 2 3 7v10l9 5 9-5V7z"/><path d="M3 7l9 5 9-5M12 12v10"/>',
+    precio: '<path d="M3 12V4h8l10 10-8 8z"/><circle cx="7.5" cy="7.5" r="1.5"/>',
+    whatsapp: '<path d="M20.5 3.5A11 11 0 0 0 3.2 17.1L2 22l5-1.3A11 11 0 0 0 20.5 3.5zM12 20a8.9 8.9 0 0 1-4.6-1.3l-.3-.2-3 .8.8-2.9-.2-.3A9 9 0 1 1 12 20zm4.9-6.7c-.3-.1-1.6-.8-1.8-.9s-.4-.1-.6.1-.7.9-.8 1-.3.2-.6.1a7.3 7.3 0 0 1-3.6-3.2c-.3-.5.3-.4.8-1.4.1-.2 0-.3 0-.5l-.8-2c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.8 11.9 11.9 0 0 0 4.6 4c1.7.7 2.4.8 3.2.7a2.8 2.8 0 0 0 1.8-1.3 2.3 2.3 0 0 0 .2-1.3c-.1-.1-.3-.2-.6-.3z" fill="currentColor" stroke="none"/>',
+    telefono: '<path d="M5 3h4l2 5-3 2a12 12 0 0 0 6 6l2-3 5 2v4a2 2 0 0 1-2 2A17 17 0 0 1 3 5a2 2 0 0 1 2-2z"/>'
+  };
+  const ico = n => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${IC[n] || IC.cubo}</svg>`;
+
+  // ---------- Contacto ----------
+  const tel = (M.telefono || '').replace(/[^\d+]/g, '');
+  const wa = (M.whatsapp || M.telefono || '').replace(/\D/g, '');
+  const waUrl = wa ? `https://wa.me/${wa}?text=${encodeURIComponent((L.cta && L.cta.mensajeWhatsApp) || 'Hola, he visto la propuesta para mi casa y me gustaría hablarlo.')}` : '#contacto';
+  const btnWa = (txt, cls = 'btn-a') => `<a class="btn ${cls}" href="${waUrl}" target="_blank" rel="noopener">${ico('whatsapp')}${esc(txt)}</a>`;
+  const btnTel = (txt, cls = 'btn-borde') => tel ? `<a class="btn ${cls}" href="tel:${tel}">${ico('telefono')}${esc(txt)}</a>` : '';
+
+  const fotos = I.fotos || [];
+  const portada = I.portada || (fotos[0] && fotos[0].src) || '';
+  const fichaDatos = [
+    I.m2 && [I.m2, 'm² construidos'], I.habitaciones && [I.habitaciones, I.habitaciones == 1 ? 'dormitorio' : 'dormitorios'],
+    I.banos && [I.banos, I.banos == 1 ? 'baño' : 'baños'], I.planta && [I.planta, 'planta'], I.precio && [I.precio, I.precioNota || 'precio orientativo'], I.ano && [I.ano, 'año de construcción']
+  ].filter(Boolean);
+
+  let h = '';
+  // NAV
+  h += `<header class="nav" id="nav"><div class="wrap"><a class="logo" href="#inicio">${M.logo ? `<img src="${esc(M.logo)}" alt="${esc(M.agencia || M.nombre)}">` : ''}<span>${M.logo ? '' : esc(M.agencia || M.nombre)}</span></a>${btnWa('Hablemos')}</div></header>`;
+  // HERO
+  h += `<section class="hero" id="inicio"><div class="hero-bg" style="background-image:url('${esc(portada)}')"></div><div class="wrap">
+    ${L.propietario ? `<div class="para">Propuesta para ${esc(L.propietario)} · ${esc(M.nombre || '')}</div>` : ''}
+    <h1>${em(I.titulo || 'Tu casa, presentada como se *merece*.')}</h1>
+    ${I.lema ? `<p class="lead">${esc(I.lema)}</p>` : ''}
+    <ul class="chips">${[I.zona, I.m2 && I.m2 + ' m²', I.habitaciones && I.habitaciones + ' dorm.', I.banos && I.banos + (I.banos == 1 ? ' baño' : ' baños'), ...(I.extras || []).slice(0, 3)].filter(Boolean).map(x => `<li>${esc(x)}</li>`).join('')}</ul>
+    <div class="acciones">${btnWa('Escríbeme por WhatsApp')}<a class="btn btn-borde" href="#plan">Ver el plan</a></div></div></section>`;
+  // RESUMEN + GALERÍA
+  h += `<section id="casa"><div class="wrap resumen"><div class="rev"><span class="eyebrow">La vivienda</span><h2>${em(L.resumenTitulo || 'Lo que tenemos *entre manos*.')}</h2>
+    <div class="datos">${fichaDatos.map(([b, s]) => `<div><b>${esc(b)}</b><span>${esc(s)}</span></div>`).join('')}</div>
+    ${I.descripcion ? `<p class="desc">${esc(I.descripcion)}</p>` : ''}</div>
+    <div class="galeria rev">${fotos.slice(0, 7).map((f, i) => { const n = Math.min(fotos.length, 7) - 1, j = i - 1, rD = n % 3, rM = n % 2; const sd = i && rD && j >= n - rD ? 6 / rD : 2, sm = i && rM && j === n - 1 ? 6 : 3; return `<button type="button" style="--sd:${sd};--sm:${sm}" data-i="${i}" aria-label="Ampliar foto: ${esc(f.t)}"><img src="${esc(f.src)}" alt="${esc(f.t)}" loading="${i ? 'lazy' : 'eager'}">${f.t ? `<span>${esc(f.t)}</span>` : ''}</button>`; }).join('')}</div></div></section>`;
+  // PLANO 3D (solo si hay plano)
+  if (I.plano3d) {
+    h += `<section class="m3" id="plano-3d"><div class="m3-wrap"><div class="m3-top"><div><span class="m3-eyebrow">Tu casa en 3D</span><h2>${em(L.planoTitulo || 'Entra antes de *entrar*.')}</h2>
+      <p class="m3-sub">El comprador entiende la distribución antes de pedir la visita. Gírala, acércate y amuéblala con un toque.</p></div>
+      <div class="m3-ctls"><div class="m3-ctl"><span class="m3-k">Muebles</span><button type="button" data-muebles="vacio" class="on">Sin muebles</button><button type="button" data-muebles="nordico">Nórdico</button><button type="button" data-muebles="moderno">Moderno</button></div>
+      <div class="m3-ctl"><span class="m3-k">Vista</span><button type="button" data-vista="maqueta" class="on">Maqueta</button><button type="button" data-vista="aerea">Desde arriba</button><button type="button" data-vista="baja">A ras de suelo</button><button type="button" data-giro class="on">↻ Girar</button></div></div></div>
+      <div id="maqueta"><div class="m3-hint">Arrastra para girar · pellizca o haz clic y usa la rueda para acercar</div></div>
+      <p class="m3-nota">Maqueta hecha a partir del plano de la vivienda. Medidas aproximadas y mobiliario orientativo.</p></div></section>`;
+  }
+  // PUNTOS FUERTES
+  const PF = L.puntosFuertes || [];
+  if (PF.length) h += `<section class="blanco" id="fuertes"><div class="wrap"><div class="rev"><span class="eyebrow">Por qué se va a vender</span><h2>${em(L.fuertesTitulo || 'Lo que la hace *distinta*.')}</h2></div>
+    <div class="fuertes">${PF.map((p, i) => `<div class="fuerte rev"><div class="n">${String(i + 1).padStart(2, '0')}</div><h3>${esc(p.t)}</h3><p>${esc(p.d)}</p></div>`).join('')}</div></div></section>`;
+  // PLAN DE MARKETING
+  const PL = (L.plan && L.plan.pilares) || [];
+  h += `<section class="oscuro" id="plan"><div class="wrap"><div class="rev"><span class="eyebrow">El plan</span><h2>${em((L.plan && L.plan.titulo) || 'Estar publicado no es *estar vendiendo*.')}</h2>
+    ${L.plan && L.plan.texto ? `<p class="sub">${esc(L.plan.texto)}</p>` : ''}</div>
+    <div class="pilares">${PL.map(p => `<div class="pilar rev">${ico(p.icono)}<h3>${esc(p.t)}</h3><p>${esc(p.d)}</p></div>`).join('')}</div></div></section>`;
+  // ANUNCIOS EN MÓVIL
+  const A = L.anuncio || {};
+  h += `<section id="anuncios"><div class="wrap anuncios"><div class="rev"><span class="eyebrow">Así la verá tu comprador</span><h2>${em(A.titulo || 'Un anuncio que *para el scroll*.')}</h2>
+    <p class="sub">${esc(A.texto || 'Fotos que se ven en el móvil, un titular que cuenta lo que importa y un botón para pedir visita. En portales y en redes.')}</p></div>
+    <div class="movil rev"><div class="pantalla"><div class="barra-app"><span>Portal inmobiliario</span><span>♡</span></div>
+      <div class="ficha-img" style="background-image:url('${esc(portada)}')"><i>1/${Math.max(fotos.length, 1)}</i></div>
+      <div class="ficha"><div class="precio">${esc(I.precio || 'Consultar')}</div><div>${esc(A.titular || I.titulo && I.titulo.replace(/\*/g, '') || '')}</div>
+      <div class="tags">${[I.m2 && I.m2 + ' m²', I.habitaciones && I.habitaciones + ' hab.', I.banos && I.banos + ' baño' + (I.banos == 1 ? '' : 's'), I.planta && I.planta + ' planta'].filter(Boolean).map(x => `<span>${esc(x)}</span>`).join('')}</div>
+      <div class="linea"></div><div class="linea" style="width:70%"></div><div class="boton">Pedir visita</div></div></div></div>
+    <div class="movil rev"><div class="pantalla"><div class="post-top"><i></i>${esc((M.agencia || M.nombre || '').toLowerCase().replace(/\s+/g, ''))}</div>
+      <div class="post-img" style="background-image:url('${esc((fotos[1] && fotos[1].src) || portada)}')"><b>${esc(A.gancho || 'Se vende. Y no va a durar.')}</b></div>
+      <div class="post-cta"><span>Más información</span><span>›</span></div>
+      <div class="post-pie"><b>${esc((M.agencia || M.nombre || '').toLowerCase().replace(/\s+/g, ''))}</b> ${esc(A.copy || '')}</div></div></div></div></section>`;
+  // CALENDARIO 30-60-90
+  const C = L.calendario || [];
+  if (C.length) h += `<section class="blanco" id="calendario"><div class="wrap"><div class="rev"><span class="eyebrow">Calendario</span><h2>${em(L.calendarioTitulo || '90 días, *paso a paso*.')}</h2>
+    <p class="sub">${esc(L.calendarioTexto || 'Sabrás en cada momento qué toca y qué hemos hecho.')}</p></div>
+    <div class="cal">${C.map((f, i) => `<div class="fase rev" style="--k:${(i + 1) / C.length}"><div class="dias">${esc(f.dias)}</div><h3>${esc(f.t)}</h3><ul>${(f.items || []).map(x => `<li>${esc(x)}</li>`).join('')}</ul></div>`).join('')}</div></div></section>`;
+  // INFORME SEMANAL
+  const IN = L.informe || {};
+  h += `<section class="oscuro" id="informe"><div class="wrap informe"><div class="rev"><span class="eyebrow">Cada semana</span><h2>${em(IN.titulo || 'Siempre sabrás *qué está pasando*.')}</h2>
+    <p class="sub">${esc(IN.texto || 'Todos los lunes te llega un informe claro: cuánta gente ha visto tu casa, cuántos han preguntado, quién la ha visitado y qué opinan. Sin tener que llamar para preguntar.')}</p></div>
+    <div class="panel rev"><div class="panel-top"><b>Informe semanal · semana ${esc(IN.semana || 3)}</b><span>Datos de ejemplo</span></div>
+      <div class="kpis">${(IN.kpis || [['2.480', 'visualizaciones'], ['38', 'contactos'], ['9', 'visitas'], ['2', 'ofertas']]).map(([b, s]) => `<div class="kpi"><b>${esc(b)}</b><span>${esc(s)}</span></div>`).join('')}</div>
+      <div class="barras" data-barras="${esc((IN.barras || [30, 45, 40, 62, 70, 88, 100]).join(','))}">${(IN.barras || [30, 45, 40, 62, 70, 88, 100]).map(() => '<i></i>').join('')}</div>
+      <small>Visualizaciones del anuncio, día a día</small>
+      <div class="nota">${esc(IN.nota || 'Lo que dicen los compradores: les encanta la luz del salón; dos preguntan por la reforma del baño.')}</div></div></div></section>`;
+  // AGENTE
+  const AG = L.agente || {};
+  h += `<section id="agente"><div class="wrap agente">${M.foto ? `<div class="foto rev"><img src="${esc(M.foto)}" alt="${esc(M.nombre)}" loading="lazy"></div>` : ''}
+    <div class="rev"><span class="eyebrow">Quién va a vender tu casa</span><h2>${em(AG.titulo || `Soy ${M.nombre || ''}.`)}</h2>
+    <p class="sub">${esc(AG.bio || '')}</p>
+    ${(AG.cifras || []).length ? `<div class="cifras">${AG.cifras.map(([b, s]) => `<div><b>${esc(b)}</b><span>${esc(s)}</span></div>`).join('')}</div>` : ''}
+    ${AG.frase ? `<p class="firma">«${esc(AG.frase)}»</p>` : ''}
+    <p style="color:var(--suave);margin:8px 0 0">${esc([M.nombre, M.agencia, M.zona].filter(Boolean).join(' · '))}</p></div></div></section>`;
+  // CTA
+  const CT = L.cta || {};
+  h += `<section class="oscuro cta" id="contacto"><div class="wrap rev"><span class="eyebrow">El siguiente paso</span><h2>${em(CT.titulo || 'Solo falta *tu sí*.')}</h2>
+    <p class="sub">${esc(CT.texto || 'Escríbeme o llámame y lo hablamos con calma. Sin compromiso.')}</p>
+    <div class="acciones">${btnWa('Escríbeme por WhatsApp')}${btnTel(M.telefono ? 'Llamar al ' + M.telefono : 'Llamar')}</div></div></section>`;
+  h += `<footer><div class="wrap"><span>${esc([M.nombre, M.agencia].filter(Boolean).join(' · '))}${M.email ? ' · ' + esc(M.email) : ''}</span><span>${esc(L.aviso || 'Propuesta privada para el propietario. Fotos e imágenes solo para esta presentación.')}</span></div></footer>`;
+  h += `<div class="barra-movil" id="barraMovil">${btnWa('WhatsApp')}${btnTel('Llamar')}</div>`;
+  h += `<div class="lightbox" id="lb" role="dialog" aria-modal="true" aria-label="Foto ampliada"><button class="lb-x" type="button" aria-label="Cerrar">✕</button><button class="lb-prev" type="button" aria-label="Anterior">‹</button><img alt=""><button class="lb-next" type="button" aria-label="Siguiente">›</button><p></p></div>`;
+  document.getElementById('app').innerHTML = h;
+
+  // ---------- Comportamiento ----------
+  const nav = document.getElementById('nav'), barra = document.getElementById('barraMovil');
+  const onScroll = () => { const y = scrollY; nav.classList.toggle('solida', y > 60); barra.classList.toggle('on', y > innerHeight * .8); };
+  addEventListener('scroll', onScroll, { passive: true }); onScroll();
+  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('ok'); io.unobserve(e.target); } }), { threshold: .12 });
+  document.querySelectorAll('.rev').forEach(el => io.observe(el));
+  const bars = document.querySelector('[data-barras]');
+  if (bars) new IntersectionObserver((es, o) => es.forEach(e => { if (e.isIntersecting) { const v = bars.dataset.barras.split(',').map(Number), mx = Math.max(...v); bars.querySelectorAll('i').forEach((b, i) => b.style.height = (v[i] / mx * 100) + '%'); o.disconnect(); } }), { threshold: .4 }).observe(bars);
+  // Lightbox
+  const lb = document.getElementById('lb'), lbImg = lb.querySelector('img'), lbP = lb.querySelector('p'); let k = 0;
+  const ver = i => { k = (i + fotos.length) % fotos.length; lbImg.src = fotos[k].src; lbImg.alt = fotos[k].t || ''; lbP.textContent = `${fotos[k].t || ''}  ·  ${k + 1}/${fotos.length}`; };
+  document.querySelectorAll('.galeria button').forEach(b => b.addEventListener('click', () => { ver(+b.dataset.i); lb.classList.add('on'); }));
+  lb.querySelector('.lb-x').onclick = () => lb.classList.remove('on');
+  lb.querySelector('.lb-prev').onclick = () => ver(k - 1);
+  lb.querySelector('.lb-next').onclick = () => ver(k + 1);
+  lb.addEventListener('click', e => { if (e.target === lb) lb.classList.remove('on'); });
+  addEventListener('keydown', e => { if (!lb.classList.contains('on')) return; if (e.key === 'Escape') lb.classList.remove('on'); if (e.key === 'ArrowLeft') ver(k - 1); if (e.key === 'ArrowRight') ver(k + 1); });
+
+  // ---------- Plano 3D: carga three.js r128 y el motor solo si hace falta ----------
+  if (I.plano3d) {
+    const css = document.createElement('link'); css.rel = 'stylesheet'; css.href = 'plano3d.css'; document.head.appendChild(css);
+    ['https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js',
+     'https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js',
+     'https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/environments/RoomEnvironment.js',
+     'https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/geometries/RoundedBoxGeometry.js',
+     'plano-data.js?v=1', 'plano3d.js?v=1'].forEach(src => { const s = document.createElement('script'); s.src = src; s.async = false; document.body.appendChild(s); });
+  }
+})();
+</script>
+</body>
+</html>

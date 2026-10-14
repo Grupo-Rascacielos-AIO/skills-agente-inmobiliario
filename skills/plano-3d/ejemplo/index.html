@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Plano 3D · ejemplo</title>
+<style>
+  :root{--color-principal:#1f3a34;--color-secundario:#f3ede3;--color-acento:#c8643b;--font-titulos:Georgia,serif;--font-texto:system-ui,-apple-system,sans-serif}
+  html,body{margin:0;background:var(--color-principal);overflow-x:hidden}
+  .ej-plano{max-width:1180px;margin:0 auto;padding:40px 20px 80px;color:var(--color-secundario);font-family:var(--font-texto)}
+  .ej-plano img{width:100%;max-width:640px;border-radius:14px;background:#fff;display:block;margin-top:12px}
+</style>
+<!-- CSS de la sección (copiado de ../plantilla/seccion.html) -->
+<link rel="stylesheet" href="seccion.css">
+</head>
+<body>
+<section class="m3" id="plano-3d">
+  <div class="m3-wrap">
+    <div class="m3-top">
+      <div>
+        <span class="m3-eyebrow">Tu casa en 3D</span>
+        <h2>Entra antes de entrar.</h2>
+        <p class="m3-sub">El comprador entiende la distribución antes de pedir la visita. Gírala, acércate y amuéblala con un toque.</p>
+      </div>
+      <div class="m3-ctls">
+        <div class="m3-ctl"><span class="m3-k">Muebles</span>
+          <button type="button" data-muebles="vacio" class="on">Sin muebles</button>
+          <button type="button" data-muebles="nordico">Nórdico</button>
+          <button type="button" data-muebles="moderno">Moderno</button>
+        </div>
+        <div class="m3-ctl"><span class="m3-k">Vista</span>
+          <button type="button" data-vista="maqueta" class="on">Maqueta</button>
+          <button type="button" data-vista="aerea">Desde arriba</button>
+          <button type="button" data-vista="baja">A ras de suelo</button>
+          <button type="button" data-giro class="on">↻ Girar</button>
+        </div>
+      </div>
+    </div>
+    <div id="maqueta"><div class="m3-hint">Arrastra para girar · pellizca o haz clic y usa la rueda para acercar</div></div>
+    <p class="m3-nota">Maqueta hecha a partir del plano de la vivienda. Medidas aproximadas y mobiliario orientativo.</p>
+  </div>
+</section>
+<div class="ej-plano"><b>Plano 2D de partida</b> (ficticio): <img src="plano.svg" alt="Plano 2D del piso de ejemplo"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/environments/RoomEnvironment.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/geometries/RoundedBoxGeometry.js"></script>
+<script src="plano-data.js?v=1"></script>
+<script src="../motor/plano3d.js?v=1"></script>
+</body>
+</html>

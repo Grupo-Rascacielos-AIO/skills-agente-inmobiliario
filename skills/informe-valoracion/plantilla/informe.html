@@ -1,0 +1,833 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Informe de valoración</title>
+<!--
+  PLANTILLA DEL INFORME DE VALORACIÓN
+  ===================================
+  Solo hay que tocar UNA cosa: el bloque <script type="application/json" id="datos"> del final.
+  - "marca": se copia de ~/.claude/mi-marca-inmobiliaria.md (colores, tipografías, contacto, logo, foto).
+  - "vivienda", "zona", "testigos", "parametros" y "textos": los datos del encargo.
+  Todos los números (medias, homogeneización, descartes, los tres precios) los calcula la página
+  a partir de los testigos y los coeficientes, así el informe nunca se contradice.
+  En los textos puedes usar: {salida} {cierre} {minimo} {valor_m2} {n_testigos} {n_validos} {dias_vendidos} {m2}
+  Para el PDF: abre el archivo en Chrome → botón «Guardar en PDF» (o Cmd/Ctrl+P) → Destino «Guardar como PDF»,
+  tamaño A4, márgenes «Predeterminados» y «Gráficos de fondo» activado.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<style>
+:root{
+  /* Marca (las sobrescribe el bloque "marca" del JSON) */
+  --c-principal:#1F3D36;
+  --c-secundario:#EEF0EB;
+  --c-acento:#C99A2E;
+  --f-titulos:"Newsreader", Georgia, "Times New Roman", serif;
+  --f-texto:"Hanken Grotesk", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  /* Derivados: no tocar */
+  --tinta:color-mix(in oklab, var(--c-principal) 55%, #000);
+  --texto:color-mix(in oklab, var(--tinta) 88%, #fff);
+  --suave:color-mix(in oklab, var(--tinta) 58%, #fff);
+  --linea:color-mix(in oklab, var(--c-principal) 16%, #fff);
+  --linea-fuerte:color-mix(in oklab, var(--c-principal) 34%, #fff);
+  --papel:#fff;
+  --fondo:color-mix(in oklab, var(--c-secundario) 70%, #d9dcd7);
+  --velo:color-mix(in oklab, var(--c-secundario) 55%, #fff);
+  --acento-suave:color-mix(in oklab, var(--c-acento) 18%, #fff);
+  --sobre-principal:#fff;
+  --radio:14px;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--fondo);color:var(--texto);font-family:var(--f-texto);font-size:16px;line-height:1.55;font-variant-numeric:tabular-nums lining-nums;-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+a{color:inherit}
+h1,h2,h3{font-family:var(--f-titulos);font-weight:500;color:var(--tinta);margin:0;letter-spacing:-.01em;line-height:1.12}
+p{margin:0 0 .8em}
+.num{font-variant-numeric:tabular-nums lining-nums}
+
+/* ---------- Barra superior (solo pantalla) ---------- */
+.barra{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 20px;background:color-mix(in oklab,var(--fondo) 85%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--linea)}
+.barra small{color:var(--suave);font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.btn{appearance:none;border:0;cursor:pointer;font:600 14px/1 var(--f-texto);padding:11px 16px;border-radius:999px;background:var(--c-principal);color:var(--sobre-principal);text-decoration:none;display:inline-flex;align-items:center;gap:8px;white-space:nowrap}
+.btn:focus-visible,a:focus-visible{outline:3px solid var(--c-acento);outline-offset:3px}
+.btn--claro{background:var(--papel);color:var(--tinta);border:1px solid var(--linea-fuerte)}
+.btn--acento{background:var(--c-acento);color:var(--tinta)}
+
+/* ---------- Páginas ---------- */
+.doc{max-width:900px;margin:28px auto 80px;padding:0 16px;display:grid;gap:28px}
+.pagina{background:var(--papel);border-radius:6px;box-shadow:0 1px 0 var(--linea),0 18px 50px -30px color-mix(in oklab,var(--tinta) 45%,transparent);padding:64px 68px 40px;position:relative;overflow:hidden}
+.cab{display:flex;justify-content:space-between;align-items:baseline;gap:16px;margin-bottom:40px;font-size:13px;color:var(--suave);border-bottom:1px solid var(--linea);padding-bottom:14px}
+.cab b{font-weight:600;color:var(--tinta)}
+.sec-n{font-family:var(--f-titulos);font-style:italic;color:var(--c-acento);font-size:22px;margin-right:10px}
+h2{font-size:clamp(30px,4.2vw,42px);margin-bottom:12px}
+h3{font-size:22px;margin-bottom:10px}
+.entrada{font-size:18px;color:var(--suave);max-width:60ch;margin-bottom:34px}
+.pie{margin-top:44px;padding-top:14px;border-top:1px solid var(--linea);display:flex;justify-content:space-between;gap:16px;font-size:11.5px;color:var(--suave)}
+
+/* ---------- Portada ---------- */
+.portada{background:var(--c-principal);color:var(--sobre-principal);padding:0;min-height:1080px;display:grid;grid-template-rows:auto 1fr auto}
+.portada h1,.portada h2{color:var(--sobre-principal)}
+.p-top{display:flex;justify-content:space-between;align-items:center;padding:44px 60px 0;gap:20px}
+.p-logo img{max-height:46px;width:auto}
+.marca-texto{font-family:var(--f-titulos);font-size:24px;letter-spacing:-.01em}
+.marca-texto span{display:block;font-family:var(--f-texto);font-size:12.5px;opacity:.7;letter-spacing:.01em}
+.p-ref{font-size:13px;opacity:.75;text-align:right}
+.p-medio{display:grid;grid-template-columns:1.1fr .9fr;align-items:end;gap:20px;padding:40px 60px 0}
+.p-tipo{font-size:15px;opacity:.78;margin-bottom:22px;display:flex;align-items:center;gap:10px}
+.p-tipo::before{content:"";width:28px;height:2px;background:var(--c-acento)}
+.p-dir{font-size:clamp(40px,6.4vw,70px);line-height:1.02;font-weight:400;letter-spacing:-.025em;margin-bottom:18px}
+.p-sub{font-size:19px;opacity:.85;font-family:var(--f-titulos);font-style:italic}
+.p-edificio{align-self:end;justify-self:end;width:100%;max-width:330px}
+.p-edificio svg{width:100%;height:auto;display:block}
+.p-foto{align-self:stretch;border-radius:4px;overflow:hidden;min-height:420px}
+.p-foto img{width:100%;height:100%;object-fit:cover}
+.p-base{background:color-mix(in oklab,var(--c-principal) 82%,#000);padding:30px 60px 40px}
+.p-datos{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:1px solid color-mix(in oklab,#fff 22%,transparent)}
+.p-datos div{padding:18px 16px 0 0}
+.p-datos b{display:block;font-family:var(--f-titulos);font-weight:400;font-size:34px;line-height:1;margin-bottom:6px}
+.p-datos span{font-size:13px;opacity:.75}
+.p-para{display:flex;justify-content:space-between;gap:20px;margin-top:30px;font-size:14px;opacity:.85;flex-wrap:wrap}
+
+/* ---------- Resumen y 3 precios ---------- */
+.frase{font-family:var(--f-titulos);font-size:clamp(26px,3.6vw,36px);line-height:1.22;color:var(--tinta);font-weight:400;letter-spacing:-.015em;max-width:24ch;margin:6px 0 42px}
+.precios{display:grid;grid-template-columns:1.25fr 1fr 1fr;border:1px solid var(--linea-fuerte);border-radius:var(--radio);overflow:hidden}
+.precio{padding:26px 24px 24px;border-left:1px solid var(--linea)}
+.precio:first-child{border-left:0;background:var(--c-principal);color:var(--sobre-principal)}
+.precio:first-child .p-et,.precio:first-child .p-ex{color:color-mix(in oklab,#fff 78%,var(--c-principal))}
+.precio:first-child .p-val{color:#fff}
+.p-et{font-size:14px;font-weight:600;color:var(--suave);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.p-et i{width:9px;height:9px;border-radius:50%;background:var(--c-acento);display:inline-block}
+.p-val{font-family:var(--f-titulos);font-size:clamp(34px,4.6vw,48px);line-height:1;color:var(--tinta);letter-spacing:-.02em;margin-bottom:12px;white-space:nowrap}
+.precio:not(:first-child) .p-val{font-size:clamp(28px,3.6vw,36px)}
+.p-ex{font-size:14px;color:var(--suave);line-height:1.45;margin:0}
+
+/* Regla del precio */
+.regla{margin:44px 0 8px}
+.regla-tit{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:58px}
+.regla-tit h3{margin:0}
+.regla-tit span{font-size:13px;color:var(--suave)}
+.pista{position:relative;height:14px;border-radius:999px;background:linear-gradient(90deg,var(--linea) 0%,var(--linea) 100%)}
+.tramo{position:absolute;top:0;bottom:0;border-radius:999px}
+.tramo--neg{background:color-mix(in oklab,var(--c-principal) 30%,#fff)}
+.tramo--sal{background:var(--c-principal)}
+.tramo--quema{background:repeating-linear-gradient(-45deg,color-mix(in oklab,var(--c-acento) 70%,#fff) 0 6px,var(--acento-suave) 6px 12px);border-radius:0 999px 999px 0}
+.marca-r{position:absolute;top:-8px;width:2px;height:30px;background:var(--tinta);transform:translateX(-1px)}
+.marca-r em{position:absolute;left:50%;transform:translateX(-50%);font-style:normal;font-size:12.5px;white-space:nowrap;color:var(--tinta);font-weight:600}
+.marca-r.arriba em{bottom:36px}
+.marca-r.abajo em{top:36px}
+.marca-r em small{display:block;font-weight:400;color:var(--suave);font-size:11.5px;text-align:center}
+.regla-ley{display:flex;flex-wrap:wrap;gap:8px 22px;margin-top:62px;font-size:13px;color:var(--suave)}
+.regla-ley span{display:inline-flex;align-items:center;gap:8px}
+.regla-ley i{width:22px;height:8px;border-radius:999px;display:inline-block}
+.aviso{margin-top:38px;padding:16px 18px;border-left:3px solid var(--c-acento);background:var(--velo);font-size:14px;color:var(--texto);border-radius:0 8px 8px 0}
+.aviso b{color:var(--tinta)}
+
+/* ---------- Vivienda ---------- */
+.dos{display:grid;grid-template-columns:1fr 1fr;gap:44px}
+.ficha{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--linea-fuerte)}
+.ficha div{padding:13px 0 12px;border-bottom:1px solid var(--linea)}
+.ficha div:nth-child(odd){padding-right:14px}
+.ficha dt{font-size:12.5px;color:var(--suave);margin:0 0 2px}
+.ficha dd{margin:0;font-weight:600;color:var(--tinta);font-size:15.5px}
+.extras{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 0;padding:0;list-style:none}
+.extras li{font-size:13.5px;padding:6px 12px;border-radius:999px;background:var(--velo);color:var(--tinta);border:1px solid var(--linea)}
+.desc{margin-top:22px;color:var(--texto);font-size:15.5px}
+.fotos{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:28px}
+.fotos img{aspect-ratio:4/3;object-fit:cover;border-radius:6px;width:100%}
+.mapa{border:1px solid var(--linea);border-radius:var(--radio);background:var(--velo);padding:14px}
+.mapa svg{width:100%;height:auto;display:block}
+.mapa img{border-radius:8px}
+.mapa-nota{font-size:12.5px;color:var(--suave);margin:10px 4px 0}
+.zona-txt{margin-top:22px;font-size:15.5px}
+.zona-pts{list-style:none;margin:14px 0 0;padding:0;display:grid;gap:10px}
+.zona-pts li{display:grid;grid-template-columns:auto 1fr;gap:12px;font-size:14.5px;align-items:start}
+.zona-pts li b{font-family:var(--f-titulos);font-weight:500;color:var(--c-principal);font-size:17px;min-width:58px}
+
+/* ---------- Testigos ---------- */
+.grafico{margin:8px 0 10px;border:1px solid var(--linea);border-radius:var(--radio);padding:22px 22px 16px}
+.g-fila{display:grid;grid-template-columns:150px 1fr;align-items:center;gap:14px;height:38px}
+.g-et{font-size:13.5px;color:var(--tinta);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.g-et small{color:var(--suave);margin-left:6px}
+.g-pista{position:relative;height:100%}
+.g-banda{position:absolute;top:-4px;bottom:-4px;background:var(--acento-suave);border-left:1px dashed color-mix(in oklab,var(--c-acento) 70%,#000);border-right:1px dashed color-mix(in oklab,var(--c-acento) 70%,#000)}
+.g-valor{position:absolute;top:-10px;bottom:-10px;width:2px;background:var(--c-acento);transform:translateX(-1px)}
+.g-linea{position:absolute;top:50%;height:2px;background:var(--linea-fuerte);transform:translateY(-1px)}
+.g-punto{position:absolute;top:50%;width:12px;height:12px;border-radius:50%;transform:translate(-50%,-50%)}
+.g-bruto{background:#fff;border:2px solid var(--suave)}
+.g-hom{background:var(--c-principal)}
+.g-hom.venta{background:#fff;border:3px solid var(--c-principal)}
+.g-fila.fuera .g-hom{background:#fff;border:2px dashed var(--suave)}
+.g-fila.fuera .g-et{color:var(--suave);text-decoration:line-through}
+.g-eje{display:grid;grid-template-columns:150px 1fr;gap:14px;margin-top:12px}
+.g-eje-in{position:relative;height:18px;border-top:1px solid var(--linea);font-size:11.5px;color:var(--suave)}
+.g-eje-in span{position:absolute;top:4px;transform:translateX(-50%);white-space:nowrap}
+.g-ley{display:flex;flex-wrap:wrap;gap:8px 20px;font-size:12.5px;color:var(--suave);margin-top:16px}
+.g-ley span{display:inline-flex;align-items:center;gap:7px}
+.g-ley i{width:11px;height:11px;border-radius:50%;display:inline-block}
+
+.tarjetas{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:30px}
+.tj{border:1px solid var(--linea);border-radius:var(--radio);padding:18px 18px 16px;break-inside:avoid;background:#fff}
+.tj.fuera{background:repeating-linear-gradient(135deg,#fff 0 10px,var(--velo) 10px 11px);border-style:dashed}
+.tj-cab{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:10px}
+.tj-id{font-family:var(--f-titulos);font-size:15px;color:var(--suave)}
+.tj-dir{font-weight:600;color:var(--tinta);font-size:15px;line-height:1.3}
+.chip{font-size:12px;font-weight:600;padding:4px 10px;border-radius:999px;white-space:nowrap}
+.chip.vendido{background:var(--c-principal);color:#fff}
+.chip.en_venta{background:#fff;color:var(--c-principal);border:1.5px solid var(--c-principal)}
+.chip.fuera{background:var(--velo);color:var(--suave);border:1px solid var(--linea-fuerte)}
+.tj-precio{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin:6px 0 10px}
+.tj-precio b{font-family:var(--f-titulos);font-weight:500;font-size:28px;color:var(--tinta);letter-spacing:-.01em}
+.tj-precio span{font-size:14px;color:var(--suave)}
+.tj-precio s{font-size:13px;color:var(--suave)}
+.tj-datos{font-size:13.5px;color:var(--texto);margin:0 0 10px}
+.tj-pie{display:flex;justify-content:space-between;gap:10px;font-size:12.5px;color:var(--suave);border-top:1px solid var(--linea);padding-top:10px;flex-wrap:wrap}
+.tj-pie b{color:var(--tinta);font-weight:600}
+.tj-motivo{font-size:13px;color:var(--tinta);margin:8px 0 0;font-style:italic}
+
+/* ---------- Cálculo ---------- */
+.pasos{list-style:none;margin:0;padding:0;counter-reset:paso}
+.paso{display:grid;grid-template-columns:52px 1fr;gap:16px;padding:22px 0;border-top:1px solid var(--linea);break-inside:avoid}
+.paso::before{counter-increment:paso;content:counter(paso);font-family:var(--f-titulos);font-size:30px;line-height:1;color:var(--c-acento)}
+.paso>div{min-width:0}
+.paso h3{font-size:20px;margin-bottom:6px}
+.paso p{font-size:15px;max-width:68ch}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:12px}
+.stat{background:var(--velo);border-radius:10px;padding:12px 14px}
+.stat span{display:block;font-size:12.5px;color:var(--suave)}
+.stat b{font-family:var(--f-titulos);font-weight:500;font-size:22px;color:var(--tinta)}
+.tabla-wrap{overflow-x:auto;margin:14px 0 0 -68px;border:1px solid var(--linea);border-radius:10px;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;font-size:12.5px}
+th,td{padding:9px 7px;text-align:right;border-bottom:1px solid var(--linea);white-space:nowrap}
+th{font-weight:600;color:var(--suave);font-size:12px;background:var(--velo);vertical-align:bottom}
+th:first-child,td:first-child{text-align:left;position:sticky;left:0;background:#fff;z-index:1}
+th:first-child{background:var(--velo)}
+tr:last-child td{border-bottom:0}
+td.neutro{color:color-mix(in oklab,var(--suave) 55%,#fff)}
+td.sube{color:var(--c-principal);font-weight:600}
+td.baja{color:color-mix(in oklab,var(--c-acento) 70%,#000);font-weight:600}
+td.res{font-weight:700;color:var(--tinta)}
+tr.fuera td{color:var(--suave);text-decoration:line-through;text-decoration-color:color-mix(in oklab,var(--suave) 50%,transparent)}
+tr.fuera td:first-child{text-decoration:none}
+.leyenda-tabla{font-size:12.5px;color:var(--suave);margin-top:8px;max-width:68ch}
+.formula{font-family:var(--f-titulos);font-size:20px;color:var(--tinta);background:var(--velo);border-radius:10px;padding:14px 18px;margin-top:12px;line-height:1.4}
+.formula b{font-weight:600}
+
+/* ---------- Riesgo y estrategia ---------- */
+.escenarios{display:grid;gap:12px;margin:8px 0 10px}
+.esc{display:grid;grid-template-columns:190px 1fr 150px;gap:20px;align-items:center;padding:18px 20px;border-radius:var(--radio);border:1px solid var(--linea);break-inside:avoid}
+.esc:first-child{border:2px solid var(--c-principal)}
+.esc-p b{display:block;font-family:var(--f-titulos);font-weight:500;font-size:26px;color:var(--tinta);line-height:1.1}
+.esc-p span{font-size:13px;color:var(--suave)}
+.esc-t h3{font-size:17px;font-family:var(--f-texto);font-weight:600;margin-bottom:3px}
+.esc-t p{font-size:14px;margin:0;color:var(--texto)}
+.esc-d{text-align:right}
+.esc-d b{display:block;font-family:var(--f-titulos);font-weight:500;font-size:22px;color:var(--tinta)}
+.esc-d span{font-size:12.5px;color:var(--suave);line-height:1.3;display:block;margin-top:4px}
+.termo-et{display:block;font-size:11.5px;color:var(--suave);margin-top:10px}
+.termo{height:6px;border-radius:999px;background:var(--linea);margin-top:4px;overflow:hidden}
+.termo i{display:block;height:100%;background:var(--c-principal)}
+.esc.peligro .termo i{background:var(--c-acento)}
+.dato-real{display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:center;margin-top:24px;padding:20px 22px;border-radius:var(--radio);background:var(--velo)}
+.dato-real b{font-family:var(--f-titulos);font-weight:500;font-size:46px;color:var(--c-principal);line-height:1}
+.dato-real p{margin:0;font-size:15px}
+
+.plan{list-style:none;margin:0;padding:0;position:relative}
+.plan li{display:grid;grid-template-columns:120px 1fr;gap:22px;padding:0 0 24px;position:relative;break-inside:avoid}
+.plan li::before{content:"";position:absolute;left:127px;top:8px;width:11px;height:11px;border-radius:50%;background:var(--c-acento);box-shadow:0 0 0 4px #fff}
+.plan li::after{content:"";position:absolute;left:132px;top:14px;bottom:-6px;width:1px;background:var(--linea-fuerte)}
+.plan li:last-child::after{display:none}
+.plan-cuando{font-size:13.5px;color:var(--suave);padding-top:2px;text-align:right;padding-right:6px}
+.plan-que{padding-left:26px}
+.plan-que h3{font-size:18px;font-family:var(--f-texto);font-weight:600;margin-bottom:4px}
+.plan-que p{font-size:14.5px;margin:0}
+
+/* ---------- Cierre ---------- */
+.cierre{background:var(--c-principal);color:var(--sobre-principal)}
+.cierre h2,.cierre h3{color:#fff}
+.cierre .cab{border-color:color-mix(in oklab,#fff 20%,transparent);color:color-mix(in oklab,#fff 70%,var(--c-principal))}
+.cierre .cab b{color:#fff}
+.cierre .entrada{color:color-mix(in oklab,#fff 82%,var(--c-principal))}
+.siguiente{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:6px 0 40px}
+.sig{background:color-mix(in oklab,var(--c-principal) 80%,#fff);border-radius:var(--radio);padding:22px}
+.sig:first-child{background:var(--c-acento);color:var(--tinta)}
+.sig:first-child h3{color:var(--tinta)}
+.sig h3{font-size:22px;margin-bottom:8px}
+.sig p{font-size:14.5px;margin:0;opacity:.92}
+.agente{display:grid;grid-template-columns:auto 1fr;gap:26px;align-items:center;padding-top:30px;border-top:1px solid color-mix(in oklab,#fff 20%,transparent)}
+.agente-foto{width:112px;height:112px;border-radius:50%;overflow:hidden;background:var(--c-acento);display:grid;place-items:center;font-family:var(--f-titulos);font-size:42px;color:var(--tinta)}
+.agente-foto img{width:100%;height:100%;object-fit:cover}
+.agente h3{font-size:30px;margin-bottom:2px}
+.agente .ag-ag{opacity:.75;margin-bottom:16px}
+.contacto{display:flex;flex-wrap:wrap;gap:10px}
+.contacto .btn{background:#fff;color:var(--tinta)}
+.contacto .btn--acento{background:var(--c-acento)}
+.contacto-print{display:none}
+.cierre .aviso{background:color-mix(in oklab,var(--c-principal) 78%,#000);color:color-mix(in oklab,#fff 85%,var(--c-principal));border-color:var(--c-acento)}
+.cierre .aviso b{color:#fff}
+.cierre .pie{border-color:color-mix(in oklab,#fff 20%,transparent);color:color-mix(in oklab,#fff 65%,var(--c-principal))}
+
+/* ---------- Entrada animada (una sola) ---------- */
+@media (prefers-reduced-motion:no-preference){
+  .ventana-sujeto{animation:enciende 1.6s .4s ease-out both}
+  @keyframes enciende{from{fill:color-mix(in oklab,var(--c-principal) 70%,#fff)}to{fill:var(--c-acento)}}
+}
+
+/* ---------- Móvil ---------- */
+@media screen and (max-width:760px){
+  .barra{padding:10px 16px}
+  .barra small{display:none}
+  .doc{margin-top:16px;padding:0;gap:14px}
+  .pagina{border-radius:0;padding:40px 20px 28px}
+  .portada{min-height:auto;padding:0}
+  .p-top{padding:28px 20px 0}
+  .p-medio{grid-template-columns:1fr;padding:34px 20px 0}
+  .p-edificio{max-width:250px;justify-self:start;margin-top:10px}
+  .p-foto{min-height:240px}
+  .p-base{padding:22px 20px 28px}
+  .p-datos{grid-template-columns:1fr 1fr}
+  .p-datos b{font-size:28px}
+  .cab{margin-bottom:28px}
+  .precios{grid-template-columns:1fr}
+  .precio{border-left:0;border-top:1px solid var(--linea)}
+  .precio:first-child{border-top:0}
+  .dos{grid-template-columns:1fr;gap:34px}
+  .g-fila,.g-eje{grid-template-columns:62px 1fr;gap:10px}
+  .g-et small{display:none}
+  .grafico{padding:16px 14px 12px}
+  .tarjetas{grid-template-columns:1fr}
+  .stats{grid-template-columns:1fr 1fr}
+  .paso{grid-template-columns:34px 1fr;gap:10px}
+  .esc{grid-template-columns:1fr;gap:10px}
+  .esc-d{text-align:left}
+  .plan li{grid-template-columns:1fr;gap:4px;padding-left:26px}
+  .plan li::before{left:0}
+  .plan li::after{left:5px}
+  .plan-cuando{text-align:left;padding:0}
+  .plan-que{padding-left:0}
+  .siguiente{grid-template-columns:1fr}
+  .agente{grid-template-columns:1fr}
+  .regla-tit{flex-direction:column;gap:4px;margin-bottom:46px}
+  .marca-r em{font-size:11.5px}
+  .pie{flex-direction:column;gap:4px}
+  table{min-width:620px}
+  .dato-real{grid-template-columns:1fr;gap:8px}
+  .dato-real b{font-size:38px}
+  .tabla-wrap{margin-left:-44px}
+}
+
+/* ---------- Impresión A4 ---------- */
+@page{size:A4;margin:14mm 13mm 14mm}
+@page :first{margin:0}
+@media print{
+  html,body{background:#fff}
+  body{font-size:10.5pt;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .barra{display:none}
+  .doc{max-width:none;margin:0;padding:0;display:block}
+  .pagina{box-shadow:none;border-radius:0;padding:0;overflow:visible;break-after:page}
+  .pagina:last-child{break-after:auto}
+  .portada{width:210mm;height:297mm;min-height:0;overflow:hidden}
+  .p-dir{font-size:46pt}
+  .cierre{padding:12mm 12mm 8mm;border-radius:6px}
+  .cab{margin-bottom:22px}
+  h2{font-size:26pt}
+  .entrada{font-size:12pt;margin-bottom:22px}
+  .frase{font-size:22pt;margin-bottom:28px}
+  .estrategia{break-inside:avoid}
+  .grafico,.tj,.esc,.paso,.precios,.regla,.mapa,.dato-real,.sig,.agente,.plan li{break-inside:avoid}
+  .tabla-wrap{overflow:visible;border:1px solid var(--linea);margin-left:0}
+  table{min-width:0;font-size:8.6pt}
+  th,td{padding:6px 5px}
+  th:first-child,td:first-child{position:static}
+  .tarjetas{gap:10px}
+  .tj{padding:13px 14px 12px}
+  .tj-precio b{font-size:20pt}
+  .pie{margin-top:24px}
+  .contacto{display:none}
+  .contacto-print{display:block;font-size:11pt;line-height:1.7}
+  a{text-decoration:none}
+  .ventana-sujeto{animation:none!important;fill:var(--c-acento)!important}
+}
+</style>
+</head>
+<body>
+
+<div class="barra" role="toolbar">
+  <small id="barra-tit">Informe de valoración</small>
+  <button class="btn" type="button" onclick="window.print()">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 3v12m0 0l-5-5m5 5l5-5M5 21h14"/></svg>
+    Guardar en PDF
+  </button>
+</div>
+
+<main class="doc" id="doc">
+  <noscript><p style="padding:20px">Este informe necesita JavaScript activado para mostrarse.</p></noscript>
+</main>
+
+<!-- =========================================================
+     DATOS DEL INFORME — lo único que hay que rellenar
+     ========================================================= -->
+<script type="application/json" id="datos">
+{
+  "marca": {
+    "nombre": "Tu nombre",
+    "agencia": "Tu agencia",
+    "telefono": "+34 600 000 000",
+    "whatsapp": "+34600000000",
+    "email": "tu@email.com",
+    "zona": "Tu zona",
+    "color_principal": "#1F3D36",
+    "color_secundario": "#EEF0EB",
+    "color_acento": "#C99A2E",
+    "tipografia_titulos": "Newsreader",
+    "tipografia_texto": "Hanken Grotesk",
+    "logo": "",
+    "foto": "",
+    "tono": "profesional"
+  },
+  "informe": {
+    "fecha": "1 de enero de 2026",
+    "referencia": "VAL-0001",
+    "preparado_para": "Nombre del propietario",
+    "validez": "Válido 3 meses: el mercado se mueve."
+  },
+  "vivienda": {
+    "direccion": "Calle Ejemplo, 1",
+    "puerta": "2.º A",
+    "barrio": "Barrio",
+    "ciudad": "Ciudad",
+    "tipo": "Piso",
+    "m2_construidos": 90,
+    "m2_utiles": 76,
+    "habitaciones": 3,
+    "banos": 1,
+    "planta": 2,
+    "plantas_edificio": 5,
+    "ascensor": true,
+    "exterior": true,
+    "orientacion": "Sur",
+    "estado": "Buen estado",
+    "anio": 1980,
+    "extras": ["Balcón", "Trastero"],
+    "descripcion": "",
+    "foto_portada": "",
+    "fotos": []
+  },
+  "zona": {
+    "texto": "Cómo es la zona en dos o tres frases.",
+    "puntos": [
+      {"dato": "5 min", "texto": "a pie del metro"}
+    ],
+    "imagen_mapa": ""
+  },
+  "testigos": [
+    {"id": "T1", "direccion": "Calle A", "fuente": "Idealista", "situacion": "vendido", "precio": 200000, "m2": 85, "habitaciones": 3, "banos": 1, "planta": "2.ª con ascensor", "estado": "Buen estado", "dias": 45, "bajadas": 0, "precio_inicial": null, "distancia_m": 200, "rumbo": 40,
+     "coef": {"estado": 1, "planta": 1, "exterior": 1, "terraza": 1, "garaje": 1, "antiguedad": 1, "otros": 1}, "nota": ""},
+    {"id": "T2", "direccion": "Calle B", "fuente": "Fotocasa", "situacion": "en_venta", "precio": 215000, "m2": 88, "habitaciones": 3, "banos": 2, "planta": "4.ª con ascensor", "estado": "Reformado", "dias": 30, "bajadas": 0, "precio_inicial": null, "distancia_m": 350, "rumbo": 200,
+     "coef": {"estado": 0.93, "planta": 1, "exterior": 1, "terraza": 1, "garaje": 1, "antiguedad": 1, "otros": 0.98}, "nota": ""},
+    {"id": "T3", "direccion": "Calle C", "fuente": "Notas propias", "situacion": "vendido", "precio": 190000, "m2": 82, "habitaciones": 3, "banos": 1, "planta": "1.ª sin ascensor", "estado": "Buen estado", "dias": 60, "bajadas": 1, "precio_inicial": 199000, "distancia_m": 420, "rumbo": 300,
+     "coef": {"estado": 1, "planta": 1.06, "exterior": 1, "terraza": 1, "garaje": 1, "antiguedad": 1, "otros": 1}, "nota": ""}
+  ],
+  "parametros": {
+    "negociacion_en_venta": 0.95,
+    "negociacion_largo": 0.92,
+    "dias_largo": 90,
+    "peso_vendido": 2,
+    "ajuste_maximo": 0.25,
+    "desviacion_maxima": 0.15,
+    "margen_salida": 0.05,
+    "margen_minimo": 0.05
+  },
+  "textos": {
+    "resumen": "Tu vivienda tiene hoy un valor de mercado de unos {cierre}. Recomendamos salir a {salida} para cerrar cerca de ese valor.",
+    "explica_salida": "Con margen para negociar sin perder valor.",
+    "explica_cierre": "Lo que se está pagando de verdad por pisos como el tuyo.",
+    "explica_minimo": "Por debajo de aquí, mejor esperar.",
+    "riesgo_intro": "El precio de salida decide quién viene a ver la casa.",
+    "escenarios": [
+      {"sobre_salida": 0, "titulo": "Salir a precio de mercado", "texto": "Visitas desde la primera semana.", "plazo": "45-75 días", "calor": 0.9},
+      {"sobre_salida": 0.08, "titulo": "Salir un 8 % por encima", "texto": "Pocas visitas, primera bajada al mes.", "plazo": "4-6 meses", "calor": 0.45},
+      {"sobre_salida": 0.15, "titulo": "Salir un 15 % por encima", "texto": "El piso se quema.", "plazo": "+9 meses", "calor": 0.15}
+    ],
+    "dato_real": {"cifra": "", "texto": ""},
+    "estrategia_intro": "",
+    "estrategia": [
+      {"cuando": "Semana 1", "titulo": "Preparación", "texto": "Fotos, plano y documentación."}
+    ],
+    "siguiente_intro": "",
+    "siguiente": [
+      {"titulo": "Firmamos el encargo", "texto": ""},
+      {"titulo": "Resolvemos tus dudas", "texto": ""}
+    ]
+  }
+}
+</script>
+
+<script>
+(function(){
+"use strict";
+const D = JSON.parse(document.getElementById('datos').textContent);
+const M = D.marca || {}, V = D.vivienda || {}, Z = D.zona || {}, P = Object.assign({
+  negociacion_en_venta:.95, negociacion_largo:.92, dias_largo:90, peso_vendido:2,
+  ajuste_maximo:.25, desviacion_maxima:.15, margen_salida:.05, margen_minimo:.05
+}, D.parametros || {}), T = D.textos || {}, INF = D.informe || {};
+
+/* ---------- Utilidades ---------- */
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const miles = n => { const s = Math.round(Math.abs(n)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.'); return (n < 0 ? '−' : '') + s; };
+const eur = n => miles(n) + ' €';
+const eurm2 = n => miles(n) + ' €/m²';
+const dec = (n, d=2) => n.toFixed(d).replace('.', ',');
+const pct = n => (n > 0 ? '+' : n < 0 ? '−' : '') + dec(Math.abs(n*100), 1).replace(',0','') + ' %';
+const ruta = r => !r ? '' : (/^(https?:|data:|file:)/.test(r) ? r : (r.startsWith('/') ? 'file://' + r : r));
+const media = a => a.reduce((s,x)=>s+x,0) / a.length;
+const mediana = a => { const b=[...a].sort((x,y)=>x-y), m=b.length>>1; return b.length%2 ? b[m] : (b[m-1]+b[m])/2; };
+const ordinal = n => (typeof n === 'number') ? (n === 0 ? 'Bajo' : n + '.ª') : n;
+
+/* ---------- Marca ---------- */
+const root = document.documentElement.style;
+const hex = c => /^#[0-9a-f]{6}$/i.test(c||'');
+if (hex(M.color_principal)) root.setProperty('--c-principal', M.color_principal);
+if (hex(M.color_secundario)) root.setProperty('--c-secundario', M.color_secundario);
+if (hex(M.color_acento)) root.setProperty('--c-acento', M.color_acento);
+function fuente(nombre, variable, respaldo){
+  if (!nombre) return;
+  root.setProperty(variable, `"${nombre}", ${respaldo}`);
+  const fam = nombre.trim().replace(/ /g, '+');
+  const l = document.createElement('link'); l.rel = 'stylesheet';
+  l.href = `https://fonts.googleapis.com/css2?family=${fam}:wght@400;500;600;700&display=swap`;
+  l.onerror = () => { const l2 = document.createElement('link'); l2.rel='stylesheet'; l2.href=`https://fonts.googleapis.com/css2?family=${fam}&display=swap`; document.head.appendChild(l2); };
+  document.head.appendChild(l);
+}
+fuente(M.tipografia_titulos, '--f-titulos', 'Georgia, serif');
+if (M.tipografia_texto !== M.tipografia_titulos) fuente(M.tipografia_texto, '--f-texto', 'system-ui, sans-serif');
+
+/* ---------- Cálculo ---------- */
+const FACT = [['estado','Estado'],['planta','Planta'],['exterior','Exterior'],['terraza','Terraza'],['garaje','Garaje'],['antiguedad','Antig.'],['otros','Otros']];
+const testigos = (D.testigos || []).map(t => {
+  const c = Object.assign({estado:1,planta:1,exterior:1,terraza:1,garaje:1,antiguedad:1,otros:1}, t.coef || {});
+  const vendido = t.situacion === 'vendido';
+  const largo = (t.dias||0) >= P.dias_largo || (t.bajadas||0) > 0;
+  const neg = (t.coef && t.coef.negociacion != null) ? t.coef.negociacion : (vendido ? 1 : (largo ? P.negociacion_largo : P.negociacion_en_venta));
+  const fisico = FACT.reduce((p,[k]) => p * (+c[k] || 1), 1);
+  const bruto = t.precio / t.m2;
+  return Object.assign({}, t, {c, vendido, neg, fisico, total: fisico*neg, bruto, hom: bruto*fisico*neg, fuera: false, motivo: t.descartar || ''});
+});
+testigos.forEach(t => {
+  if (t.motivo) { t.fuera = true; return; }
+  if (Math.abs(1 - t.fisico) > P.ajuste_maximo) { t.fuera = true; t.motivo = `Hay que corregirlo un ${dec(Math.abs(1-t.fisico)*100,0)} % para compararlo: es otro tipo de vivienda.`; }
+});
+const medPrevia = mediana(testigos.filter(t=>!t.fuera).map(t=>t.hom));
+testigos.forEach(t => {
+  if (!t.fuera && Math.abs(t.hom/medPrevia - 1) > P.desviacion_maxima) { t.fuera = true; t.motivo = `Se aleja un ${dec(Math.abs(t.hom/medPrevia-1)*100,0)} % del resto una vez corregido.`; }
+});
+const validos = testigos.filter(t=>!t.fuera);
+const pesoDe = t => t.vendido ? P.peso_vendido : 1;
+const sumaP = validos.reduce((s,t)=>s+pesoDe(t),0);
+const valorM2 = Math.round(validos.reduce((s,t)=>s+t.hom*pesoDe(t),0) / sumaP);
+const m2 = V.m2_construidos;
+const valor = valorM2 * m2;
+const cierre = Math.round(valor/1000)*1000;
+const salidaBruta = cierre*(1+P.margen_salida);
+const salida = P.precio_salida || (Math.round((salidaBruta+1000)/10000)*10000 - 1000);
+const minimo = P.precio_minimo || Math.round(cierre*(1-P.margen_minimo)/1000)*1000;
+const brutos = testigos.map(t=>t.bruto), homs = validos.map(t=>t.hom);
+const vendV = validos.filter(t=>t.vendido && t.dias);
+const diasVend = vendV.length ? Math.round(media(vendV.map(t=>t.dias))) : null;
+const R = {salida, cierre, minimo, valorM2, valor};
+window.__informe = {R, testigos, valorM2};
+
+const tok = s => String(s||'')
+  .replace(/\{salida\}/g, eur(salida)).replace(/\{cierre\}/g, eur(cierre)).replace(/\{minimo\}/g, eur(minimo))
+  .replace(/\{valor_m2\}/g, eurm2(valorM2)).replace(/\{n_testigos\}/g, testigos.length).replace(/\{n_validos\}/g, validos.length)
+  .replace(/\{dias_vendidos\}/g, diasVend ?? '—').replace(/\{m2\}/g, m2);
+const txt = s => esc(tok(s));
+
+/* ---------- Piezas ---------- */
+const nombreAg = M.agencia || M.nombre || '';
+document.title = `Informe de valoración · ${V.direccion || ''}`;
+document.getElementById('barra-tit').textContent = `${V.direccion || ''}${V.puerta ? ', ' + V.puerta : ''} · ${nombreAg}`;
+const totalSecs = 6;
+const cab = (n, titulo) => `<div class="cab"><span><b>${esc(nombreAg)}</b> · Informe de valoración</span><span>${n} / ${totalSecs} · ${esc(titulo)}</span></div>`;
+const pie = () => `<div class="pie"><span>Estimación orientativa de mercado, no una tasación oficial (ECO/805/2003).</span><span>${esc(INF.referencia||'')} · ${esc(INF.fecha||'')}</span></div>`;
+
+function edificio(){
+  const pl = typeof V.planta === 'number' ? V.planta : 2;
+  const n = Math.max(V.plantas_edificio || 0, pl + 2, 4);
+  const W = 300, hP = Math.min(52, 460/(n+1)), base = 34, H = base + hP*(n+1) + 30;
+  const x0 = 40, ancho = W - 80, cols = 4, vw = ancho/cols;
+  let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Edificio con tu vivienda marcada en la planta ${esc(ordinal(pl))}">`;
+  s += `<rect x="${x0}" y="${30}" width="${ancho}" height="${H-30-base+8}" fill="none" stroke="rgba(255,255,255,.55)" stroke-width="1.5"/>`;
+  s += `<line x1="${x0-10}" y1="30" x2="${x0+ancho+10}" y2="30" stroke="rgba(255,255,255,.55)" stroke-width="1.5"/>`;
+  for (let f=0; f<=n; f++){
+    const y = H - base - (f+1)*hP + 8;
+    for (let c=0; c<cols; c++){
+      const x = x0 + c*vw + vw*.22, w = vw*.56, h = hP*.58;
+      const suj = f === pl && c === 2;
+      if (f === 0 && (c === 1 || c === 2)) { if (c===1) s += `<rect x="${x0+vw*1.25}" y="${y+hP*.2}" width="${vw*1.5}" height="${hP*.8}" fill="none" stroke="rgba(255,255,255,.55)" stroke-width="1.5"/>`; continue; }
+      s += `<rect class="${suj?'ventana-sujeto':''}" x="${x}" y="${y+hP*.2}" width="${w}" height="${h}" rx="1.5" fill="${suj?'var(--c-acento)':'none'}" stroke="${suj?'var(--c-acento)':'rgba(255,255,255,.4)'}" stroke-width="1.2"/>`;
+      if (suj) s += `<line x1="${x+w+8}" y1="${y+hP*.2+h/2}" x2="${W-6}" y2="${y+hP*.2+h/2}" stroke="var(--c-acento)" stroke-width="1.2"/>`;
+    }
+  }
+  s += `<line x1="0" y1="${H-base+8}" x2="${W}" y2="${H-base+8}" stroke="rgba(255,255,255,.7)" stroke-width="1.5"/>`;
+  s += `</svg>`;
+  return s;
+}
+
+function portada(){
+  const logo = M.logo ? `<div class="p-logo"><img src="${esc(ruta(M.logo))}" alt="${esc(nombreAg)}"></div>`
+    : `<div class="marca-texto">${esc(M.agencia || M.nombre)}<span>${esc(M.agencia && M.nombre ? M.nombre : (M.zona||''))}</span></div>`;
+  const visual = V.foto_portada ? `<div class="p-foto"><img src="${esc(ruta(V.foto_portada))}" alt="Fachada de la vivienda"></div>` : `<div class="p-edificio">${edificio()}</div>`;
+  const plantaTxt = typeof V.planta === 'number' ? (V.planta === 0 ? 'Planta baja' : `${V.planta}.ª planta`) : V.planta;
+  return `<section class="pagina portada" aria-label="Portada">
+    <div class="p-top">${logo}<div class="p-ref">Ref. ${esc(INF.referencia||'')}<br>${esc(INF.fecha||'')}</div></div>
+    <div class="p-medio">
+      <div>
+        <div class="p-tipo">Informe de valoración de mercado</div>
+        <h1 class="p-dir">${esc(V.direccion)}${V.puerta ? `<br>${esc(V.puerta)}` : ''}</h1>
+        <div class="p-sub">${esc([V.barrio, V.ciudad].filter(Boolean).join(', '))}</div>
+      </div>
+      ${visual}
+    </div>
+    <div class="p-base">
+      <div class="p-datos">
+        <div><b>${esc(V.m2_construidos)} m²</b><span>construidos${V.m2_utiles ? ` · ${esc(V.m2_utiles)} útiles` : ''}</span></div>
+        <div><b>${esc(V.habitaciones)}</b><span>habitaciones</span></div>
+        <div><b>${esc(V.banos)}</b><span>${V.banos == 1 ? 'baño' : 'baños'}</span></div>
+        <div><b>${esc(typeof V.planta==='number' ? ordinal(V.planta) : V.planta)}</b><span>${esc(plantaTxt)}${V.ascensor ? ' con ascensor' : ' sin ascensor'}</span></div>
+      </div>
+      <div class="p-para"><span>Preparado para <b>${esc(INF.preparado_para||'')}</b></span><span>por ${esc(M.nombre||'')}${M.agencia && M.nombre ? ', ' + esc(M.agencia) : ''}</span></div>
+    </div>
+  </section>`;
+}
+
+function resumen(){
+  const lo = minimo*0.94, hi = salida*1.17, span = hi - lo, x = v => ((v-lo)/span*100).toFixed(2);
+  const quemaDesde = salida*1.06;
+  return `<section class="pagina" aria-labelledby="t-res">
+    ${cab(1,'Resumen')}
+    <h2 id="t-res"><span class="sec-n">1</span>En una frase</h2>
+    <p class="frase">${txt(T.resumen)}</p>
+    <div class="precios">
+      <div class="precio"><div class="p-et"><i></i>Precio de salida recomendado</div><div class="p-val num">${eur(salida)}</div><p class="p-ex">${txt(T.explica_salida)}</p></div>
+      <div class="precio"><div class="p-et">Precio objetivo de cierre</div><div class="p-val num">${eur(cierre)}</div><p class="p-ex">${txt(T.explica_cierre)}</p></div>
+      <div class="precio"><div class="p-et">Precio mínimo razonable</div><div class="p-val num">${eur(minimo)}</div><p class="p-ex">${txt(T.explica_minimo)}</p></div>
+    </div>
+    <div class="regla" role="img" aria-label="Rango de precio: mínimo ${eur(minimo)}, cierre ${eur(cierre)}, salida ${eur(salida)}">
+      <div class="regla-tit"><h3>Dónde se mueve tu precio</h3><span>Rango recomendado: ${eur(minimo)} – ${eur(salida)}</span></div>
+      <div class="pista">
+        <div class="tramo tramo--neg" style="left:${x(minimo)}%;width:${(x(salida)-x(minimo)).toFixed(2)}%"></div>
+        <div class="tramo tramo--sal" style="left:${x(cierre)}%;width:${(x(salida)-x(cierre)).toFixed(2)}%"></div>
+        <div class="tramo tramo--quema" style="left:${x(quemaDesde)}%;right:0"></div>
+        <div class="marca-r abajo" style="left:${x(minimo)}%"><em>${eur(minimo)}<small>mínimo</small></em></div>
+        <div class="marca-r arriba" style="left:${x(cierre)}%"><em>${eur(cierre)}<small>cierre</small></em></div>
+        <div class="marca-r abajo" style="left:${x(salida)}%"><em>${eur(salida)}<small>salida</small></em></div>
+      </div>
+      <div class="regla-ley">
+        <span><i style="background:color-mix(in oklab,var(--c-principal) 30%,#fff)"></i>Margen de negociación</span>
+        <span><i style="background:var(--c-principal)"></i>Hasta el precio de salida</span>
+        <span><i style="background:repeating-linear-gradient(-45deg,color-mix(in oklab,var(--c-acento) 70%,#fff) 0 4px,var(--acento-suave) 4px 8px)"></i>Sobreprecio: el piso se queda parado</span>
+      </div>
+    </div>
+    <div class="aviso"><b>Esto es una estimación orientativa de mercado, no una tasación oficial (ECO/805/2003).</b> Se basa en ${testigos.length} viviendas comparables de la zona y en la experiencia de ${esc(M.nombre || 'tu agente')}. Para una hipoteca o un trámite oficial hace falta la tasación de una sociedad homologada. ${esc(INF.validez||'')}</div>
+    ${pie()}
+  </section>`;
+}
+
+function mapa(){
+  const con = testigos.filter(t => t.distancia_m != null && t.rumbo != null);
+  const maxD = Math.max(250, ...con.map(t=>t.distancia_m));
+  const paso = maxD <= 300 ? 100 : maxD <= 750 ? 250 : maxD <= 1500 ? 500 : 1000;
+  const lim = Math.ceil(maxD/paso)*paso, C = 200, Rr = 168;
+  let s = `<svg viewBox="0 0 400 400" role="img" aria-label="Situación de los testigos alrededor de tu vivienda">`;
+  for (let d=paso; d<=lim; d+=paso){ const r = d/lim*Rr;
+    s += `<circle cx="${C}" cy="${C}" r="${r}" fill="none" stroke="var(--linea-fuerte)" stroke-dasharray="${d===lim?'0':'3 4'}"/>`;
+    s += `<text x="${C+5}" y="${(C-r+14).toFixed(1)}" font-size="11" fill="var(--suave)" font-family="var(--f-texto)">${d < 1000 ? d+' m' : dec(d/1000,1).replace(',0','')+' km'}</text>`; }
+  s += `<line x1="${C}" y1="${C-Rr-14}" x2="${C}" y2="${C+Rr+6}" stroke="var(--linea)"/><line x1="${C-Rr-6}" y1="${C}" x2="${C+Rr+6}" y2="${C}" stroke="var(--linea)"/>`;
+  s += `<text x="${C}" y="16" text-anchor="middle" font-size="13" font-weight="700" fill="var(--tinta)" font-family="var(--f-texto)">N</text>`;
+  con.forEach(t => {
+    const r = t.distancia_m/lim*Rr, a = t.rumbo*Math.PI/180, px = C + r*Math.sin(a), py = C - r*Math.cos(a);
+    const fill = t.fuera ? '#fff' : (t.vendido ? 'var(--c-principal)' : '#fff');
+    const st = t.fuera ? 'var(--suave)' : 'var(--c-principal)';
+    s += `<g><circle cx="${px.toFixed(1)}" cy="${py.toFixed(1)}" r="14" fill="${fill}" stroke="${st}" stroke-width="2" ${t.fuera?'stroke-dasharray="3 3"':''}/>`;
+    s += `<text x="${px.toFixed(1)}" y="${(py+4).toFixed(1)}" text-anchor="middle" font-size="11" font-weight="700" fill="${t.vendido && !t.fuera ? '#fff' : st}" font-family="var(--f-texto)">${esc(t.id)}</text></g>`;
+  });
+  s += `<circle cx="${C}" cy="${C}" r="22" fill="var(--c-acento)" opacity=".25"/><path d="M${C} ${C-12} L${C+11} ${C-2} V${C+10} H${C-11} V${C-2} Z" fill="var(--c-acento)" stroke="var(--tinta)" stroke-width="1.5" stroke-linejoin="round"/>`;
+  s += `</svg>`;
+  return s;
+}
+
+function vivienda(){
+  const filas = [
+    ['Tipo', V.tipo], ['Superficie construida', V.m2_construidos && V.m2_construidos + ' m²'], ['Superficie útil', V.m2_utiles && V.m2_utiles + ' m²'],
+    ['Habitaciones', V.habitaciones], ['Baños', V.banos], ['Planta', (typeof V.planta==='number' ? (V.planta===0?'Baja':ordinal(V.planta)) : V.planta) + (V.ascensor ? ', con ascensor' : ', sin ascensor')],
+    ['Exterior', V.exterior === true ? 'Sí' : V.exterior === false ? 'Interior' : V.exterior], ['Orientación', V.orientacion], ['Estado', V.estado], ['Año de construcción', V.anio]
+  ].filter(f => f[1] !== undefined && f[1] !== null && f[1] !== '');
+  const fotos = (V.fotos||[]).slice(0,6).map(f=>`<img src="${esc(ruta(f))}" alt="Foto de la vivienda" loading="lazy">`).join('');
+  const mapaHtml = Z.imagen_mapa ? `<img src="${esc(ruta(Z.imagen_mapa))}" alt="Mapa de la zona">` : mapa();
+  return `<section class="pagina" aria-labelledby="t-viv">
+    ${cab(2,'La vivienda y la zona')}
+    <h2 id="t-viv"><span class="sec-n">2</span>Tu vivienda y su entorno</h2>
+    <p class="entrada">Lo que hemos visto en la visita y lo que pesa en el precio.</p>
+    <div class="dos">
+      <div>
+        <h3>Ficha</h3>
+        <dl class="ficha">${filas.map(([k,v])=>`<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join('')}</dl>
+        ${(V.extras||[]).length ? `<ul class="extras">${V.extras.map(e=>`<li>${esc(e)}</li>`).join('')}</ul>` : ''}
+        ${V.descripcion ? `<p class="desc">${esc(V.descripcion)}</p>` : ''}
+      </div>
+      <div>
+        <h3>La zona</h3>
+        <div class="mapa">${mapaHtml}<p class="mapa-nota">${Z.imagen_mapa ? '' : 'Tu vivienda en el centro y los testigos a su distancia real en línea recta. Relleno: vendido. Hueco: en venta.'}</p></div>
+        ${Z.texto ? `<p class="zona-txt">${txt(Z.texto)}</p>` : ''}
+        ${(Z.puntos||[]).length ? `<ul class="zona-pts">${Z.puntos.map(p=>`<li><b>${esc(p.dato)}</b><span>${esc(p.texto)}</span></li>`).join('')}</ul>` : ''}
+      </div>
+    </div>
+    ${fotos ? `<div class="fotos">${fotos}</div>` : ''}
+    ${pie()}
+  </section>`;
+}
+
+function grafico(){
+  const todos = testigos.flatMap(t=>[t.bruto,t.hom]);
+  let lo = Math.min(...todos), hi = Math.max(...todos);
+  const pad = (hi-lo)*.06; lo -= pad; hi += pad;
+  const x = v => ((v-lo)/(hi-lo)*100).toFixed(2);
+  const bandaL = Math.min(...homs), bandaH = Math.max(...homs);
+  const pasoEje = (hi-lo) > 1200 ? 500 : (hi-lo) > 500 ? 250 : 100;
+  const ticks = []; for (let v = Math.ceil(lo/pasoEje)*pasoEje; v <= hi; v += pasoEje) ticks.push(v);
+  const filas = testigos.map(t => {
+    const a = Math.min(t.bruto,t.hom), b = Math.max(t.bruto,t.hom);
+    return `<div class="g-fila ${t.fuera?'fuera':''}">
+      <div class="g-et">${esc(t.id)}<small>${t.vendido?'vendido':'en venta'}</small></div>
+      <div class="g-pista">
+        <div class="g-banda" style="left:${x(bandaL)}%;width:${(x(bandaH)-x(bandaL)).toFixed(2)}%"></div>
+        <div class="g-valor" style="left:${x(valorM2)}%"></div>
+        <div class="g-linea" style="left:${x(a)}%;width:${(x(b)-x(a)).toFixed(2)}%"></div>
+        <div class="g-punto g-bruto" style="left:${x(t.bruto)}%" title="Anunciado: ${eurm2(t.bruto)}"></div>
+        <div class="g-punto g-hom ${t.vendido?'':'venta'}" style="left:${x(t.hom)}%" title="Comparable con el tuyo: ${eurm2(t.hom)}"></div>
+      </div></div>`;
+  }).join('');
+  return `<div class="grafico" role="img" aria-label="Precio por metro cuadrado de cada testigo antes y después de compararlo con tu vivienda">
+    ${filas}
+    <div class="g-eje"><div></div><div class="g-eje-in">${ticks.map(v=>`<span style="left:${x(v)}%">${miles(v)}</span>`).join('')}</div></div>
+    <div class="g-ley">
+      <span><i style="background:#fff;border:2px solid var(--suave)"></i>€/m² anunciado o vendido</span>
+      <span><i style="background:var(--c-principal)"></i>€/m² corregido, vendido</span>
+      <span><i style="background:#fff;border:3px solid var(--c-principal)"></i>€/m² corregido, en venta</span>
+      <span><i style="background:var(--c-acento);border-radius:2px;width:3px;height:14px"></i>Valor de tu vivienda: ${eurm2(valorM2)}</span>
+    </div>
+  </div>`;
+}
+
+function testigosSec(){
+  const tarjetas = testigos.map(t => {
+    const sit = t.fuera ? `<span class="chip fuera">Descartado</span>` : `<span class="chip ${t.vendido?'vendido':'en_venta'}">${t.vendido?'Vendido':'En venta'}</span>`;
+    const baj = t.precio_inicial && t.precio_inicial > t.precio ? `<s>${eur(t.precio_inicial)}</s>` : '';
+    return `<article class="tj ${t.fuera?'fuera':''}">
+      <div class="tj-cab"><div><div class="tj-id">${esc(t.id)} · ${esc(t.fuente||'')}</div><div class="tj-dir">${esc(t.direccion)}</div></div>${sit}</div>
+      <div class="tj-precio"><b class="num">${eur(t.precio)}</b>${baj}<span>${eurm2(t.bruto)}</span></div>
+      <p class="tj-datos">${esc([t.m2 && t.m2+' m²', t.habitaciones && t.habitaciones+' hab.', t.banos && t.banos+(t.banos==1?' baño':' baños'), t.planta, t.estado].filter(Boolean).join(' · '))}${t.nota ? '. ' + esc(t.nota) : ''}</p>
+      <div class="tj-pie"><span>${t.vendido ? 'Vendido en' : 'Publicado hace'} <b>${esc(t.dias ?? '—')} días</b>${t.bajadas ? ` · ${t.bajadas} ${t.bajadas==1?'bajada':'bajadas'}` : ''}</span><span>Comparable: <b>${eurm2(t.hom)}</b></span></div>
+      ${t.fuera ? `<p class="tj-motivo">${esc(t.motivo)}</p>` : ''}
+    </article>`;
+  }).join('');
+  return `<section class="pagina" aria-labelledby="t-tes">
+    ${cab(3,'Testigos')}
+    <h2 id="t-tes"><span class="sec-n">3</span>Con qué la comparamos</h2>
+    <p class="entrada">${testigos.length} viviendas parecidas y cercanas, vendidas o a la venta. Cada punto vacío es su precio tal cual; el lleno, ese precio corregido para que sea comparable con el tuyo.</p>
+    ${grafico()}
+    <div class="tarjetas">${tarjetas}</div>
+    ${pie()}
+  </section>`;
+}
+
+function calculo(){
+  const cel = v => { const cls = Math.abs(v-1) < 1e-9 ? 'neutro' : v > 1 ? 'sube' : 'baja'; return `<td class="${cls}">${dec(v)}</td>`; };
+  const filas = testigos.map(t => `<tr class="${t.fuera?'fuera':''}"><td><b>${esc(t.id)}</b> ${t.vendido?'vendido':'en venta'}</td><td>${miles(t.bruto)}</td>${FACT.map(([k])=>cel(+t.c[k]||1)).join('')}${cel(t.neg)}<td class="res">${dec(t.total)}</td><td class="res">${miles(t.hom)}</td></tr>`).join('');
+  const fuera = testigos.filter(t=>t.fuera);
+  const vend = validos.filter(t=>t.vendido).length, venta = validos.length - vend;
+  return `<section class="pagina" aria-labelledby="t-cal">
+    ${cab(4,'Cálculo')}
+    <h2 id="t-cal"><span class="sec-n">4</span>El cálculo, paso a paso</h2>
+    <p class="entrada">Sin cajas negras: así llegamos a los tres precios. Cualquiera puede repetir las cuentas.</p>
+    <ol class="pasos">
+      <li class="paso"><div><h3>Recogemos los testigos</h3><p>${testigos.length} viviendas de la zona con superficie, habitaciones y estado parecidos: ${testigos.filter(t=>t.vendido).length} ya vendidas (precio real de cierre) y ${testigos.filter(t=>!t.vendido).length} a la venta (precio pedido, que aún no se ha cobrado).</p></div></li>
+      <li class="paso"><div><h3>Miramos los números en bruto</h3><p>El precio por metro cuadrado tal y como aparece, sin corregir nada:</p>
+        <div class="stats"><div class="stat"><span>Media</span><b>${miles(media(brutos))}</b></div><div class="stat"><span>Mediana</span><b>${miles(mediana(brutos))}</b></div><div class="stat"><span>Más bajo</span><b>${miles(Math.min(...brutos))}</b></div><div class="stat"><span>Más alto</span><b>${miles(Math.max(...brutos))}</b></div></div>
+        <p style="margin-top:12px">Demasiada distancia entre el más bajo y el más alto para usar la media sin más: hay que corregir las diferencias con tu vivienda.</p></div></li>
+      <li class="paso"><div><h3>Corregimos las diferencias (homogeneización)</h3><p>Cada testigo se multiplica por unos coeficientes. Si el testigo es <b>mejor</b> que tu vivienda en algo (reformado, más alto, con garaje), su coeficiente es menor que 1; si es <b>peor</b>, mayor que 1. A los que siguen a la venta se les aplica además la negociación habitual: el precio pedido no es el que se cobra.</p>
+        <div class="tabla-wrap"><table>
+          <thead><tr><th>Testigo</th><th>€/m² bruto</th>${FACT.map(([,n])=>`<th>${n}</th>`).join('')}<th>Negoc.</th><th>Total</th><th>€/m² final</th></tr></thead>
+          <tbody>${filas}</tbody></table></div>
+        <p class="leyenda-tabla"><b style="color:var(--c-principal)">1,10</b> el testigo es peor que tu vivienda y se sube · <b style="color:color-mix(in oklab,var(--c-acento) 70%,#000)">0,93</b> es mejor y se baja · <span style="color:color-mix(in oklab,var(--suave) 55%,#fff)">1,00</span> igual. Planta incluye ascensor; Exterior, luz y vistas; Negoc., la rebaja habitual sobre el precio pedido.</p></div></li>
+      <li class="paso"><div><h3>Apartamos lo que no se parece</h3><p>${fuera.length ? `Descartamos ${fuera.length === 1 ? 'un testigo' : fuera.length + ' testigos'} para no contaminar el resultado: ${fuera.map(t=>`<b>${esc(t.id)}</b> (${esc(t.motivo.charAt(0).toLowerCase() + t.motivo.slice(1).replace(/\.$/,''))})`).join('; ')}.` : 'Ningún testigo se ha descartado: todos se parecen lo suficiente.'} Criterio: fuera si hay que corregirlo más de un ${Math.round(P.ajuste_maximo*100)} % o si, ya corregido, se aleja más de un ${Math.round(P.desviacion_maxima*100)} % del resto.</p>
+        <div class="stats"><div class="stat"><span>Testigos válidos</span><b>${validos.length}</b></div><div class="stat"><span>Media corregida</span><b>${miles(media(homs))}</b></div><div class="stat"><span>Mediana corregida</span><b>${miles(mediana(homs))}</b></div><div class="stat"><span>Rango</span><b>${miles(Math.min(...homs))}–${miles(Math.max(...homs))}</b></div></div></div></li>
+      <li class="paso"><div><h3>Sacamos el valor de mercado</h3><p>Media ponderada de los válidos: las ${vend} ventas cerradas cuentan ${P.peso_vendido === 2 ? 'el doble' : '×' + P.peso_vendido} porque son precio real; las ${venta} a la venta, una vez.</p>
+        <div class="formula">${eurm2(valorM2)} × ${esc(m2)} m² construidos = <b>${eur(valor)}</b><br><span style="font-size:15px;color:var(--suave);font-family:var(--f-texto)">Redondeado al millar: precio objetivo de cierre ${eur(cierre)}</span></div></div></li>
+      <li class="paso"><div><h3>Convertimos el valor en tres precios</h3><p><b>Salida ${eur(salida)}</b>: el cierre más un ${Math.round(P.margen_salida*100)} % para negociar, ajustado a una cifra que filtra bien en los portales. <b>Cierre ${eur(cierre)}</b>: el valor de mercado. <b>Mínimo ${eur(minimo)}</b>: un ${Math.round(P.margen_minimo*100)} % por debajo; aceptar menos solo tendría sentido con prisa real por vender.</p></div></li>
+    </ol>
+    ${pie()}
+  </section>`;
+}
+
+function riesgo(){
+  const escs = (T.escenarios||[]).map((e,i) => {
+    const pr = Math.round(salida*(1+(e.sobre_salida||0))/1000)*1000;
+    return `<div class="esc ${i>0 && (e.calor??1) < .5 ? 'peligro':''}">
+      <div class="esc-p"><b class="num">${eur(pr)}</b><span>${i===0 ? 'precio recomendado' : pct(e.sobre_salida) + ' sobre el recomendado'}</span></div>
+      <div class="esc-t"><h3>${esc(e.titulo)}</h3><p>${txt(e.texto)}</p><span class="termo-et">Interés de compradores</span><div class="termo" aria-hidden="true"><i style="width:${Math.round((e.calor??.5)*100)}%"></i></div></div>
+      <div class="esc-d"><b>${esc(e.plazo)}</b><span>plazo de venta estimado</span></div>
+    </div>`;
+  }).join('');
+  const plan = (T.estrategia||[]).map(p=>`<li><div class="plan-cuando">${esc(p.cuando)}</div><div class="plan-que"><h3>${txt(p.titulo)}</h3><p>${txt(p.texto)}</p></div></li>`).join('');
+  return `<section class="pagina" aria-labelledby="t-rie">
+    ${cab(5,'Estrategia')}
+    <h2 id="t-rie"><span class="sec-n">5</span>Por qué no conviene pasarse</h2>
+    <p class="entrada">${txt(T.riesgo_intro)}</p>
+    <div class="escenarios">${escs}</div>
+    ${T.dato_real && T.dato_real.cifra ? `<div class="dato-real"><b>${esc(T.dato_real.cifra)}</b><p>${txt(T.dato_real.texto)}</p></div>` : ''}
+    <div class="estrategia"><h3 style="margin:48px 0 6px;font-size:26px">Cómo lo vamos a vender</h3>
+    <p class="entrada" style="margin-bottom:26px">${txt(T.estrategia_intro)}</p>
+    <ol class="plan">${plan}</ol></div>
+    ${pie()}
+  </section>`;
+}
+
+function cierreSec(){
+  const ini = (M.nombre||'?').split(/\s+/).map(p=>p[0]).slice(0,2).join('');
+  const foto = M.foto ? `<img src="${esc(ruta(M.foto))}" alt="${esc(M.nombre)}">` : esc(ini);
+  const wa = (M.whatsapp||'').replace(/[^\d]/g,'');
+  const msg = encodeURIComponent(`Hola ${M.nombre ? M.nombre.split(' ')[0] : ''}, he leído el informe de ${V.direccion || 'mi vivienda'} y quiero hablar del siguiente paso.`);
+  const sig = (T.siguiente||[]).map(s=>`<div class="sig"><h3>${esc(s.titulo)}</h3><p>${txt(s.texto)}</p></div>`).join('');
+  return `<section class="pagina cierre" aria-labelledby="t-sig">
+    ${cab(6,'Siguiente paso')}
+    <h2 id="t-sig"><span class="sec-n">6</span>Y ahora, ¿qué?</h2>
+    <p class="entrada">${txt(T.siguiente_intro)}</p>
+    <div class="siguiente">${sig}</div>
+    <div class="agente">
+      <div class="agente-foto">${foto}</div>
+      <div>
+        <h3>${esc(M.nombre)}</h3>
+        <div class="ag-ag">${esc([M.agencia, M.zona].filter(Boolean).join(' · '))}</div>
+        <div class="contacto">
+          ${wa ? `<a class="btn btn--acento" href="https://wa.me/${wa}?text=${msg}" target="_blank" rel="noopener">Escribir por WhatsApp</a>` : ''}
+          ${M.telefono ? `<a class="btn" href="tel:${esc(M.telefono.replace(/\s/g,''))}">Llamar al ${esc(M.telefono)}</a>` : ''}
+          ${M.email ? `<a class="btn" href="mailto:${esc(M.email)}?subject=${encodeURIComponent('Informe de valoración ' + (V.direccion||''))}">${esc(M.email)}</a>` : ''}
+        </div>
+        <div class="contacto-print">${M.telefono ? 'Teléfono: ' + esc(M.telefono) + '<br>' : ''}${wa ? 'WhatsApp: ' + esc(M.whatsapp) + '<br>' : ''}${M.email ? 'Email: ' + esc(M.email) : ''}</div>
+      </div>
+    </div>
+    <div class="aviso"><b>Esto es una estimación orientativa de mercado, no una tasación oficial (ECO/805/2003).</b> Elaborada con testigos públicos y datos facilitados por la propiedad, sin visita de tasador homologado ni comprobación registral. No sirve como valor de tasación hipotecaria ni para trámites oficiales.</div>
+    ${pie()}
+  </section>`;
+}
+
+document.getElementById('doc').innerHTML = portada() + resumen() + vivienda() + testigosSec() + calculo() + riesgo() + cierreSec();
+})();
+</script>
+</body>
+</html>

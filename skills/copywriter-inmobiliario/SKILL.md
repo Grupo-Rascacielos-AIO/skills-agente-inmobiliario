@@ -112,3 +112,7 @@ Si fallan 2 o más, reescribe antes de enseñar.
 ## Ejemplos
 
 Ejemplos completos con datos ficticios (anuncio, captación tras valoración, reel, bio, carrusel) en [referencias/ejemplos.md](referencias/ejemplos.md). Úsalos como referencia de nivel, no como plantilla para copiar.
+
+## En la app de Claude (sin terminal)
+
+Si no existe `~/.claude/mi-marca-inmobiliaria.md` (por ejemplo, en la app de Claude), busca un archivo `mi-marca-inmobiliaria.md` en el conocimiento del Proyecto o adjunto al chat y úsalo igual. Si tampoco está, lanza `mi-marca`. Entrega siempre el resultado como archivos para **descargar** (HTML, imágenes) y, para publicar, explica Netlify Drop: entrar en app.netlify.com/drop y arrastrar la carpeta. Si no puedes abrir un enlace de un portal, pide las fotos y que pegue el texto del anuncio.

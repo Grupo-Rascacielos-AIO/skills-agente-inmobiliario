@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Comprobar trazado del plano</title>
+<style>
+  body{margin:0;font:14px/1.4 system-ui,sans-serif;background:#f3f3f3;color:#222}
+  header{padding:12px 16px;background:#fff;border-bottom:1px solid #ddd;display:flex;gap:16px;flex-wrap:wrap;align-items:center}
+  header code{background:#f0f0f0;padding:2px 6px;border-radius:4px}
+  .ley span{display:inline-flex;align-items:center;gap:6px;margin-right:12px}
+  .ley i{width:14px;height:14px;border-radius:3px;display:inline-block}
+  #lienzo{position:relative;display:inline-block;margin:16px}
+  #lienzo img{display:block;max-width:calc(100vw - 32px);height:auto}
+  svg{position:absolute;inset:0;width:100%;height:100%}
+  #xy{font-weight:700}
+</style>
+</head>
+<body>
+<!--
+  Superpone lo trazado en plano-data.js encima de la imagen del plano para ver si cuadra.
+  Uso (con un servidor local en la carpeta de la skill, p. ej. `npx serve`):
+    herramientas/comprobar-trazado.html?plano=../ejemplo/plano.svg&datos=../ejemplo/plano-data.js
+  Haz clic en cualquier punto del plano para ver sus coordenadas en píxeles (sirve para trazar).
+-->
+<header>
+  <b>Comprobar trazado</b>
+  <span class="ley">
+    <span><i style="background:rgba(230,40,40,.6)"></i>Paredes</span>
+    <span><i style="background:rgba(30,120,255,.6)"></i>Ventanas</span>
+    <span><i style="background:rgba(40,170,90,.25);border:1px solid #2a5"></i>Suelos</span>
+    <span><i style="background:#f90"></i>Muebles (flecha = frente)</span>
+  </span>
+  <span>Clic: <span id="xy">—</span></span>
+</header>
+<div id="lienzo"><img id="plano" alt="Plano"><svg id="capa"></svg></div>
+<script>
+  const q = new URLSearchParams(location.search);
+  const plano = q.get('plano') || '../ejemplo/plano.svg';
+  const datos = q.get('datos') || '../ejemplo/plano-data.js';
+  const img = document.getElementById('plano'), svg = document.getElementById('capa');
+  const s = document.createElement('script'); s.src = datos; s.onload = () => { img.src = plano; }; document.body.appendChild(s);
+  img.onload = () => {
+    const D = window.PLANO_DATA, W = img.naturalWidth, H = img.naturalHeight;
+    svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+    let h = '';
+    const r = ([a, b, c, d], f) => `<rect x="${a}" y="${b}" width="${c - a}" height="${d - b}" ${f}/>`;
+    (D.suelos || []).forEach(x => h += r(x, 'fill="rgba(40,170,90,.18)" stroke="#2a5" stroke-dasharray="6 4"'));
+    (D.paredes || []).forEach(x => h += r(x, 'fill="rgba(230,40,40,.55)"'));
+    (D.ventanas || []).forEach(x => h += r(x, 'fill="rgba(30,120,255,.6)"'));
+    (D.muebles || []).forEach(([t, x, y, g]) => {
+      const a = (g || 0) * Math.PI / 180, dx = Math.sin(a) * 40, dy = Math.cos(a) * 40;
+      h += `<circle cx="${x}" cy="${y}" r="7" fill="#f90"/><line x1="${x}" y1="${y}" x2="${x + dx}" y2="${y + dy}" stroke="#f90" stroke-width="3"/><text x="${x + 9}" y="${y - 9}" font-size="13" fill="#b60">${t}</text>`;
+    });
+    (D.etiquetas || []).forEach(([n, m, x, y]) => h += `<text x="${x}" y="${y}" font-size="14" font-weight="700" fill="#06c" text-anchor="middle">◆ ${n}</text>`);
+    h += `<circle cx="${D.cx}" cy="${D.cz}" r="9" fill="none" stroke="#000" stroke-width="2"/><text x="${D.cx + 12}" y="${D.cz + 5}" font-size="12">centro</text>`;
+    svg.innerHTML = h;
+  };
+  document.getElementById('lienzo').addEventListener('click', e => {
+    const b = img.getBoundingClientRect();
+    const x = Math.round((e.clientX - b.left) * img.naturalWidth / b.width), y = Math.round((e.clientY - b.top) * img.naturalHeight / b.height);
+    document.getElementById('xy').textContent = `x=${x}, y=${y}`;
+  });
+</script>
+</body>
+</html>
