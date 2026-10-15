@@ -9,6 +9,8 @@ Resultado: una sección web con la vivienda en 3D vista como una maqueta de arqu
 altura), que gira sola, se acerca con la rueda o con dos dedos y se amuebla con un toque (nórdico o moderno).
 Funciona en ordenador y en móvil, sin instalar nada y sin pagar nada: usa three.js desde un CDN con versión fija.
 
+> **¿Un edificio de obra nueva con varias viviendas?** Usa la skill `edificio-interactivo`: la fachada con cada planta clicable, varias tipologías y 6 estilos de muebles (nórdico, moderno, japandi, art déco, mediterráneo) con su mismo formato de trazado. Su motor (`plantilla/motor3d.js`) sirve también para una casa suelta si quieres esos estilos o la piscina, la isla de cocina o las tumbonas.
+
 ## Archivos
 | Archivo | Qué es |
 |---|---|
