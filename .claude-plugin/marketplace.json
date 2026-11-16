@@ -10,7 +10,7 @@
       "displayName": "Agente inmobiliario (pack completo)",
       "source": "./",
       "description": "Todas las skills del repositorio en un solo plugin. La opción recomendada.",
-      "version": "1.1.0",
+      "version": "1.2.0",
       "category": "inmobiliaria",
       "tags": [
         "inmobiliaria",
@@ -97,6 +97,16 @@
         "./skills/equipo-inmobiliario"
       ],
       "description": "Para encargos grandes: Claude monta un equipo de subagentes (estrategia, copy, diseño, mercado, revisión) y te entrega todo junto.",
+      "version": "1.0.0",
+      "category": "inmobiliaria"
+    },
+    {
+      "name": "preparar-videollamada",
+      "source": "./",
+      "skills": [
+        "./skills/preparar-videollamada"
+      ],
+      "description": "Prepara la videollamada con un propietario según su perfil: presentación con la valoración aparte, adelanto para WhatsApp y chuleta de la llamada.",
       "version": "1.0.0",
       "category": "inmobiliaria"
     }

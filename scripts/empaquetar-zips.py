@@ -15,6 +15,7 @@ CORTAS = {
     "copywriter-inmobiliario": "Copywriter para agentes inmobiliarios: anuncios de portal, posts, guiones de reel, WhatsApp y emails a propietarios, objeciones. «Escríbeme el anuncio de este piso».",
     "informe-valoracion": "Informe de valoración para el propietario a partir de testigos: €/m², homogeneización y 3 precios con estrategia. Orientativo, no tasación. «Valora este piso con estos testigos».",
     "edificio-interactivo": "Convierte la foto de un edificio de obra nueva en una web: cada planta se pulsa y abre su vivienda en 3D con 6 estilos, precios y fotos. Para promotoras. «Hazme el edificio interactivo».",
+    "preparar-videollamada": "Prepara la videollamada con un propietario según su perfil: presentación con la valoración aparte, imagen y mensaje para WhatsApp y chuleta de la llamada. «Prepara la videollamada».",
     "equipo-inmobiliario": "Organiza un equipo de especialistas (estratega, copy, diseño, mercado, revisor) para tareas grandes del negocio. «Prepara la captación de este piso con el equipo».",
 }
 FUERA = {".DS_Store", "_capturas", "node_modules"}

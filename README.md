@@ -17,6 +17,7 @@ No hace falta saber programar. Le hablas a Claude como a un compañero de oficin
 | **edificio-interactivo** | Para obra nueva y promotoras: la foto del edificio (real, render o hecha con IA) con cada planta clicable. Al pulsar una planta, la foto se acerca con una animación y se abre la vivienda en 3D, con precios, disponibilidad por puerta, 6 estilos de muebles (nórdico, moderno, japandi, art déco, mediterráneo) y fotos realistas de cada estilo. | «Hazme el edificio interactivo de esta promoción» (y adjuntas la foto y los planos) |
 | **copywriter-inmobiliario** | Anuncios de portal, posts y carruseles de Instagram, guiones de reel listos para teleprompter, WhatsApp y emails a propietarios, respuestas a objeciones, tu bio y el texto de tu landing. | «Hazme el anuncio de Idealista de este piso: 3 dormitorios, 85 m²…» · «Un propietario me dice que mi comisión es muy alta, ¿qué le contesto?» |
 | **informe-valoracion** | Pegas los testigos (comparables) y te hace el informe de precio para el propietario: €/m², homogeneización, 3 precios (salida, cierre, mínimo), riesgo de sobrevalorar y plan de venta. Listo para PDF. Orientativo, no es una tasación oficial. | «Valora este piso: 92 m², 3 hab., 3.º con ascensor… y estos son los testigos: [pegar]» |
+| **preparar-videollamada** | Después del triaje, prepara la videollamada con el propietario según su perfil (lleva meses sin vender, vende para comprar otra, herencia, separación, primera vez o inversor): la presentación de scroll con la valoración aparte, que solo se abre en la llamada; la imagen y el mensaje para WhatsApp; y la chuleta con las preguntas y las objeciones de ese perfil. | «Prepara la videollamada con Carmen y Luis: estas son mis notas del triaje, la dirección, las fotos y los testigos» |
 | **equipo-inmobiliario** | Para encargos grandes: Claude dirige un equipo (estratega, revisor y los especialistas que hagan falta: analista de mercado, copywriter, diseñador, community manager, captación…) que trabaja en paralelo, te consulta solo lo importante y te entrega todo en una carpeta con un informe. | «Prepara la captación de este piso» · «Monta mi plan de contenidos del mes» |
 
 
@@ -55,7 +56,7 @@ Los nombres de los menús pueden cambiar con las actualizaciones de Claude: si n
 
 Se abrirá el panel de plugins: confirma la instalación. Si te lo pide, ejecuta `/reload-plugins` o cierra y vuelve a abrir Claude Code. Listo.
 
-> **¿Solo quieres una skill?** Instala por separado `mi-marca`, `presentacion-scroll`, `landing-propietario`, `plano-3d`, `edificio-interactivo`, `copywriter-inmobiliario`, `informe-valoracion` o `equipo-inmobiliario`, por ejemplo:
+> **¿Solo quieres una skill?** Instala por separado `mi-marca`, `presentacion-scroll`, `landing-propietario`, `plano-3d`, `edificio-interactivo`, `copywriter-inmobiliario`, `informe-valoracion`, `preparar-videollamada` o `equipo-inmobiliario`, por ejemplo:
 > `/plugin install copywriter-inmobiliario@skills-agente-inmobiliario`
 > (No instales a la vez el pack completo y skills sueltas: las tendrías repetidas.)
 
