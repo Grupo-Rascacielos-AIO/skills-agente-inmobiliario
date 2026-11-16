@@ -30,7 +30,7 @@ h1,.para,.dir{text-shadow:0 2px 24px rgba(0,0,0,.35)}
 .para{font-size:22px;letter-spacing:.26em;text-transform:uppercase;font-weight:600;color:color-mix(in srgb,var(--c-acento) 55%,#fff);display:flex;align-items:center;gap:16px}
 .para::before{content:"";width:44px;height:2px;background:currentColor}
 h1{font-family:var(--f-titulos);font-weight:400;font-size:98px;line-height:1.0;letter-spacing:-.02em;margin:22px 0 18px}
-h1 em{font-style:italic;color:color-mix(in srgb,var(--c-acento) 45%,#fff)}
+h1 em{display:block;font-style:italic;color:color-mix(in srgb,var(--c-acento) 45%,#fff)}
 .dir{font-size:27px;opacity:.9}
 .angulo{margin-top:40px;display:flex;align-items:center;gap:22px;background:color-mix(in srgb,var(--c-secundario) 12%,transparent);border:1px solid rgba(255,255,255,.22);border-radius:22px;padding:24px 28px;backdrop-filter:blur(10px)}
 .angulo i{flex:none;width:52px;height:52px;border-radius:50%;background:var(--c-acento);display:grid;place-items:center}
@@ -70,17 +70,18 @@ h1 em{font-style:italic;color:color-mix(in srgb,var(--c-acento) 45%,#fff)}
 </div>
 <script>
 (function(){
-  const {D,M,esc,iniciales,aplicarMarca}=UT;
+  const {D,M,esc,iniciales,aplicarMarca,deLa,suCasa}=UT;
   aplicarMarca();
   const C=D.casa||{}, Ci=D.cita||{}, A=D.adelanto||{};
   const vos=(D.propietarios||{}).tratamiento!=='tu';
   const $=(id)=>document.getElementById(id);
   $('foto').style.backgroundImage=`url("${C.foto_adelanto||C.foto_portada||''}")`;
+  if(A.foto_posicion) $('foto').style.backgroundPosition=A.foto_posicion;
   const mono=$('mono');
   if(M.foto) mono.innerHTML=`<img src="${esc(M.foto)}" alt="">`; else mono.textContent=iniciales(M.nombre);
   $('nom').textContent=M.nombre||''; $('ag').textContent=M.agencia||'';
   $('para').textContent=`Preparado para ${(D.propietarios||{}).nombres||''}`;
-  $('tit').innerHTML=`${vos?'Vuestra':'Tu'} casa de la <em>${esc(C.direccion_corta||'')}</em>`;
+  $('tit').innerHTML=`${esc(suCasa())} ${deLa(C.direccion_corta)}<em>${esc(C.direccion_corta||'')}</em>`;
   $('dir').textContent=[C.barrio,C.ciudad].filter(Boolean).join(' · ');
   $('ang').textContent=A.etiqueta||'';
   const ex=(A.fotos_extra||[]).slice(0,3);

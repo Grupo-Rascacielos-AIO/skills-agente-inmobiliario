@@ -119,5 +119,21 @@
     };
   }
 
-  window.UT = { D, M, eur, num, esc, iniciales, aplicarMarca, valorar };
+  /* «de la Calle…», «del Paseo…». Se puede forzar con casa.articulo ('de la', 'del', 'de'). */
+  function deLa(calle) {
+    const C = D.casa || {};
+    if (C.articulo) return C.articulo;
+    return /^(paseo|camino|pasaje|callejón|bulevar|carrer|barrio|polígono)\b/i.test(String(calle || '').trim()) ? 'del' : 'de la';
+  }
+
+  /* «Vuestra casa», «Tu ático», «Vuestro chalet»: según casa.tipo (o casa.palabra si se quiere forzar). */
+  function suCasa() {
+    const C = D.casa || {};
+    const vos = (D.propietarios || {}).tratamiento !== 'tu';
+    const w = String(C.palabra || C.tipo || 'casa').toLowerCase();
+    const fem = /^(casa|vivienda|villa|finca|planta baja|masía|masia|cabaña)/.test(w);
+    return (vos ? (fem ? 'Vuestra' : 'Vuestro') : 'Tu') + ' ' + w;
+  }
+
+  window.UT = { D, M, eur, num, esc, iniciales, aplicarMarca, valorar, deLa, suCasa };
 })();

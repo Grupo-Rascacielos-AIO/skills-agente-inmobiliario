@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1080">
+<title>{casa} · Adelanto</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<script src="datos.js"></script>
+<script src="comun.js"></script>
+<style>
+/* Lienzo fijo de 1080×1350 (4:5, se ve entero en WhatsApp). Solo lo que ya está preparado de su casa. */
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1080px;height:1350px;overflow:hidden;background:#111}
+body{font-family:var(--f-texto);-webkit-font-smoothing:antialiased}
+.lienzo{position:relative;width:1080px;height:1350px;overflow:hidden;color:#fff;background:var(--c-principal)}
+.foto{position:absolute;inset:0;background-size:cover;background-position:center}
+.velo{position:absolute;inset:0;background:
+  linear-gradient(180deg,rgba(0,0,0,.55) 0%,rgba(0,0,0,0) 20%,rgba(0,0,0,0) 30%,color-mix(in srgb,var(--c-principal) 62%,transparent) 46%,color-mix(in srgb,var(--c-principal) 90%,transparent) 64%,var(--c-principal) 82%)}
+h1,.para,.dir{text-shadow:0 2px 24px rgba(0,0,0,.35)}
+.marco{position:absolute;inset:34px;border:1px solid rgba(255,255,255,.28);border-radius:28px;pointer-events:none}
+.arriba{position:absolute;top:70px;left:76px;right:76px;display:flex;justify-content:space-between;align-items:center}
+.agente{display:flex;align-items:center;gap:18px}
+.mono{width:68px;height:68px;border-radius:50%;display:grid;place-items:center;background:var(--c-acento);font-family:var(--f-titulos);font-size:28px;overflow:hidden}
+.mono img{width:100%;height:100%;object-fit:cover}
+.agente b{display:block;font-size:27px;font-weight:600;letter-spacing:.01em}
+.agente span{font-size:21px;opacity:.82}
+.sello{font-size:19px;letter-spacing:.28em;text-transform:uppercase;font-weight:600;border:1.5px solid rgba(255,255,255,.75);border-radius:99px;padding:13px 24px}
+.abajo{position:absolute;left:76px;right:76px;bottom:84px}
+.para{font-size:22px;letter-spacing:.26em;text-transform:uppercase;font-weight:600;color:color-mix(in srgb,var(--c-acento) 55%,#fff);display:flex;align-items:center;gap:16px}
+.para::before{content:"";width:44px;height:2px;background:currentColor}
+h1{font-family:var(--f-titulos);font-weight:400;font-size:98px;line-height:1.0;letter-spacing:-.02em;margin:22px 0 18px}
+h1 em{display:block;font-style:italic;color:color-mix(in srgb,var(--c-acento) 45%,#fff)}
+.dir{font-size:27px;opacity:.9}
+.angulo{margin-top:40px;display:flex;align-items:center;gap:22px;background:color-mix(in srgb,var(--c-secundario) 12%,transparent);border:1px solid rgba(255,255,255,.22);border-radius:22px;padding:24px 28px;backdrop-filter:blur(10px)}
+.angulo i{flex:none;width:52px;height:52px;border-radius:50%;background:var(--c-acento);display:grid;place-items:center}
+.angulo p{font-family:var(--f-titulos);font-size:34px;line-height:1.18}
+.pie{margin-top:36px;display:flex;justify-content:space-between;align-items:flex-end;gap:24px}
+.minis{display:flex;align-items:center}
+.minis div{width:96px;height:96px;border-radius:18px;background-size:cover;background-position:center;border:3px solid var(--c-principal);margin-left:-18px;box-shadow:0 10px 24px rgba(0,0,0,.35)}
+.minis div:first-child{margin-left:0}
+.minis span{margin-left:18px;font-size:22px;opacity:.85;line-height:1.3}
+.cuando{text-align:right}
+.cuando small{display:block;font-size:19px;letter-spacing:.22em;text-transform:uppercase;opacity:.75;margin-bottom:6px}
+.cuando b{font-family:var(--f-titulos);font-weight:400;font-size:38px;white-space:nowrap}
+.detalle{margin-top:30px;font-size:21px;opacity:.75;display:flex;align-items:center;gap:12px}
+.detalle::before{content:"";width:10px;height:10px;border-radius:50%;background:var(--c-acento)}
+</style>
+</head>
+<body>
+<div class="lienzo">
+  <div class="foto" id="foto"></div>
+  <div class="velo"></div>
+  <div class="marco"></div>
+  <div class="arriba">
+    <div class="agente"><div class="mono" id="mono"></div><div><b id="nom"></b><span id="ag"></span></div></div>
+    <div class="sello">Adelanto</div>
+  </div>
+  <div class="abajo">
+    <div class="para" id="para"></div>
+    <h1 id="tit"></h1>
+    <div class="dir" id="dir"></div>
+    <div class="angulo"><i><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></i><p id="ang"></p></div>
+    <div class="pie">
+      <div class="minis" id="minis"></div>
+      <div class="cuando"><small>Videollamada</small><b id="cuando"></b></div>
+    </div>
+    <div class="detalle" id="detalle"></div>
+  </div>
+</div>
+<script>
+(function(){
+  const {D,M,esc,iniciales,aplicarMarca,deLa,suCasa}=UT;
+  aplicarMarca();
+  const C=D.casa||{}, Ci=D.cita||{}, A=D.adelanto||{};
+  const vos=(D.propietarios||{}).tratamiento!=='tu';
+  const $=(id)=>document.getElementById(id);
+  $('foto').style.backgroundImage=`url("${C.foto_adelanto||C.foto_portada||''}")`;
+  if(A.foto_posicion) $('foto').style.backgroundPosition=A.foto_posicion;
+  const mono=$('mono');
+  if(M.foto) mono.innerHTML=`<img src="${esc(M.foto)}" alt="">`; else mono.textContent=iniciales(M.nombre);
+  $('nom').textContent=M.nombre||''; $('ag').textContent=M.agencia||'';
+  $('para').textContent=`Preparado para ${(D.propietarios||{}).nombres||''}`;
+  $('tit').innerHTML=`${esc(suCasa())} ${deLa(C.direccion_corta)}<em>${esc(C.direccion_corta||'')}</em>`;
+  $('dir').textContent=[C.barrio,C.ciudad].filter(Boolean).join(' · ');
+  $('ang').textContent=A.etiqueta||'';
+  const ex=(A.fotos_extra||[]).slice(0,3);
+  const total=(C.fotos||[]).length;
+  $('minis').innerHTML=ex.map(s=>`<div style="background-image:url('${esc(s)}')"></div>`).join('')+(total?`<span>${total} fotos<br>estudiadas</span>`:'');
+  $('cuando').textContent=`${Ci.fecha_corta||Ci.fecha_texto||''} · ${Ci.hora||''}`;
+  const det=$('detalle'); if(A.detalle) det.textContent=A.detalle; else det.remove();
+})();
+</script>
+</body>
+</html>

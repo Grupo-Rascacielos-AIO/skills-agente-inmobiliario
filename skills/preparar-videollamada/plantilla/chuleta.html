@@ -16,8 +16,8 @@
 html{background:#d9d6d1}
 body{font-family:var(--f-texto);color:var(--c-principal);-webkit-font-smoothing:antialiased;font-size:12.4px;line-height:1.45}
 .hoja{width:210mm;min-height:297mm;margin:24px auto;background:#fff;padding:13mm 13mm 11mm;box-shadow:0 20px 60px -30px rgba(0,0,0,.4)}
-@media print{html{background:#fff}.hoja{margin:0;box-shadow:none}}
-@media (max-width:820px){.hoja{width:auto;min-height:0;margin:0;padding:22px 18px}.cols{grid-template-columns:1fr!important}.cab{flex-direction:column;align-items:flex-start!important;gap:12px}}
+@media print{html{background:#fff}.hoja{margin:0;box-shadow:none;min-height:0}}
+@media screen and (max-width:820px){.hoja{width:auto;min-height:0;margin:0;padding:22px 18px}.cols{grid-template-columns:1fr!important}.cab{flex-direction:column;align-items:flex-start!important;gap:12px}}
 .cab{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:2px solid var(--c-principal);padding-bottom:10px}
 .cab h1{font-family:var(--f-titulos);font-weight:400;font-size:30px;line-height:1.05}
 .cab h1 em{color:var(--c-acento)}
@@ -105,14 +105,14 @@ ol.pq li::after{content:"";width:11px;height:11px;border:1.3px solid color-mix(i
   $('marco').textContent=K.marco||'';
   $('preguntas').innerHTML=(K.preguntas||[]).map(q=>`<li>${esc(q)}</li>`).join('');
   $('objeciones').innerHTML=(K.objeciones||[]).map(o=>`<div class="ob"><b>${esc(o.dice)}</b><p>${esc(o.respondes)}</p></div>`).join('');
-  const casa=[['Dirección',C.direccion],['Superficie',C.m2_construidos?`${C.m2_construidos} m² construidos`:''],['Distribución',[C.habitaciones&&`${C.habitaciones} hab.`,C.banos&&`${C.banos} baños`].filter(Boolean).join(' · ')],['Planta',[C.planta,C.ascensor?'con ascensor':'sin ascensor'].filter(Boolean).join(', ')],['Año',C.anio],['Estado',C.estado]].filter(x=>x[1]);
+  const casa=[['Dirección',C.direccion],['Superficie',C.m2_construidos?`${C.m2_construidos} m² construidos`:''],['Distribución',[C.habitaciones&&`${C.habitaciones} hab.`,C.banos&&`${C.banos} ${C.banos==1?'baño':'baños'}`].filter(Boolean).join(' · ')],['Parcela',C.parcela_m2?`${C.parcela_m2} m²`:''],['Planta',C.planta?[C.planta,C.ascensor?'con ascensor':'sin ascensor'].join(', '):''],['Año',C.anio],['Estado',C.estado]].filter(x=>x[1]);
   $('casa').innerHTML=casa.map(c=>`<dt>${c[0]}</dt><dd>${esc(c[1])}</dd>`).join('');
   const V=valorar();
   if(V&&V.cierre){
     $('precios').innerHTML=`<div><small>Salida</small><b>${eur(V.salida)}</b></div><div class="c"><small>Cierre</small><b>${eur(V.cierre)}</b></div><div><small>Mínimo</small><b>${eur(V.minimo)}</b></div>`;
     $('pnota').textContent=`${num(V.eurm2)} €/m² · ${V.validos.length} de ${V.testigos.length} testigos válidos${V.debil?' · muestra débil':''}. Tu mínimo de honorarios, decidido antes de conectar.`;
   } else { $('precios').innerHTML='<div style="grid-column:1/-1">Sin testigos: prepara la valoración antes de la llamada.</div>'; }
-  const antes=K.antes||['Sitio tranquilo, buena luz y cámara a la altura de los ojos.','Presentación abierta y la valoración aún cerrada.','Encargo listo para compartir pantalla.','Confirmado: los dos titulares se conectan.','Anuncia 20-30 minutos al empezar.'];
+  const antes=K.antes||['Sitio tranquilo, buena luz y cámara a la altura de los ojos.','Presentación abierta y la valoración aún cerrada.','Encargo listo para compartir pantalla.',(Ci.asistentes?`Confirmado quién se conecta: ${Ci.asistentes}.`:'Confirmado quién se conecta (todos los titulares).'),'Anuncia 20-30 minutos al empezar.'];
   $('antes').innerHTML=antes.map(a=>`<li>${esc(a)}</li>`).join('');
   $('falta').innerHTML=(D.falta||[]).length?D.falta.map(a=>`<li>${esc(a)}</li>`).join(''):'<li>Nada: lo tienes todo.</li>';
   $('pieA').textContent=`${M.nombre||''}${M.agencia?' · '+M.agencia:''}`;

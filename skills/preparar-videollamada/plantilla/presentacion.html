@@ -51,9 +51,10 @@ section{position:relative}
 /* portada */
 .hero{height:100svh;min-height:600px;overflow:hidden;color:#fff;display:flex;align-items:flex-end}
 .hero .bg{position:absolute;inset:-8% 0 0 0;background-size:cover;background-position:center;will-change:transform;transform:scale(1.08)}
-.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.45) 0%,rgba(0,0,0,0) 28%,rgba(0,0,0,.08) 50%,rgba(0,0,0,.72) 100%)}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.45) 0%,rgba(0,0,0,0) 22%,rgba(0,0,0,.3) 42%,rgba(0,0,0,.6) 62%,rgba(0,0,0,.82) 100%)}
+.hero .wrap{text-shadow:0 2px 22px rgba(0,0,0,.35)}
 .hero .wrap{position:relative;z-index:2;width:100%;padding-bottom:clamp(48px,9vh,110px)}
-.hero .kicker{color:#fff;opacity:.9}
+.hero .kicker{color:#fff;text-shadow:0 1px 14px rgba(0,0,0,.7)}
 .hero h1{font-size:clamp(2.7rem,7.2vw,7rem);margin:.22em 0 .3em;max-width:none}
 .hero h1 em{display:block}
 .hero h1 em{color:#fff;opacity:.92}
@@ -125,7 +126,7 @@ section{position:relative}
 .papeles ul{list-style:none;columns:2;gap:30px}
 .papeles li{padding:.4em 0 .4em 1.9em;position:relative;break-inside:avoid}
 .papeles li::before{content:"";position:absolute;left:0;top:.62em;width:16px;height:16px;border:1.5px solid var(--c-acento);border-radius:4px}
-.partidas{background:#fff;border-radius:22px;padding:clamp(20px,3vw,40px);margin-top:clamp(30px,4vw,50px);max-width:760px}
+.partidas{background:#fff;border-radius:22px;padding:clamp(20px,3vw,40px);align-self:start;box-shadow:0 24px 50px -40px rgba(0,0,0,.4)}
 .partida{display:flex;justify-content:space-between;align-items:center;gap:20px;padding:18px 0;border-bottom:1px solid var(--linea)}
 .partida span{font-size:1.06em}
 .partida .signo{color:var(--c-acento);font-weight:700;margin-right:.6em}
@@ -222,6 +223,8 @@ section{position:relative}
   .barra{grid-template-columns:96px 1fr 64px;gap:10px;font-size:.8em}
   .fin{grid-template-columns:1fr}
   .dato-real{grid-template-columns:1fr;gap:8px}
+  .partida{flex-wrap:wrap;gap:6px 14px;padding:14px 0}
+  .partida i{font-size:.72em}
   .contacto{justify-content:flex-start}
   .top .cita{font-size:.92em;padding:.38em .8em}
   .agente small{display:none}
@@ -323,7 +326,7 @@ section{position:relative}
 
 <script>
 (function(){
-  const {D,M,eur,num,esc,iniciales,aplicarMarca,valorar}=UT;
+  const {D,M,eur,num,esc,iniciales,aplicarMarca,valorar,deLa,suCasa}=UT;
   aplicarMarca();
   const vos=(D.propietarios||{}).tratamiento!=='tu';
   const T=(a,b)=>vos?a:b;
@@ -339,7 +342,7 @@ section{position:relative}
   // portada
   $('heroBg').style.backgroundImage=`url("${C.foto_portada||(C.fotos&&C.fotos[0]&&C.fotos[0].src)||''}")`;
   $('heroKicker').textContent=`Preparado para ${(D.propietarios||{}).nombres||''}`;
-  $('heroTitulo').innerHTML=`${T('Vuestra','Tu')} casa <span style="white-space:nowrap">de la</span><em>${esc(C.direccion_corta||C.direccion||'')}</em>`;
+  $('heroTitulo').innerHTML=`${esc(suCasa())} <span style="white-space:nowrap">${deLa(C.direccion_corta)}</span><em>${esc(C.direccion_corta||C.direccion||'')}</em>`;
   $('heroDir').innerHTML=[C.direccion,[C.barrio,C.ciudad].filter(Boolean).join(', '),`${Ci.fecha_texto||''} · ${Ci.hora||''}`].filter(Boolean).map(s=>`<span>${esc(s)}</span>`).join('');
 
   // triaje
@@ -355,6 +358,7 @@ section{position:relative}
   if(C.m2_construidos) cif.push([C.m2_construidos,'m²','construidos']);
   if(C.habitaciones) cif.push([C.habitaciones,'','habitaciones']);
   if(C.banos) cif.push([C.banos,'',C.banos==1?'baño':'baños']);
+  if(C.parcela_m2) cif.push([C.parcela_m2,'m²','de parcela']);
   if(C.planta) cif.push([parseInt(C.planta)||C.planta,(String(C.planta).match(/[ªº]/)||[''])[0],C.ascensor?'planta, con ascensor':'planta']);
   $('cifras').innerHTML=cif.map(c=>`<div class="cifra"><strong><span class="cuenta" data-n="${typeof c[0]==='number'?c[0]:''}">${typeof c[0]==='number'?0:esc(c[0])}</span>${c[1]?`<sup>${c[1]}</sup>`:''}</strong><span>${c[2]}</span></div>`).join('');
   $('chips').innerHTML=(C.extras||[]).map(x=>`<span class="chip">${esc(x)}</span>`).join('');
@@ -369,13 +373,16 @@ section{position:relative}
   // ángulo
   const A=D.angulo||{tipo:'tarjetas',items:[]};
   const cabA=`<div class="kicker rv">${esc(A.kicker||'El plan')}</div><h2 class="rv">${A.titulo||''}</h2>`;
+  // Avisos fijos: nada de asesoramiento legal o fiscal definitivo
+  if(A.tipo==='pasos' && !A.nota) A.nota=T('Lista orientativa. Qué hace falta en vuestro caso, y los impuestos, os lo confirma vuestro notario o gestor.','Lista orientativa. Qué hace falta en tu caso, y los impuestos, te lo confirma tu notario o gestor.');
+  if(A.tipo==='partidas' && !A.nota) A.nota=T('Cifras orientativas: los impuestos dependen de vuestra situación. Confirmadlas con vuestro gestor o asesor fiscal.','Cifras orientativas: los impuestos dependen de tu situación. Confírmalas con tu gestor o asesor fiscal.');
   let cuerpo='';
   if(A.tipo==='linea'){
     cuerpo=`<div class="wrap linea-wrap"><div class="fija">${cabA}<p class="lead rv">${esc(A.entradilla||'')}</p>${A.nota?`<p class="nota rv">${esc(A.nota)}</p>`:''}</div><ol class="tl" id="tl"><span class="relleno" id="tlRelleno"></span>${(A.items||[]).map(it=>`<li><div class="cuando">${esc(it.cuando||'')}</div><h3>${esc(it.titulo)}</h3><p>${esc(it.texto||'')}</p></li>`).join('')}</ol></div>`;
   } else if(A.tipo==='pasos'){
     cuerpo=`<div class="wrap">${cabA}<p class="lead rv">${esc(A.entradilla||'')}</p><ol class="pasos rv">${(A.items||[]).map(it=>`<li><div><h3>${esc(it.titulo)}</h3><p>${esc(it.texto||'')}</p></div></li>`).join('')}</ol>${A.papeles?`<div class="papeles rv"><div class="kicker" style="margin-bottom:14px">Papeles</div><ul>${A.papeles.map(p=>`<li>${esc(p)}</li>`).join('')}</ul></div>`:''}${A.nota?`<p class="nota rv">${esc(A.nota)}</p>`:''}</div>`;
   } else if(A.tipo==='partidas'){
-    cuerpo=`<div class="wrap">${cabA}<p class="lead rv">${esc(A.entradilla||'')}</p><div class="partidas rv">${(A.items||[]).map((it,i)=>`<div class="partida${it.total?' total':''}"><span>${i&&!it.total?'<b class="signo">−</b>':''}${esc(it.titulo)}</span><i>${esc(it.texto||'En la llamada')}</i></div>`).join('')}</div>${A.nota?`<p class="nota rv">${esc(A.nota)}</p>`:''}</div>`;
+    cuerpo=`<div class="wrap linea-wrap"><div class="fija">${cabA}<p class="lead rv">${esc(A.entradilla||'')}</p>${A.nota?`<p class="nota rv">${esc(A.nota)}</p>`:''}</div><div class="partidas rv">${(A.items||[]).map((it,i)=>`<div class="partida${it.total?' total':''}"><span>${i&&!it.total?'<b class="signo">−</b>':''}${esc(it.titulo)}</span><i>${esc(it.texto||'En la llamada')}</i></div>`).join('')}</div></div>`;
   } else {
     cuerpo=`<div class="wrap">${cabA}<p class="lead rv">${esc(A.entradilla||'')}</p><div class="tarjetas">${(A.items||[]).map((it,i)=>`<div class="tarjeta rv" style="transition-delay:${i*110}ms"><div class="n">${String(i+1).padStart(2,'0')}</div><h3>${esc(it.titulo)}</h3><p>${esc(it.texto||'')}</p></div>`).join('')}</div>${A.nota?`<p class="nota rv">${esc(A.nota)}</p>`:''}</div>`;
   }
@@ -445,6 +452,8 @@ section{position:relative}
   function scroll(){
     const y=scrollY, h=document.documentElement.scrollHeight-innerHeight;
     prog.style.width=(h>0?y/h*100:0)+'%';
+    // Respaldo del IntersectionObserver (saltos de scroll, pestañas en segundo plano)
+    document.querySelectorAll('.rv:not(.in)').forEach(el=>{ const b=el.getBoundingClientRect(); if(b.top<innerHeight*.92&&b.bottom>0) el.classList.add('in'); });
     top.classList.toggle('solida',y>innerHeight*.8);
     if(!reducido && y<innerHeight) bg.style.transform=`translateY(${y*.28}px) scale(1.08)`;
     // galería horizontal

@@ -16,7 +16,7 @@ Entre el triaje y la videollamada, el propietario tiene que ver que **te has cur
 Archivos de la skill:
 - [perfiles.md](perfiles.md): los 6 perfiles, con cómo se detectan, el ángulo, las preguntas y las objeciones. **Léelo antes de generar.**
 - [plantilla/](plantilla/): `presentacion.html`, `adelanto.html`, `chuleta.html` y `comun.js`. No se tocan: todo sale de `datos.js`.
-- [ejemplo/](ejemplo/): un caso terminado con datos ficticios (perfil 2). Su `datos.js` es el **modelo** que copias y rellenas.
+- [ejemplos/](ejemplos/): seis casos terminados con datos ficticios, uno por perfil (`perfil-1-…` a `perfil-6-…`), cada uno con sus tres piezas, `mensajes.md` y capturas. El `datos.js` del perfil que toque es el **modelo** que copias y rellenas.
 - [scripts/capturar-adelanto.sh](scripts/capturar-adelanto.sh): convierte `adelanto.html` en `adelanto.png`.
 
 ## Reglas (no se negocian)
@@ -64,12 +64,16 @@ Del perfil salen `angulo` (tipo de sección y contenido), `adelanto.etiqueta` y 
 
 1. Crea una carpeta junto a donde trabaja el agente: `videollamada-<calle>-<aaaa-mm-dd>/`.
 2. Copia dentro los cuatro archivos de `plantilla/` y una carpeta `fotos/` con las fotos (nombres sencillos: `salon.jpg`, `cocina.jpg`…).
-3. Escribe `datos.js` tomando `ejemplo/datos.js` como modelo, campo a campo:
+3. Escribe `datos.js` tomando como modelo el `datos.js` de `ejemplos/perfil-<N>-…/` del mismo perfil, campo a campo:
    - `casa.foto_portada`: la foto más luminosa y amplia (normalmente el salón). `casa.foto_adelanto`: la misma u otra con mucha luz. `adelanto.fotos_extra`: tres miniaturas distintas de la portada.
    - `adelanto.detalle`: **un detalle concreto de su casa**, corto («Ese salón con luz de sur toda la tarde»). Sale en la imagen.
    - `angulo.titulo` admite `<em>…</em>` para la parte en cursiva.
    - `falta`: todo lo que no tienes o has supuesto. Solo sale en la chuleta.
-4. Escribe `mensajes.md` con la estructura de `ejemplo/mensajes.md`: el adelanto, el guion del vídeo, el mensaje de mediodía si no contesta, el de una hora antes, el de diez minutos antes y qué hacer si no se conecta. Todo con la regla 3.
+   - `casa.tipo` decide el título: «Tu ático», «Vuestro chalet», «Vuestra casa». Si quieres otra palabra, `casa.palabra`. La calle va con «de la» o «del» según empiece (Calle, Paseo…); se fuerza con `casa.articulo`.
+   - Chalets y casas: `casa.parcela_m2` añade la parcela a las cifras y a la chuleta.
+   - `adelanto.foto_posicion` (p. ej. `'center 70%'`) mueve el encuadre de la foto del adelanto si corta lo importante.
+   - Perfiles 3 y 6: la presentación añade sola el aviso «orientativo, confírmalo con tu notario o gestor». No lo quites ni des cifras fiscales exactas; en el perfil 6 cada partida dice «En la llamada» u «Orientativo · tu gestor».
+4. Escribe `mensajes.md` con la estructura del `mensajes.md` de ese ejemplo: el adelanto, el guion del vídeo, el mensaje de mediodía si no contesta, el de una hora antes, el de diez minutos antes y qué hacer si no se conecta. Todo con la regla 3.
 
 ## Paso 4 · La imagen del adelanto
 
