@@ -1,0 +1,611 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Plan · vistas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Hanken+Grotesk:wght@400;500;600;700&display=swap">
+<script src="datos.js"></script>
+<script>
+/* Fotos de las vistas: las de la casa (por nombre si coincide; si no, por orden). Va aquí arriba para que no se pida ninguna foto que no existe. */
+(function(){
+  var C=(window.DATOS||{}).casa||{}, fotos=(C.fotos||[]).map(function(f){return f.src;}), r=document.documentElement.style;
+  var porNombre=function(k,i){ var f=fotos.filter(function(s){return s.indexOf(k)>=0;})[0]; return f||fotos[i%Math.max(1,fotos.length)]||''; };
+  var m={salon:C.foto_portada||porNombre('salon',0),'salon-terraza':porNombre('salon-terraza',1),terraza:porNombre('terraza',2),fachada:porNombre('fachada',fotos.length-1)};
+  for(var k in m) r.setProperty('--f-'+k, m[k]?'url("'+m[k]+'")':'none');
+})();
+</script>
+<style>
+/* Misma marca que casa-ejemplo-vista/presentacion.html (datos.js → marca) */
+:root{
+  --c-principal:#1E3A34;--c-secundario:#F4EFE6;--c-acento:#C8643B;
+  --f-titulos:'Newsreader',Georgia,serif;--f-texto:'Hanken Grotesk',system-ui,sans-serif;
+  --verde:var(--c-principal);--crema:var(--c-secundario);--acento:var(--c-acento);
+  --ac2:color-mix(in srgb,var(--c-acento) 70%,#fff);
+  --fondo2:color-mix(in srgb,var(--c-principal) 78%,#000);
+  --tenue:color-mix(in srgb,var(--c-secundario) 68%,transparent);
+  --linea:color-mix(in srgb,var(--c-secundario) 22%,transparent);
+  --hueco:var(--c-principal);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{background:#151517;color:var(--crema);font-family:var(--f-texto);-webkit-font-smoothing:antialiased;padding:30px 0 60px}
+img{display:block;max-width:100%}
+em{font-style:italic;color:var(--ac2)}
+ul,ol{list-style:none}
+
+.rotulo{width:1600px;margin:0 auto 14px;font:500 20px/1.3 var(--f-texto);color:#e9e6e0}
+.rotulo span{display:inline-block;background:var(--acento);color:#fff;border-radius:6px;padding:3px 12px;margin-right:12px;font-weight:700;letter-spacing:.04em}
+.rotulo small{color:#9b978f;font-size:.82em;margin-left:10px;font-weight:400}
+
+.slide{position:relative;width:1600px;height:900px;margin:0 auto 70px;background:var(--verde);overflow:hidden;padding:54px 72px 0;display:flex;flex-direction:column}
+.cab .kicker{font-size:15px;letter-spacing:.22em;text-transform:uppercase;font-weight:700;color:var(--ac2);display:flex;align-items:center;gap:.8em}
+.cab .kicker::before{content:"";width:28px;height:1px;background:currentColor}
+.cab h2{font:400 56px/1.05 var(--f-titulos);letter-spacing:-.015em;margin:12px 0 8px}
+.cab .lead{font-size:21px;line-height:1.4;color:var(--tenue)}
+.cuerpo{flex:1;min-height:0;margin:30px 0 74px;display:flex;flex-direction:column}
+.pie{position:absolute;left:72px;right:72px;bottom:26px;display:flex;justify-content:space-between;gap:16px;font-size:15px;color:color-mix(in srgb,var(--crema) 52%,transparent)}
+.pie b{font-weight:600;color:var(--tenue)}
+
+/* ---------- Iconos hechos con CSS (caja de 1em, color = currentColor) ---------- */
+.ic{position:relative;display:inline-block;width:1em;height:1em;flex:none}
+.ic::before,.ic::after{content:"";position:absolute;box-sizing:border-box}
+.ic.casa::before{inset:0;background:currentColor;clip-path:polygon(50% 4%,100% 46%,86% 46%,86% 96%,60% 96%,60% 66%,40% 66%,40% 96%,14% 96%,14% 46%,0 46%)}
+.ic.persona::before{left:30%;top:3%;width:40%;height:40%;border-radius:50%;background:currentColor}
+.ic.persona::after{left:13%;right:13%;top:49%;bottom:2%;border-radius:.34em .34em .08em .08em;background:currentColor}
+.ic.movil::before{left:23%;right:23%;top:2%;bottom:2%;border:.09em solid currentColor;border-radius:.15em}
+.ic.movil::after{left:37%;right:37%;top:18%;height:34%;background:currentColor;border-radius:.04em}
+.ic.play::before{inset:15% 2%;border:.09em solid currentColor;border-radius:.16em}
+.ic.play::after{left:39%;top:33%;width:28%;height:34%;background:currentColor;clip-path:polygon(0 0,100% 50%,0 100%)}
+.ic.chat::before{inset:8% 2% 8%;background:currentColor;border-radius:.2em .2em .2em 0;clip-path:polygon(0 0,100% 0,100% 80%,42% 80%,20% 100%,20% 80%,0 80%)}
+.ic.chat::after{left:24%;right:24%;top:36%;height:.1em;background:linear-gradient(90deg,var(--hueco) 0 20%,transparent 20% 40%,var(--hueco) 40% 60%,transparent 60% 80%,var(--hueco) 80%)}
+.ic.euro::before{inset:4%;border:.09em solid currentColor;border-radius:50%}
+.ic.euro::after{content:"€";inset:0;display:grid;place-items:center;font:700 .54em/1 var(--f-texto)}
+.ic.puerta::before{left:22%;right:22%;top:4%;bottom:4%;border:.09em solid currentColor;border-radius:.08em .08em 0 0}
+.ic.puerta::after{right:33%;top:49%;width:.12em;height:.12em;border-radius:50%;background:currentColor}
+.ic.doc::before{left:18%;right:18%;top:2%;bottom:2%;border:.09em solid currentColor;border-radius:.1em}
+.ic.doc::after{left:33%;right:33%;top:25%;height:.43em;background:repeating-linear-gradient(currentColor 0 .07em,transparent .07em .18em)}
+.ic.mega::before{inset:12% 6% 20% 4%;background:currentColor;clip-path:polygon(0 32%,36% 32%,100% 0,100% 100%,36% 68%,0 68%)}
+.ic.mega::after{left:15%;top:56%;width:17%;height:36%;background:currentColor;border-radius:0 0 .06em .06em}
+.ic.lista::before{left:6%;top:14%;width:.2em;height:.72em;background:radial-gradient(circle closest-side,currentColor 78%,transparent 82%) 0 0/.2em .24em}
+.ic.lista::after{left:36%;right:4%;top:14%;height:.72em;background:repeating-linear-gradient(transparent 0 .075em,currentColor .075em .165em,transparent .165em .24em)}
+.ic.red::before{inset:0;background:radial-gradient(circle at 50% 20%,currentColor .15em,transparent .16em),radial-gradient(circle at 18% 78%,currentColor .15em,transparent .16em),radial-gradient(circle at 82% 78%,currentColor .15em,transparent .16em)}
+.ic.red::after{left:18%;right:18%;top:20%;bottom:22%;background:currentColor;clip-path:polygon(evenodd,50% 0,100% 100%,0 100%,50% 0,50% 22%,17% 90%,83% 90%,50% 22%)}
+.ic.plano::before{inset:8%;border:.09em solid currentColor;border-radius:.06em}
+.ic.plano::after{inset:8%;background:linear-gradient(currentColor,currentColor) 56% 0/.08em 60% no-repeat,linear-gradient(currentColor,currentColor) 0 60%/42% .08em no-repeat}
+.ic.camara::before{inset:10% 2% 10%;background:currentColor;border-radius:.12em;clip-path:polygon(0 20%,28% 20%,36% 0,64% 0,72% 20%,100% 20%,100% 100%,0 100%)}
+.ic.camara::after{left:33%;top:38%;width:34%;height:34%;border-radius:50%;border:.07em solid var(--hueco)}
+.ic.diana::before{inset:4%;border-radius:50%;background:radial-gradient(circle closest-side,currentColor 0 18%,transparent 20% 40%,currentColor 42% 60%,transparent 62% 80%,currentColor 82% 100%)}
+.ic.barras::before{inset:10% 8%;background:linear-gradient(currentColor,currentColor) 0 100%/24% 45% no-repeat,linear-gradient(currentColor,currentColor) 50% 100%/24% 72% no-repeat,linear-gradient(currentColor,currentColor) 100% 100%/24% 100% no-repeat}
+.ic.si::before{left:33%;top:8%;width:38%;height:68%;border:solid currentColor;border-width:0 .14em .14em 0;transform:rotate(42deg)}
+.rep{display:flex;flex-wrap:wrap}
+.rep .off{opacity:.22}
+
+/* ============ A · Portal frente a nosotros ============ */
+.a-grid{display:grid;grid-template-columns:38fr 62fr;gap:26px;flex:1;min-height:0}
+.a-lado{border-radius:24px;padding:28px 34px 26px;display:flex;flex-direction:column;min-width:0}
+.a-portal{background:var(--fondo2);border:2px dashed var(--linea);color:var(--tenue)}
+.a-nos{background:var(--crema);color:var(--verde);--hueco:var(--crema)}
+.et{font-size:15px;letter-spacing:.2em;text-transform:uppercase;font-weight:700}
+.a-nos .et{color:var(--acento)}
+.a-lado h3{font:400 37px/1.08 var(--f-titulos);margin-top:8px}
+.a-portal h3{color:var(--crema)}
+.a-muro{display:grid;grid-template-columns:repeat(10,1fr);justify-items:center;gap:10px 4px;margin-top:26px;font-size:40px;color:color-mix(in srgb,var(--crema) 24%,transparent)}
+.a-muro .tuya{color:var(--acento)}
+.a-nota{display:flex;align-items:center;gap:10px;margin-top:16px;font-size:19px}
+.a-nota .ic{color:var(--acento);font-size:22px}
+.a-quien{margin-top:auto;padding-top:18px;border-top:1px solid var(--linea)}
+.a-nos .a-quien{border-color:color-mix(in srgb,var(--verde) 16%,transparent)}
+.a-quien .rep{gap:9px;font-size:32px}
+.a-nos .a-quien .rep{color:var(--acento)}
+.a-quien p{margin-top:10px;font-size:22px;line-height:1.3;font-weight:600}
+.a-portal .a-quien p{color:var(--crema)}
+.a-quien small{display:block;font-size:15px;font-weight:400;opacity:.7;margin-top:3px}
+.a-orbita{display:grid;grid-template-columns:1fr 280px 1fr;align-items:center;gap:6px;margin:auto 0}
+.a-col{display:grid;gap:34px}
+.a-chip{display:flex;align-items:center;gap:12px;font-size:20px;line-height:1.2;font-weight:600}
+.a-izq .a-chip{justify-content:flex-end;text-align:right}
+.a-izq .a-chip:nth-child(odd){transform:translateX(26px)}
+.a-der .a-chip:nth-child(odd){transform:translateX(-26px)}
+.bola{flex:none;width:64px;height:64px;border-radius:50%;display:grid;place-items:center;background:var(--verde);color:var(--crema);font-size:30px;--hueco:var(--verde)}
+.a-chip .con{flex:none;width:24px;border-top:4px dotted var(--acento)}
+.a-casa{position:relative;width:280px;height:280px;border-radius:50%;border:6px solid var(--acento);box-shadow:0 0 0 12px color-mix(in srgb,var(--acento) 18%,transparent);background:var(--f-fachada) center/cover}
+.a-casa b{position:absolute;left:50%;bottom:-16px;transform:translateX(-50%);white-space:nowrap;background:var(--acento);color:#fff;font-size:16px;padding:5px 16px;border-radius:99px}
+
+/* ============ B · Radar ============ */
+.b-grid{display:grid;grid-template-columns:556px 1fr;gap:76px;align-items:center;flex:1;min-height:0}
+.b-radar{position:relative;width:100%;aspect-ratio:1}
+.b-an{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);border-radius:50%;border:2px solid color-mix(in srgb,var(--crema) 26%,transparent);background:color-mix(in srgb,var(--crema) 5%,transparent)}
+.b-an.a3{width:100%;height:100%}.b-an.a2{width:74%;height:74%}.b-an.a1{width:48%;height:48%;border-color:color-mix(in srgb,var(--acento) 70%,transparent)}
+.b-barrido{position:absolute;inset:0;border-radius:50%;background:conic-gradient(from 290deg,color-mix(in srgb,var(--acento) 42%,transparent),transparent 80deg)}
+.b-zona{position:absolute;left:50%;transform:translate(-50%,-50%);white-space:nowrap;font-size:15px;font-weight:700;padding:4px 13px;border-radius:99px;background:var(--verde);border:1.5px solid color-mix(in srgb,var(--crema) 30%,transparent);color:var(--crema);z-index:2}
+.b-zona.z3{top:0}.b-zona.z2{top:13%}.b-zona.z1{top:26%;border-color:var(--acento)}
+.b-casa{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:20%;height:20%;border-radius:50%;border:5px solid var(--acento);background:var(--f-fachada) center/cover;box-shadow:0 0 0 7px color-mix(in srgb,var(--acento) 30%,transparent);z-index:2}
+.b-canal{position:absolute;left:var(--x);top:var(--y);transform:translate(-50%,-50%);z-index:3}
+.num{position:relative;width:58px;height:58px;border-radius:50%;display:grid;place-items:center;background:var(--crema);color:var(--verde);font-size:30px;--hueco:var(--crema);flex:none}
+.num b{position:absolute;right:-6px;top:-6px;width:24px;height:24px;border-radius:50%;background:var(--acento);color:#fff;font:700 14px/24px var(--f-texto);text-align:center}
+.num.iman{background:var(--acento);color:#fff;--hueco:var(--acento)}
+.b-canal .num{width:54px;height:54px;font-size:28px}
+.b-p{position:absolute;transform:translate(-50%,-50%);font-size:18px;color:color-mix(in srgb,var(--crema) 38%,transparent)}
+.b-p.on{color:var(--ac2)}
+.b-ley{display:grid;gap:15px}
+.b-ley li{display:grid;grid-template-columns:58px 1fr;gap:20px;align-items:center}
+.b-ley div>b{display:block;font-size:24px;line-height:1.2;font-weight:600}
+.b-ley div>span{display:block;font-size:18.5px;line-height:1.35;color:var(--tenue);margin-top:2px}
+.b-ley li.sep{padding-top:15px;border-top:1px solid var(--linea)}
+
+/* ============ C · El viaje del comprador ============ */
+.c-ruta{display:grid;grid-template-columns:repeat(6,1fr);position:relative;margin:auto 0}
+.c-ruta::before{content:"";position:absolute;left:7%;right:7%;top:268px;border-top:4px dashed color-mix(in srgb,var(--crema) 34%,transparent)}
+.c-par{display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 8px;min-width:0}
+.c-il{width:206px;height:206px;display:grid;place-items:center}
+.c-nodo{position:relative;z-index:1;margin-top:20px;width:88px;height:88px;border-radius:50%;background:var(--crema);color:var(--verde);--hueco:var(--crema);display:grid;place-items:center;font-size:42px;box-shadow:0 0 0 9px var(--verde)}
+.c-nodo b{position:absolute;right:-4px;top:-4px;width:28px;height:28px;border-radius:50%;background:var(--acento);color:#fff;font:700 15px/28px var(--f-texto)}
+.c-par.fin .c-nodo{background:var(--acento);color:#fff;--hueco:var(--acento)}
+.c-par.fin .c-nodo b{background:var(--crema);color:var(--verde)}
+.c-par h3{font:400 27px/1.1 var(--f-titulos);margin:18px 0 7px}
+.c-par p{font-size:18px;line-height:1.35;color:var(--tenue);max-width:212px}
+/* ilustraciones */
+.il-movil{width:114px;height:204px;border-radius:22px;background:#0f1513;padding:6px;box-shadow:0 14px 30px rgba(0,0,0,.3)}
+.il-movil>div{height:100%;border-radius:16px;overflow:hidden;background:var(--crema);display:flex;flex-direction:column}
+.il-movil .cabm{display:flex;align-items:center;gap:6px;padding:8px}
+.il-movil .cabm i{width:16px;height:16px;border-radius:50%;background:var(--acento)}
+.il-movil .cabm u{flex:1;height:6px;border-radius:3px;background:color-mix(in srgb,var(--verde) 25%,transparent)}
+.il-movil .fo{flex:1;background:var(--f-fachada) center/cover}
+.il-movil .cta{margin:8px;background:var(--acento);color:#fff;border-radius:8px;font-size:12.5px;font-weight:700;text-align:center;padding:6px 0}
+.il-foto{position:relative;width:204px;height:152px;border-radius:16px;background:center/cover;box-shadow:0 14px 30px rgba(0,0,0,.3);overflow:hidden}
+.il-foto .pl{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:58px;height:58px;border-radius:50%;background:color-mix(in srgb,var(--crema) 92%,transparent)}
+.il-foto .pl::after{content:"";position:absolute;left:23px;top:17px;width:19px;height:24px;background:var(--verde);clip-path:polygon(0 0,100% 50%,0 100%)}
+.il-foto .tg{position:absolute;left:10px;bottom:10px;display:flex;align-items:center;gap:6px;background:var(--crema);color:var(--verde);--hueco:var(--crema);font-size:14px;font-weight:700;padding:4px 10px;border-radius:99px}
+.il-chat{width:200px;display:grid;gap:12px}
+.il-chat span{font-size:16px;line-height:1.25;padding:10px 14px;border-radius:16px;max-width:168px;text-align:left}
+.il-chat .el{background:var(--crema);color:var(--verde);border-bottom-left-radius:4px;justify-self:start}
+.il-chat .yo{background:var(--acento);color:#fff;border-bottom-right-radius:4px;justify-self:end}
+.il-chat small{justify-self:end;font-size:13.5px;color:var(--tenue);margin-top:-6px}
+.il-lista{width:188px;background:var(--crema);color:var(--verde);border-radius:16px;padding:16px 16px;display:grid;gap:11px;box-shadow:0 14px 30px rgba(0,0,0,.3)}
+.il-lista li{display:flex;align-items:center;gap:10px;font-size:17px;font-weight:600}
+.il-lista li i{flex:none;width:26px;height:26px;border-radius:50%;background:var(--verde);color:var(--crema);display:grid;place-items:center;font-size:15px}
+.il-doc{width:150px;height:186px;background:var(--crema);color:var(--verde);border-radius:10px;padding:16px;transform:rotate(-4deg);box-shadow:0 14px 30px rgba(0,0,0,.3);display:flex;flex-direction:column;gap:9px;text-align:left}
+.il-doc b{font:500 23px/1 var(--f-titulos)}
+.il-doc u{height:7px;border-radius:4px;background:color-mix(in srgb,var(--verde) 20%,transparent)}
+.il-doc u.c{width:60%}
+.il-doc u.p{height:22px;width:76%;background:color-mix(in srgb,var(--acento) 30%,transparent)}
+.il-doc s{margin-top:auto;align-self:flex-end;text-decoration:none;display:flex;align-items:center;gap:6px;font-size:14px;font-weight:700;color:var(--acento)}
+
+/* ============ D · Embudo con personas ============ */
+.d-fila{display:grid;grid-template-columns:1fr 440px;gap:34px;align-items:center}
+.d-canales{display:flex;justify-content:center;gap:10px}
+.d-chip{position:relative;display:flex;align-items:center;gap:8px;border:1.5px solid color-mix(in srgb,var(--crema) 34%,transparent);border-radius:99px;padding:8px 15px;font-size:16.5px;font-weight:600;white-space:nowrap}
+.d-chip .ic{font-size:21px;color:var(--ac2)}
+.d-chip::after{content:"";position:absolute;left:50%;bottom:-17px;width:14px;height:9px;transform:translateX(-50%);background:var(--ac2);clip-path:polygon(0 0,100% 0,50% 100%)}
+.d-nota{font:italic 400 21px/1.25 var(--f-titulos);color:var(--tenue)}
+.d-embudo{display:grid;gap:4px;margin-top:22px}
+.d-banda{height:76px;width:var(--w);margin:0 auto;background:var(--bg);color:var(--fg,var(--crema));clip-path:polygon(0 0,100% 0,calc(100% - var(--i)) 100%,var(--i) 100%);display:flex;align-items:center;justify-content:center;gap:6px;font-size:26px}
+.d-banda.fin{font-size:38px;--hueco:var(--acento)}
+.d-txt{display:grid;grid-template-columns:132px 1fr;gap:18px;align-items:center}
+.d-txt strong{font:400 46px/1 var(--f-titulos);color:var(--ac2);text-align:right;white-space:nowrap}
+.d-txt b{display:block;font-size:22px;line-height:1.15;font-weight:600}
+.d-txt span{display:block;font-size:16.5px;line-height:1.3;color:var(--tenue);margin-top:2px}
+
+/* ============ E · Tres fases ============ */
+.e-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;flex:1;min-height:0}
+.e-fase{background:var(--crema);color:var(--verde);--hueco:var(--crema);border-radius:24px;overflow:hidden;display:flex;flex-direction:column;min-width:0}
+.e-il{position:relative;height:212px;flex:none;background:center/cover;overflow:hidden}
+.e-il::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(0,0,0,.42))}
+.e-il .visor{position:absolute;inset:16px;z-index:1;background:
+  linear-gradient(#fff,#fff) 0 0/34px 4px no-repeat,linear-gradient(#fff,#fff) 0 0/4px 34px no-repeat,
+  linear-gradient(#fff,#fff) 100% 0/34px 4px no-repeat,linear-gradient(#fff,#fff) 100% 0/4px 34px no-repeat,
+  linear-gradient(#fff,#fff) 0 100%/34px 4px no-repeat,linear-gradient(#fff,#fff) 0 100%/4px 34px no-repeat,
+  linear-gradient(#fff,#fff) 100% 100%/34px 4px no-repeat,linear-gradient(#fff,#fff) 100% 100%/4px 34px no-repeat}
+.e-il .tags{position:absolute;left:0;right:0;bottom:14px;z-index:2;display:flex;justify-content:center;gap:8px}
+.e-il .tags span{background:var(--crema);color:var(--verde);font-size:14.5px;font-weight:700;padding:4px 12px;border-radius:99px;white-space:nowrap}
+.e-il.lanzar{background:var(--fondo2)}
+.e-il.lanzar::after{display:none}
+.e-il .onda{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);border-radius:50%;border:2px solid color-mix(in srgb,var(--acento) 60%,transparent)}
+.e-il .mini{position:absolute;left:50%;top:14px;transform:translateX(-50%);width:92px;height:190px;border-radius:18px;background:#0f1513;padding:5px;z-index:1}
+.e-il .mini>div{height:100%;border-radius:13px;background:var(--f-terraza) center/cover}
+.e-il .gente{position:absolute;top:50%;transform:translateY(-50%);display:grid;grid-template-columns:repeat(4,auto);gap:9px 11px;font-size:23px;color:var(--ac2);z-index:1}
+.e-il .gente.l{left:38px}.e-il .gente.r{right:38px}
+.e-il .oferta{position:absolute;right:26px;top:30px;z-index:2;width:176px;background:var(--crema);border-radius:12px;padding:14px 16px;transform:rotate(3deg);box-shadow:0 12px 26px rgba(0,0,0,.35);display:grid;gap:8px}
+.e-il .oferta b{font:500 21px/1 var(--f-titulos)}
+.e-il .oferta u{height:7px;border-radius:4px;background:color-mix(in srgb,var(--verde) 20%,transparent)}
+.e-il .oferta s{text-decoration:none;display:flex;align-items:center;gap:6px;font-size:14px;font-weight:700;color:var(--acento)}
+.e-txt{padding:18px 28px 22px;display:flex;flex-direction:column;flex:1;min-height:0}
+.e-top{display:flex;align-items:baseline;gap:14px}
+.e-top i{font:400 60px/.9 var(--f-titulos);font-style:normal;color:var(--acento)}
+.e-top h3{font:400 44px/1 var(--f-titulos)}
+.e-top small{margin-left:auto;font-size:15px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:color-mix(in srgb,var(--verde) 60%,transparent);white-space:nowrap}
+.e-txt ul{margin-top:16px;display:grid;gap:11px}
+.e-txt li{display:flex;gap:12px;font-size:20px;line-height:1.3;font-weight:500}
+.e-txt li .ic{font-size:22px;color:var(--acento);margin-top:1px}
+.e-veis{margin-top:auto;background:color-mix(in srgb,var(--acento) 15%,var(--crema));border-radius:14px;padding:11px 16px 12px;font-size:17.5px;line-height:1.3;font-weight:600}
+.e-veis small{display:block;font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;color:var(--acento);margin-bottom:2px}
+.e-tiempo{display:grid;grid-template-columns:2fr 3fr 8fr;gap:6px;margin-top:16px}
+.e-tiempo span{height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15.5px;font-weight:700;white-space:nowrap;background:color-mix(in srgb,var(--crema) 16%,transparent);color:var(--crema)}
+.e-tiempo span:nth-child(2){background:color-mix(in srgb,var(--acento) 55%,transparent)}
+.e-tiempo span:nth-child(3){background:var(--acento);color:#fff}
+
+/* ============ Móvil ============ */
+@media(max-width:760px){
+  body{padding:12px 0 30px}
+  .rotulo{width:auto;padding:0 16px;font-size:14px;margin-bottom:10px}
+  .rotulo small{display:block;margin:6px 0 0}
+  .slide{width:100%;height:auto;padding:30px 18px 22px;margin-bottom:36px}
+  .cab .kicker{font-size:12px}
+  .cab h2{font-size:31px}
+  .cab .lead{font-size:16.5px}
+  .cuerpo{margin:24px 0 22px}
+  .pie{position:static;flex-direction:column;gap:3px;font-size:12.5px}
+
+  .a-grid{grid-template-columns:1fr;gap:16px}
+  .a-lado{padding:22px 18px;border-radius:18px}
+  .a-lado h3{font-size:28px}
+  .a-muro{font-size:24px;gap:7px 2px;margin-top:18px}
+  .a-nota{font-size:16px}
+  .a-quien{margin-top:20px}
+  .a-quien .rep{font-size:23px;gap:7px}
+  .a-quien p{font-size:18px}
+  .a-orbita{grid-template-columns:1fr;gap:26px;margin:22px 0 0}
+  .a-casa{width:170px;height:170px;margin:0 auto;order:-1}
+  .a-col{gap:12px}
+  .a-chip,.a-izq .a-chip{justify-content:flex-start;text-align:left;font-size:17px;transform:none!important}
+  .a-izq .a-chip{flex-direction:row-reverse;justify-content:flex-end}
+  .a-chip .con{display:none}
+  .bola{width:46px;height:46px;font-size:24px}
+
+  .b-grid{grid-template-columns:1fr;gap:28px}
+  .b-radar{margin-top:10px}
+  .b-zona{font-size:11.5px;padding:3px 9px}
+  .num,.b-canal .num{width:42px;height:42px;font-size:22px}
+  .b-canal .num{width:36px;height:36px;font-size:19px}
+  .num b{width:19px;height:19px;font-size:11.5px;line-height:19px;right:-5px;top:-5px}
+  .b-p{font-size:12px}
+  .b-casa{border-width:3px;box-shadow:0 0 0 5px color-mix(in srgb,var(--acento) 30%,transparent)}
+  .b-ley li{grid-template-columns:42px 1fr;gap:14px}
+  .b-ley div>b{font-size:19px}
+  .b-ley div>span{font-size:15.5px}
+
+  .c-ruta{grid-template-columns:1fr;gap:26px;margin:0}
+  .c-ruta::before{left:27px;right:auto;top:10px;bottom:270px;border-top:0;border-left:3px dashed color-mix(in srgb,var(--crema) 34%,transparent)}
+  .c-par{display:grid;grid-template-columns:56px 1fr;column-gap:16px;text-align:left;padding:0;align-items:start}
+  .c-nodo{grid-column:1;grid-row:1/span 3;width:56px;height:56px;font-size:27px;margin:0;box-shadow:0 0 0 6px var(--verde)}
+  .c-nodo b{width:22px;height:22px;font-size:12.5px;line-height:22px;text-align:center}
+  .c-par h3{grid-column:2;grid-row:1;font-size:24px;margin:2px 0 4px}
+  .c-par p{grid-column:2;grid-row:2;font-size:16px;max-width:none}
+  .c-il{grid-column:2;grid-row:3;width:auto;height:auto;justify-items:start;margin-top:14px}
+  .il-movil{width:96px;height:170px}
+  .il-doc{margin:6px 0 4px 6px}
+
+  .d-fila{grid-template-columns:1fr;gap:6px}
+  .d-canales{flex-wrap:wrap;gap:8px;justify-content:flex-start}
+  .d-chip{font-size:14px;padding:6px 11px}
+  .d-chip .ic{font-size:17px}
+  .d-chip::after{display:none}
+  .d-nota{font-size:17px;margin-top:8px}
+  .d-embudo{gap:14px;margin-top:24px}
+  .d-txt{order:-1;grid-template-columns:auto 1fr;gap:10px;align-items:baseline}
+  .d-txt strong{font-size:30px;text-align:left}
+  .d-txt b{font-size:17.5px;display:inline}
+  .d-txt span{font-size:14.5px}
+  .d-banda{height:40px;font-size:16px;gap:4px;--i:calc(var(--i0)*.34)!important}
+  .d-banda.fin{font-size:22px}
+
+  .e-grid{grid-template-columns:1fr;gap:16px}
+  .e-fase{border-radius:18px}
+  .e-il{height:212px}
+  .e-il .gente{font-size:19px;gap:8px}
+  .e-il .gente.l{left:16px}.e-il .gente.r{right:16px}
+  .e-il .gente .ic:nth-child(4n){display:none}
+  .e-il .gente{grid-template-columns:repeat(3,auto)}
+  .e-txt{padding:16px 18px 18px}
+  .e-top i{font-size:46px}
+  .e-top h3{font-size:34px}
+  .e-top small{font-size:12.5px}
+  .e-txt li{font-size:16.5px}
+  .e-veis{margin-top:16px;font-size:16px}
+  .e-tiempo span{font-size:13px;height:32px}
+  .e-tiempo .l{display:none}
+}
+
+/* Vista única dentro de la presentación (opción F) */
+html,body{background:transparent!important;padding:0!important;overflow:hidden}
+.slide{display:none;margin:0!important;border-radius:22px}
+.slide.on{display:flex}
+@media(min-width:761px){.marco{width:1600px;transform-origin:0 0}}
+</style>
+</head>
+<body>
+<div class="marco" id="marco">
+
+<!-- ================= A ================= -->
+<section class="slide" id="A">
+  <div class="cab">
+    <p class="kicker">El plan</p>
+    <h2>No esperamos al comprador: <em>salimos a buscarlo</em></h2>
+    <p class="lead">El portal solo llega a quien ya está buscando. Nosotros vamos también a por quien todavía no.</p>
+  </div>
+  <div class="cuerpo">
+    <div class="a-grid">
+      <div class="a-lado a-portal">
+        <p class="et">Solo portales</p>
+        <h3>Publicar y esperar</h3>
+        <div class="a-muro" data-muro="50" data-tuya="27"></div>
+        <p class="a-nota"><i class="ic casa"></i>Vuestra casa, una más entre cientos parecidas</p>
+        <div class="a-quien">
+          <div class="rep" data-ic="persona" data-n="10" data-on="3"></div>
+          <p>Solo la ve quien ya está buscando<small>Ilustración de ejemplo</small></p>
+        </div>
+      </div>
+      <div class="a-lado a-nos">
+        <p class="et">Nuestro plan</p>
+        <h3>Llevar la casa hasta quien puede comprarla</h3>
+        <div class="a-orbita">
+          <div class="a-col a-izq">
+            <div class="a-chip"><span>Redes, por zona y&nbsp;perfil</span><span class="bola"><i class="ic diana"></i></span><i class="con"></i></div>
+            <div class="a-chip"><span>Nuestra base de compradores</span><span class="bola"><i class="ic lista"></i></span><i class="con"></i></div>
+            <div class="a-chip"><span>Red de agentes colaboradores</span><span class="bola"><i class="ic red"></i></span><i class="con"></i></div>
+          </div>
+          <div class="a-casa"><b>Vuestra casa</b></div>
+          <div class="a-col a-der">
+            <div class="a-chip"><i class="con"></i><span class="bola"><i class="ic play"></i></span><span>Fotos, vídeo y plano&nbsp;3D</span></div>
+            <div class="a-chip"><i class="con"></i><span class="bola"><i class="ic puerta"></i></span><span>Puertas abiertas</span></div>
+            <div class="a-chip"><i class="con"></i><span class="bola"><i class="ic mega"></i></span><span>Portales: un&nbsp;canal&nbsp;más</span></div>
+          </div>
+        </div>
+        <div class="a-quien">
+          <div class="rep" data-ic="persona" data-n="10" data-on="10"></div>
+          <p>La ve también quien encaja y aún no ha entrado en un portal</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="pie"><span>Cifras e imágenes de ejemplo · cada casa tiene las suyas</span><b class="pv-firma"></b></div>
+</section>
+
+<!-- ================= B ================= -->
+<section class="slide" id="B">
+  <div class="cab">
+    <p class="kicker">El plan</p>
+    <h2>Vuestra casa, <em>en el centro del radar</em></h2>
+    <p class="lead">El portal solo cubre el círculo de dentro. El plan llega hasta el de fuera.</p>
+  </div>
+  <div class="cuerpo">
+    <div class="b-grid">
+      <div class="b-radar" id="radar">
+        <i class="b-an a3"></i><i class="b-barrido"></i><i class="b-an a2"></i><i class="b-an a1"></i>
+        <span class="b-zona z3">Aún no sabe que se vende</span>
+        <span class="b-zona z2">Encaja, pero no busca</span>
+        <span class="b-zona z1">Ya busca</span>
+        <div class="b-casa"></div>
+        <span class="b-canal" style="--x:32.8%;--y:56.2%"><span class="num"><i class="ic mega"></i><b>1</b></span></span>
+        <span class="b-canal" style="--x:67.2%;--y:56.2%"><span class="num"><i class="ic lista"></i><b>2</b></span></span>
+        <span class="b-canal" style="--x:24%;--y:34%"><span class="num"><i class="ic red"></i><b>3</b></span></span>
+        <span class="b-canal" style="--x:73.5%;--y:69.5%"><span class="num"><i class="ic puerta"></i><b>4</b></span></span>
+        <span class="b-canal" style="--x:87.5%;--y:28.5%"><span class="num"><i class="ic diana"></i><b>5</b></span></span>
+      </div>
+      <ol class="b-ley">
+        <li><span class="num"><i class="ic mega"></i><b>1</b></span><div><b>Portales</b><span>Para quien ya está buscando. Un canal más, no el único.</span></div></li>
+        <li><span class="num"><i class="ic lista"></i><b>2</b></span><div><b>Nuestra base de compradores</b><span>Gente que ya nos ha dicho qué busca y hasta cuánto puede pagar.</span></div></li>
+        <li><span class="num"><i class="ic red"></i><b>3</b></span><div><b>Red de agentes colaboradores</b><span>Otros agentes traen a sus propios compradores.</span></div></li>
+        <li><span class="num"><i class="ic puerta"></i><b>4</b></span><div><b>Puertas abiertas</b><span>Una jornada para verla sin compromiso. También vienen vecinos.</span></div></li>
+        <li><span class="num"><i class="ic diana"></i><b>5</b></span><div><b>Redes, por zona y perfil</b><span>Anuncios a quien vive cerca o encaja, aunque todavía no busque.</span></div></li>
+        <li class="sep"><span class="num iman"><i class="ic casa"></i></span><div><b>El imán: cómo se ve la casa</b><span>Fotos, vídeo, plano 3D y decoración virtual.</span></div></li>
+      </ol>
+    </div>
+  </div>
+  <div class="pie"><span>Cifras e imágenes de ejemplo · cada casa tiene las suyas</span><b class="pv-firma"></b></div>
+</section>
+
+<!-- ================= C ================= -->
+<section class="slide" id="C">
+  <div class="cab">
+    <p class="kicker">El plan</p>
+    <h2>El camino de quien <em>acabará comprándola</em></h2>
+    <p class="lead">Seis paradas. En cada una sabemos qué hacer para que dé el paso siguiente.</p>
+  </div>
+  <div class="cuerpo">
+    <div class="c-ruta">
+      <div class="c-par">
+        <div class="c-il"><div class="il-movil"><div><div class="cabm"><i></i><u></u></div><div class="fo"></div><div class="cta">Ver la casa</div></div></div></div>
+        <div class="c-nodo"><i class="ic movil"></i><b>1</b></div>
+        <h3>Le aparece en el móvil</h3><p>Un anuncio en redes a quien vive o busca en la zona.</p>
+      </div>
+      <div class="c-par">
+        <div class="c-il"><div class="il-foto" style="background-image:var(--f-salon)"><i class="pl"></i><span class="tg"><i class="ic plano"></i>Plano 3D</span></div></div>
+        <div class="c-nodo"><i class="ic play"></i><b>2</b></div>
+        <h3>La recorre desde el sofá</h3><p>Vídeo, plano 3D y decoración virtual.</p>
+      </div>
+      <div class="c-par">
+        <div class="c-il"><div class="il-chat"><span class="el">¿Sigue disponible?</span><span class="yo">Sí. ¿Te llamo ahora?</span><small>Respondido en 5 min</small></div></div>
+        <div class="c-nodo"><i class="ic chat"></i><b>3</b></div>
+        <h3>Nos escribe</h3><p>Le llamamos ese mismo día.</p>
+      </div>
+      <div class="c-par">
+        <div class="c-il"><ul class="il-lista"><li><i><span class="ic si"></span></i>Financiación</li><li><i><span class="ic si"></span></i>Plazos</li><li><i><span class="ic si"></span></i>Qué busca</li></ul></div>
+        <div class="c-nodo"><i class="ic euro"></i><b>4</b></div>
+        <h3>Pasa el filtro</h3><p>¿Puede comprarla? Lo comprobamos antes de la visita.</p>
+      </div>
+      <div class="c-par">
+        <div class="c-il"><div class="il-foto" style="background-image:var(--f-salon-terraza)"><span class="tg"><i class="ic puerta"></i>Visita concertada</span></div></div>
+        <div class="c-nodo"><i class="ic puerta"></i><b>5</b></div>
+        <h3>Viene a verla</h3><p>Solo visita quien puede comprar.</p>
+      </div>
+      <div class="c-par fin">
+        <div class="c-il"><div class="il-doc"><b>Oferta</b><u></u><u class="c"></u><u class="p"></u><u></u><s><i class="ic si"></i>Por escrito</s></div></div>
+        <div class="c-nodo"><i class="ic doc"></i><b>6</b></div>
+        <h3>Hace una oferta</h3><p>Por escrito, para comparar con calma.</p>
+      </div>
+    </div>
+  </div>
+  <div class="pie"><span>Cifras e imágenes de ejemplo · cada casa tiene las suyas</span><b class="pv-firma"></b></div>
+</section>
+
+<!-- ================= D ================= -->
+<section class="slide" id="D">
+  <div class="cab">
+    <p class="kicker">El plan</p>
+    <h2>De miles de miradas a <em>un comprador</em></h2>
+    <p class="lead">Atraemos a muchos y filtramos a casi todos antes de que entren en el salón.</p>
+  </div>
+  <div class="cuerpo">
+    <div class="d-fila">
+      <div class="d-canales">
+        <span class="d-chip"><i class="ic diana"></i>Redes por zona</span>
+        <span class="d-chip"><i class="ic lista"></i>Base de compradores</span>
+        <span class="d-chip"><i class="ic red"></i>Red de agentes</span>
+        <span class="d-chip"><i class="ic puerta"></i>Puertas abiertas</span>
+        <span class="d-chip"><i class="ic mega"></i>Portales</span>
+      </div>
+      <p class="d-nota">Entran por cinco puertas, no solo por los portales. Cifras de ejemplo.</p>
+    </div>
+    <div class="d-embudo" id="embudo">
+      <div class="d-fila"><div class="d-banda" style="--w:100%;--i0:10%;--i:10%;--bg:color-mix(in srgb,var(--crema) 20%,var(--verde))"></div><div class="d-txt"><strong>20.000</strong><div><b>La ven</b> <span>En redes, portales y nuestra base</span></div></div></div>
+      <div class="d-fila"><div class="d-banda" style="--w:80%;--i0:11.25%;--i:11.25%;--bg:color-mix(in srgb,var(--crema) 30%,var(--verde))"></div><div class="d-txt"><strong>1.500</strong><div><b>Miran el vídeo y el plano</b> <span>Les interesa de verdad</span></div></div></div>
+      <div class="d-fila"><div class="d-banda" style="--w:62%;--i0:12.9%;--i:12.9%;--bg:color-mix(in srgb,var(--crema) 42%,var(--verde))"></div><div class="d-txt"><strong>80</strong><div><b>Preguntan</b> <span>Les llamamos el mismo día</span></div></div></div>
+      <div class="d-fila"><div class="d-banda" style="--w:46%;--i0:15.2%;--i:15.2%;--bg:color-mix(in srgb,var(--crema) 62%,var(--verde));--fg:var(--verde)"></div><div class="d-txt"><strong>30</strong><div><b>Pasan el filtro</b> <span>Financiación comprobada</span></div></div></div>
+      <div class="d-fila"><div class="d-banda" style="--w:32%;--i0:18.75%;--i:18.75%;--bg:var(--crema);--fg:var(--verde)"></div><div class="d-txt"><strong>12</strong><div><b>La visitan</b> <span>Solo quien puede comprar</span></div></div></div>
+      <div class="d-fila"><div class="d-banda fin" style="--w:20%;--i0:14%;--i:14%;--bg:var(--acento);--fg:#fff"></div><div class="d-txt"><strong>1</strong><div><b>Compra</b> <span>Tras dos o tres ofertas por escrito</span></div></div></div>
+    </div>
+  </div>
+  <div class="pie"><span>Cifras e imágenes de ejemplo · cada casa tiene las suyas</span><b class="pv-firma"></b></div>
+</section>
+
+<!-- ================= E ================= -->
+<section class="slide" id="E">
+  <div class="cab">
+    <p class="kicker">El plan</p>
+    <h2>90 días, <em>tres pasos</em></h2>
+    <p class="lead">Qué hacemos nosotros y qué vais a ver vosotros en cada uno.</p>
+  </div>
+  <div class="cuerpo">
+    <div class="e-grid">
+      <article class="e-fase">
+        <div class="e-il" style="background-image:var(--f-salon)"><i class="visor"></i><div class="tags"><span>Fotos</span><span>Vídeo</span><span>Plano 3D</span></div></div>
+        <div class="e-txt">
+          <div class="e-top"><i>1</i><h3>Preparar</h3><small>2 semanas</small></div>
+          <ul>
+            <li><i class="ic camara"></i>Fotos y vídeo con buena luz</li>
+            <li><i class="ic plano"></i>Plano 3D y decoración virtual</li>
+            <li><i class="ic doc"></i>Precio y anuncio, listos</li>
+          </ul>
+          <p class="e-veis"><small>Qué veis vosotros</small>El anuncio completo, antes de que salga.</p>
+        </div>
+      </article>
+      <article class="e-fase">
+        <div class="e-il lanzar">
+          <i class="onda" style="width:230px;height:230px"></i><i class="onda" style="width:380px;height:380px;opacity:.6"></i><i class="onda" style="width:540px;height:540px;opacity:.35"></i>
+          <div class="gente l rep" data-ic="persona" data-n="12" data-on="12"></div>
+          <div class="mini"><div></div></div>
+          <div class="gente r rep" data-ic="persona" data-n="12" data-on="12"></div>
+        </div>
+        <div class="e-txt">
+          <div class="e-top"><i>2</i><h3>Lanzar</h3><small>3 semanas</small></div>
+          <ul>
+            <li><i class="ic diana"></i>Anuncios en redes, por zona y perfil</li>
+            <li><i class="ic red"></i>Aviso a nuestros compradores y a la red de agentes</li>
+            <li><i class="ic mega"></i>Portales, como un canal más</li>
+          </ul>
+          <p class="e-veis"><small>Qué veis vosotros</small>Cada lunes: cuánta gente la ha visto y cuánta ha preguntado.</p>
+        </div>
+      </article>
+      <article class="e-fase">
+        <div class="e-il" style="background-image:var(--f-terraza)"><div class="oferta"><b>Oferta</b><u></u><u style="width:62%"></u><s><i class="ic si"></i>Por escrito</s></div></div>
+        <div class="e-txt">
+          <div class="e-top"><i>3</i><h3>Vender</h3><small>8 semanas</small></div>
+          <ul>
+            <li><i class="ic euro"></i>Llamada y filtro antes de cada visita</li>
+            <li><i class="ic puerta"></i>Visitas agrupadas o puertas abiertas</li>
+            <li><i class="ic doc"></i>Ofertas por escrito y negociación</li>
+          </ul>
+          <p class="e-veis"><small>Qué veis vosotros</small>Quién ha venido, qué opina y cada oferta que llegue.</p>
+        </div>
+      </article>
+    </div>
+    <div class="e-tiempo"><span><i class="l" style="font-style:normal">Semanas&nbsp;</i>1–2</span><span><i class="l" style="font-style:normal">Semanas&nbsp;</i>3–5</span><span>Semanas 6–13</span></div>
+  </div>
+  <div class="pie"><span>Cifras e imágenes de ejemplo · cada casa tiene las suyas</span><b class="pv-firma"></b></div>
+</section>
+
+</div>
+<script>
+(function(){
+  var movil = window.innerWidth < 760;
+  var ic = function(n, c){ return '<i class="ic ' + n + (c ? ' ' + c : '') + '"></i>'; };
+  /* filas de iconos repetidos */
+  document.querySelectorAll('.rep').forEach(function(el){
+    var n = +el.dataset.n, on = +el.dataset.on, h = '';
+    for (var i = 0; i < n; i++) h += ic(el.dataset.ic, i < on ? '' : 'off');
+    el.innerHTML = h;
+  });
+  /* A: muro de casas iguales */
+  document.querySelectorAll('[data-muro]').forEach(function(el){
+    var n = +el.dataset.muro, t = +el.dataset.tuya, h = '';
+    for (var i = 0; i < n; i++) h += ic('casa', i === t ? 'tuya' : '');
+    el.innerHTML = h;
+  });
+  /* B: personas repartidas por los anillos [radio %, ángulo °, encendida] */
+  var radar = document.getElementById('radar');
+  [[17,95,1],[17,250,0],[17,305,1],[30.5,100,0],[30.5,150,1],[30.5,185,0],[30.5,340,0],[30.5,10,1],[30.5,70,0],[30.5,300,0],
+   [43.5,20,0],[43.5,48,1],[43.5,75,0],[43.5,100,1],[43.5,125,0],[43.5,150,0],[43.5,175,1],[43.5,225,0],[43.5,300,0],[43.5,355,1],[43.5,205,0]
+  ].forEach(function(p){
+    var a = p[1] * Math.PI / 180, e = document.createElement('i');
+    e.className = 'ic persona b-p' + (p[2] ? ' on' : '');
+    e.style.left = (50 + p[0] * Math.cos(a)) + '%';
+    e.style.top = (50 + p[0] * Math.sin(a)) + '%';
+    radar.appendChild(e);
+  });
+  /* D: personas dentro de cada banda del embudo */
+  var cuantas = movil ? [12, 9, 6, 4, 2, 1] : [24, 18, 11, 6, 3, 1];
+  document.querySelectorAll('#embudo .d-banda').forEach(function(b, i){
+    var h = '';
+    for (var k = 0; k < cuantas[i]; k++) h += ic('persona');
+    b.innerHTML = h;
+  });
+})();
+</script>
+<script>
+(function(){
+  var marco=document.getElementById('marco');
+  function ajustar(){
+    var w=document.documentElement.clientWidth, h;
+    if(w>760){var k=w/1600;marco.style.transform='scale('+k+')';h=900*k;}
+    else{marco.style.transform='';h=marco.getBoundingClientRect().height;}
+    parent.postMessage({planAlto:Math.ceil(h)},'*');
+  }
+  window.verPlan=function(v){
+    document.querySelectorAll('.slide').forEach(function(s){s.classList.toggle('on',s.id===v);});
+    ajustar();
+  };
+  addEventListener('resize',ajustar);addEventListener('load',ajustar);
+  verPlan((location.hash||'#A').slice(1));
+  if(document.fonts)document.fonts.ready.then(ajustar);
+})();
+</script>
+<script>
+/* Marca, fotos y tratamiento: los de datos.js */
+(function(){
+  var M=(window.DATOS||{}).marca||{}, r=document.documentElement.style;
+  function pon(p,s,a){ if(p)r.setProperty('--c-principal',p); if(s)r.setProperty('--c-secundario',s); if(a)r.setProperty('--c-acento',a); }
+  pon(M.color_principal,M.color_secundario,M.color_acento);
+  var ft=M.tipografia_titulos, fx=M.tipografia_texto;
+  if(ft||fx){
+    if(ft)r.setProperty('--f-titulos',"'"+ft+"',Georgia,serif"); if(fx)r.setProperty('--f-texto',"'"+fx+"',system-ui,sans-serif");
+    var fam=function(f,w){return 'family='+encodeURIComponent(f).replace(/%20/g,'+')+':'+w;}, l=document.createElement('link');
+    l.rel='stylesheet'; l.href='https://fonts.googleapis.com/css2?'+[ft&&fam(ft,'ital,wght@0,400;0,500;0,600;1,400;1,500'),fx&&fam(fx,'wght@400;500;600;700')].filter(Boolean).join('&')+'&display=swap';
+    document.head.appendChild(l);
+  }
+  var D=window.DATOS||{};
+  // firma del pie
+  document.querySelectorAll('.pv-firma').forEach(function(e){ e.textContent=M.agencia||M.nombre||''; });
+  // tuteo si el propietario es uno solo
+  if((D.propietarios||{}).tratamiento==='tu'){
+    var w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT),n;
+    while((n=w.nextNode())) if(/Vuestra casa/.test(n.nodeValue)) n.nodeValue=n.nodeValue.replace(/Vuestra casa/g,'Tu casa');
+  }
+})();
+</script>
+</body>
+</html>

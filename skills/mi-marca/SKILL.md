@@ -15,7 +15,7 @@ Las demás skills, si no encuentran el archivo, lanzan este mismo flujo antes de
 - Quiere cambiar algo: «cambia mis colores», «ahora trabajo en otra zona», «pon mi nuevo logo».
 - Quiere ver cómo queda su marca: «enséñame mi marca».
 
-**No la uses** para escribir textos (eso es `copywriter-inmobiliario`) ni para hacer una landing completa (`landing-propietario`).
+**No la uses** para escribir textos (eso es `copywriter-inmobiliario`) ni para preparar la presentación completa de una casa para el propietario (`preparar-videollamada`).
 
 ## El archivo (formato EXACTO, no lo cambies)
 

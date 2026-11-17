@@ -43,6 +43,17 @@ window.DATOS = {
       { titulo: 'Aparece en la búsqueda equivocada', texto: 'Hoy compite con pisos más grandes y a su lado pierde. Con el posicionamiento correcto aparece donde es el mejor de la lista.' },
     ],
   },
+  // Sin plano: la sección del 3D no sale. El plan va estándar (comun.js).
+  plano: { activo: false },
+
+  // Mockups: textos para COMPRADORES, con datos reales de la casa y sin precio.
+  mockups: {
+    portal: { titular: 'Ático con terraza de 14 m² y vistas en Chamberí' },
+    post: { gancho: 'Una terraza de 14 m² sobre Chamberí', texto: 'Ático reformado en 2018, con dos dormitorios, cocina abierta y ascensor hasta la puerta. Escríbenos y te lo enseñamos.' },
+    story: { texto: 'Ático reformado con terraza y vistas' },
+    portada: { detalle: 'Terraza de 14 m² y vistas despejadas' },
+  },
+
   zona: {
     titulo: 'Chamberí, <em>visto por quien compra</em>',
     datos: [
@@ -74,7 +85,7 @@ window.DATOS = {
     { titulo: 'Si te encaja', texto: 'Firmamos el encargo y en 48 horas hago fotos nuevas.' },
     { titulo: 'En una semana', texto: 'El anuncio nuevo sale con la terraza delante.' },
   ],
-  falta: ['Fecha de fin de los encargos con las otras dos agencias.', 'Certificado energético.', 'Gastos de comunidad.'],
+  falta: ['Plano: sin plano, la presentación sale sin maqueta 3D.', 'Fecha de fin de los encargos con las otras dos agencias.', 'Certificado energético.', 'Gastos de comunidad.'],
   adelanto: {
     etiqueta: 'Tres cambios para que tu ático se venda',
     frase: 'He mirado tu anuncio con lupa y hay tres cosas que explican estos siete meses.',

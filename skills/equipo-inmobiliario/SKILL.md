@@ -66,7 +66,7 @@ El agente escribe `/equipo-inmobiliario` o dice «monta el equipo».
 
 **Diseñador**: cuando hay piezas visuales.
 - Carruseles, portadas, ficha del inmueble, landing y presentación en HTML con los colores, tipografías y `estilo` de la marca.
-- Usa las skills de formato disponibles (`landing-propietario`, `presentacion-scroll`, `plano-3d`) en lugar de reinventarlas.
+- Usa las skills de formato disponibles (`preparar-videollamada`, `presentacion-scroll`, `plano-3d`) en lugar de reinventarlas.
 
 **Community manager**: cuando hay plan de redes.
 - Calendario de publicación, formatos por red, horas, hashtags locales e ideas de historias.

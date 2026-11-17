@@ -42,6 +42,17 @@ window.DATOS = {
       { titulo: 'Las dos primeras semanas', texto: 'Aviso a mis compradores en búsqueda antes de publicar y agrupo las visitas en dos tardes.' },
     ],
   },
+  // Sin plano: la sección del 3D no sale. El plan va estándar (comun.js).
+  plano: { activo: false },
+
+  // Mockups: textos para COMPRADORES, con datos reales de la casa y sin precio.
+  mockups: {
+    portal: { titular: 'Piso reformado y exterior con balcón en Indautxu' },
+    post: { gancho: 'Reformado, exterior y con balcón', texto: 'Cuarto con ascensor, tres dormitorios y un salón-comedor muy luminoso, a dos minutos del metro. Pide tu visita.' },
+    story: { texto: 'Tres dormitorios a dos minutos del metro' },
+    portada: { detalle: 'Reformado en 2019, con ascensor y balcón' },
+  },
+
   zona: {
     titulo: 'Indautxu, <em>visto por quien compra</em>',
     datos: [

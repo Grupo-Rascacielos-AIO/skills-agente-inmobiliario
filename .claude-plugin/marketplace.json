@@ -1,6 +1,6 @@
 {
   "name": "skills-agente-inmobiliario",
-  "description": "Skills de Claude Code para agentes inmobiliarios: tu marca, presentaciones, landing de propietario, planos 3D, edificios interactivos de obra nueva, copywriting, informe de valoración y un equipo de agentes que trabaja en paralelo.",
+  "description": "Skills de Claude Code para agentes inmobiliarios: tu marca, presentaciones, la videollamada con el propietario, planos 3D, edificios interactivos de obra nueva, copywriting, informe de valoración y un equipo de agentes que trabaja en paralelo.",
   "owner": {
     "name": "Skills Agente Inmobiliario"
   },
@@ -10,7 +10,7 @@
       "displayName": "Agente inmobiliario (pack completo)",
       "source": "./",
       "description": "Todas las skills del repositorio en un solo plugin. La opción recomendada.",
-      "version": "1.2.0",
+      "version": "1.3.0",
       "category": "inmobiliaria",
       "tags": [
         "inmobiliaria",
@@ -37,16 +37,6 @@
         "./skills/presentacion-scroll"
       ],
       "description": "Presentaciones web en scroll con tu marca.",
-      "version": "1.0.0",
-      "category": "inmobiliaria"
-    },
-    {
-      "name": "landing-propietario",
-      "source": "./",
-      "skills": [
-        "./skills/landing-propietario"
-      ],
-      "description": "Landing para captar propietarios que quieren vender, con tu marca.",
       "version": "1.0.0",
       "category": "inmobiliaria"
     },
@@ -106,8 +96,8 @@
       "skills": [
         "./skills/preparar-videollamada"
       ],
-      "description": "Prepara la videollamada con un propietario según su perfil: presentación con la valoración aparte, adelanto para WhatsApp y chuleta de la llamada.",
-      "version": "1.0.0",
+      "description": "Prepara la videollamada con un propietario según su perfil: presentación con su casa, plano 3D, plan de marketing con diagramas, mockups de portal y redes y la valoración con mapa 3D de testigos; adelanto para WhatsApp y chuleta de la llamada.",
+      "version": "2.0.0",
       "category": "inmobiliaria"
     }
   ]

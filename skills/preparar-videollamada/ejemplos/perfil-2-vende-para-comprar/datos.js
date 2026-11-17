@@ -85,6 +85,17 @@ window.DATOS = {
     nota: 'Las semanas son una estimación. Las fijamos juntos en la videollamada.',
   },
 
+  // Sin plano: la sección del 3D no sale. El plan va estándar (comun.js).
+  plano: { activo: false },
+
+  // Mockups: textos para COMPRADORES, con datos reales de la casa y sin precio.
+  mockups: {
+    portal: { titular: 'Piso exterior de 3 dormitorios con terraza en Benimaclet' },
+    post: { gancho: 'Luz de sur toda la tarde', texto: 'Tercero con ascensor, tres dormitorios, dos baños, terraza de 6 m² y cocina reformada en 2021. Pide tu visita por mensaje.' },
+    story: { texto: 'Cocina reformada, lista para entrar' },
+    portada: { detalle: 'Tres dormitorios, dos baños y terraza' },
+  },
+
   zona: {
     titulo: 'Benimaclet, <em>visto por quien compra</em>',
     datos: [

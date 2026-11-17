@@ -45,6 +45,28 @@ window.DATOS = {
       { titulo: 'Lo que te queda limpio', texto: 'Orientativo', total: true },
     ],
   },
+  // Sin plano: la sección del 3D no sale.
+  plano: { activo: false },
+  // Plan estándar salvo el pilar de las visitas (perfil 6): al escribir `pilares`, se sustituyen los seis.
+  plan: {
+    pilares: [
+      { icono: 'camara', t: 'Fotos y vídeo que paran el scroll', d: 'Sesión con luz natural, gran angular y un vídeo corto en vertical para redes. La primera foto decide el clic.' },
+      { icono: 'sofa', t: 'Decoración virtual', d: 'Las estancias vacías o anticuadas se decoran en digital para que quien la vea se imagine viviendo allí. Siempre avisado como «decoración virtual».' },
+      { icono: 'megafono', t: 'Portales y redes, bien dirigidos', d: 'Anuncio destacado en los portales y campañas en redes para quien busca en la zona y en ese rango de precio.' },
+      { icono: 'personas', t: 'Compradores filtrados', d: 'Cada contacto se llama el mismo día y se comprueba si puede comprar (financiación y plazos) antes de enseñarle la casa.' },
+      { icono: 'puerta', t: 'Visitas pactadas con el inquilino', d: 'Pocas visitas, con cita y avisando antes al inquilino, y solo con compradores que pueden comprar.' },
+      { icono: 'informe', t: 'Informe cada lunes', d: 'Cuánta gente la ha visto, cuántos han preguntado, quién la ha visitado y qué opinan. Sin tener que llamar para preguntar.' },
+    ],
+  },
+
+  // Mockups: textos para COMPRADORES, con datos reales de la casa y sin precio.
+  mockups: {
+    portal: { titular: 'Piso de 3 dormitorios alquilado hasta 2027 en Nervión' },
+    post: { gancho: 'Alquilado y en Nervión', texto: 'Tercero con ascensor, tres dormitorios, dos baños y trastero. Se vende con inquilino, con contrato hasta junio de 2027. Pide información.' },
+    story: { texto: 'Inversión con inquilino en Nervión' },
+    portada: { detalle: 'Tres dormitorios, dos baños y trastero' },
+  },
+
   zona: {
     titulo: 'Nervión, <em>visto por quien compra</em>',
     datos: [
@@ -76,7 +98,7 @@ window.DATOS = {
     { titulo: 'Esta semana', texto: 'Confirmas los impuestos con tu gestor con las cifras que te paso.' },
     { titulo: 'Si te encaja', texto: 'Firmamos el encargo y hablo con el inquilino para las visitas.' },
   ],
-  falta: ['Precio de compra de 2012 y gastos de entonces (para la ganancia).', 'Hipoteca pendiente, si queda.', 'Contrato de alquiler (duración y fianza).'],
+  falta: ['Plano: sin plano, la presentación sale sin maqueta 3D.', 'Precio de compra de 2012 y gastos de entonces (para la ganancia).', 'Hipoteca pendiente, si queda.', 'Contrato de alquiler (duración y fianza).'],
   adelanto: {
     etiqueta: 'Lo que te quedaría limpio al vender',
     frase: 'Te he preparado lo que te quedaría limpio después de gastos.',

@@ -5,10 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>{casa} · Presentación para la videollamada</title>
 <meta name="robots" content="noindex">
+<meta name="description" content="Presentación de la videollamada: la casa, el plan y la valoración.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <script src="datos.js"></script>
 <script src="comun.js"></script>
+<script src="valoracion.js"></script>
 <style>
 :root{
   --c-principal:#1F2A33;--c-secundario:#F4EFE8;--c-acento:#B5653A;
@@ -18,6 +20,8 @@
   --linea:color-mix(in srgb,var(--c-principal) 14%,transparent);
   --gutter:clamp(20px,5vw,72px);--max:1180px;
   --ease:cubic-bezier(.2,.7,.2,1);
+  /* nombres que usa la sección del plano 3D */
+  --color-principal:var(--c-principal);--color-secundario:var(--c-secundario);--color-acento:var(--c-acento);--font-titulos:var(--f-titulos);--font-texto:var(--f-texto);
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
@@ -83,17 +87,33 @@ section{position:relative}
 .chip{border:1px solid var(--linea);border-radius:99px;padding:.45em 1em;font-size:.86em;background:#fff}
 .dos{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(28px,5vw,80px);align-items:end}
 
-/* galería horizontal */
-.galeria{background:var(--c-principal)}
-.pin{position:sticky;top:0;height:100svh;overflow:hidden;display:flex;flex-direction:column;justify-content:center;gap:24px;padding-top:64px}
-.pista img{max-height:calc(100svh - 300px)}
-.galeria .cab{color:var(--c-secundario)}
+/* galería: visor con miniaturas (todas a la vista, sin scroll) */
+.galeria{background:var(--c-principal);color:var(--c-secundario);padding:clamp(72px,9vw,120px) 0}
 .galeria .cab h2{margin:.3em 0 0;max-width:none;font-size:clamp(1.8rem,3.4vw,3rem)}
-.pista{display:flex;gap:clamp(16px,2vw,28px);padding:0 var(--gutter);will-change:transform}
-.pista figure{flex:none;width:min(66vw,820px);position:relative}
-.pista img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:16px}
-.pista figcaption{color:color-mix(in srgb,var(--c-secundario) 78%,transparent);font-size:.86em;margin-top:.8em;display:flex;gap:.8em}
-.pista figcaption b{color:var(--c-acento);font-weight:600}
+.visor{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.42fr);gap:clamp(12px,1.6vw,20px);margin-top:clamp(24px,3vw,40px);align-items:stretch}
+.escena{position:relative;aspect-ratio:16/10;border-radius:18px;overflow:hidden;background:color-mix(in srgb,#000 30%,var(--c-principal));touch-action:pan-y;cursor:zoom-in}
+.escena img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transform:scale(1.04);transition:opacity .7s ease,transform 6s ease-out}
+.escena img.on{opacity:1;transform:scale(1.1)}
+.escena::after{content:"";position:absolute;inset:auto 0 0 0;height:38%;background:linear-gradient(transparent,rgba(0,0,0,.55));pointer-events:none}
+.esc-pie{position:absolute;left:clamp(16px,2vw,26px);bottom:clamp(14px,2vw,22px);z-index:2;display:flex;align-items:baseline;gap:.8em;color:#fff;font-size:clamp(.95rem,1.4vw,1.15rem);font-weight:600;text-shadow:0 1px 10px rgba(0,0,0,.4)}
+.esc-pie b{font-variant-numeric:tabular-nums;color:color-mix(in srgb,var(--c-acento) 55%,#fff);font-weight:600;font-size:.85em}
+.esc-nav{position:absolute;top:50%;z-index:2;width:46px;height:46px;margin-top:-23px;border-radius:50%;border:0;background:rgba(255,255,255,.88);color:#1b1b1b;font-size:22px;line-height:1;display:grid;place-items:center;cursor:pointer;opacity:0;transition:opacity .25s}
+.escena:hover .esc-nav,.esc-nav:focus-visible{opacity:1}
+.esc-nav.ant{left:14px}.esc-nav.sig{right:14px}
+.minis{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(5,minmax(0,1fr));gap:clamp(8px,1vw,12px);height:0;min-height:100%}
+.mini{position:relative;padding:0;border:0;border-radius:12px;overflow:hidden;cursor:pointer;background:none;min-height:0}
+.mini img{width:100%;height:100%;object-fit:cover;display:block;filter:saturate(.75) brightness(.72);transition:filter .3s,transform .4s}
+.mini:hover img{filter:none;transform:scale(1.05)}
+.mini.on img{filter:none}
+.mini::after{content:"";position:absolute;inset:0;border-radius:12px;box-shadow:inset 0 0 0 0 var(--c-acento);transition:box-shadow .25s}
+.mini.on::after{box-shadow:inset 0 0 0 3px var(--c-acento)}
+.mini i{position:absolute;left:0;bottom:0;height:3px;width:0;background:var(--c-acento);z-index:1}
+.mini.on.corre i{animation:avance var(--dur,5s) linear forwards}
+@keyframes avance{to{width:100%}}
+.ampliada{position:fixed;inset:0;z-index:4000;background:rgba(8,10,12,.94);display:none;align-items:center;justify-content:center;padding:max(16px,env(safe-area-inset-top,0px)) 16px max(16px,env(safe-area-inset-bottom,0px))}
+.ampliada.on{display:flex}
+.ampliada img{max-width:100%;max-height:100%;border-radius:10px;object-fit:contain}
+.ampliada button{position:absolute;top:max(14px,env(safe-area-inset-top,0px));right:16px;width:44px;height:44px;border-radius:50%;border:0;background:rgba(255,255,255,.9);font-size:22px;cursor:pointer}
 
 /* ángulo · línea */
 .linea-wrap{display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(30px,6vw,96px)}
@@ -202,10 +222,157 @@ section{position:relative}
 .contacto a.linea-b{color:var(--c-secundario);border:1px solid color-mix(in srgb,var(--c-secundario) 35%,transparent);border-radius:99px;padding:.95em 1.4em;text-decoration:none;font-weight:600;font-size:.95em}
 .pie{font-size:.78em;opacity:.6;margin-top:40px}
 
+/* plano 3D (sección de la skill plano-3d; solo sale si plano.activo) */
+.m3{--m3-fondo:var(--color-principal,#1f2a2e);--m3-claro:var(--color-secundario,#f4efe8);--m3-acento:var(--color-acento,#c8643b);
+  --m3-linea:color-mix(in srgb,var(--m3-claro) 16%,transparent);
+  padding:96px 0 80px;color:var(--m3-claro);font-family:var(--font-texto,system-ui,sans-serif);
+  background:radial-gradient(ellipse 70% 60% at 50% 55%,color-mix(in srgb,var(--m3-fondo) 78%,#fff 6%) 0%,var(--m3-fondo) 70%)}
+.m3 .m3-wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+.m3 .m3-top{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap}
+.m3 .m3-eyebrow{font-size:12px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--m3-acento)}
+.m3 h2{font-family:var(--font-titulos,Georgia,serif);font-weight:600;font-size:clamp(32px,5vw,54px);line-height:1.05;margin:12px 0 10px;color:var(--m3-claro)}
+.m3 .m3-sub{max-width:520px;margin:0;color:color-mix(in srgb,var(--m3-claro) 72%,transparent);font-size:16px;line-height:1.55}
+#maqueta{position:relative;height:min(76vh,700px);margin-top:32px;border-radius:22px;overflow:hidden;cursor:grab;border:1px solid var(--m3-linea);
+  background:radial-gradient(ellipse at 50% 40%,color-mix(in srgb,var(--m3-acento) 14%,transparent),transparent 65%)}
+#maqueta:active{cursor:grabbing}
+#maqueta canvas{display:block;width:100%!important;height:100%!important}
+.m3-labels{position:absolute;inset:0;pointer-events:none;transition:opacity .4s}
+.m3-lb{position:absolute;left:0;top:0;white-space:nowrap;background:color-mix(in srgb,var(--m3-fondo) 82%,transparent);backdrop-filter:blur(6px);
+  border:1px solid var(--m3-linea);border-radius:10px;padding:6px 10px;text-align:center;font-size:12px;line-height:1.2;color:var(--m3-claro)}
+.m3-lb b{display:block;font-weight:700;font-size:12.5px}
+.m3-lb span{opacity:.65;font-size:11px}
+.m3-lb.on{background:var(--m3-acento);border-color:var(--m3-acento);color:#fff}
+.m3-lb.on span{opacity:.9}
+.m3-ctls{display:grid;gap:10px}
+.m3-ctl{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.m3-k{font-weight:700;font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;opacity:.55;width:74px}
+.m3-ctl button{font-family:inherit;font-size:13px;font-weight:600;color:var(--m3-claro);background:color-mix(in srgb,var(--m3-claro) 7%,transparent);
+  border:1px solid var(--m3-linea);border-radius:99px;padding:10px 15px;cursor:pointer;min-height:40px}
+.m3-ctl button.on{background:var(--m3-claro);color:var(--m3-fondo)}
+.m3-ctl button[data-muebles].on{background:var(--m3-acento);border-color:var(--m3-acento);color:#fff}
+.m3-hint{position:absolute;left:50%;bottom:14px;transform:translateX(-50%);font-size:12px;color:color-mix(in srgb,var(--m3-claro) 70%,transparent);
+  background:color-mix(in srgb,var(--m3-fondo) 70%,transparent);padding:6px 12px;border-radius:99px;pointer-events:none;white-space:nowrap}
+.m3-nota{margin-top:14px;font-size:13px;opacity:.7}
+@media(max-width:640px){
+  .m3{padding:72px 0 60px}
+  #maqueta{height:480px}
+  .m3-k{width:100%}
+  .m3-lb{padding:4px 7px}.m3-lb b{font-size:11px}.m3-lb span{display:none}
+  .m3-hint{font-size:11px}
+}
+
+/* plan · pilares */
+.ico{width:32px;height:32px;color:var(--c-acento);display:block}
+.pilares{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:color-mix(in srgb,var(--c-secundario) 16%,transparent);border-radius:20px;overflow:hidden;margin-top:clamp(36px,5vw,60px)}
+.pilar{background:var(--c-principal);padding:clamp(24px,2.8vw,38px);min-width:0}
+.pilar h3{font-size:1.35em;margin:.8em 0 .4em}
+.pilar p{font-size:.9em;color:color-mix(in srgb,var(--c-secundario) 70%,transparent)}
+.compradores{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(12px,2vw,22px);margin-top:clamp(28px,4vw,44px)}
+.comprador{min-width:0;border-radius:20px;padding:clamp(20px,2.4vw,30px);background:color-mix(in srgb,var(--c-secundario) 8%,transparent);border:1px solid color-mix(in srgb,var(--c-secundario) 16%,transparent)}
+.comprador h3{font-size:1.25em;margin-bottom:.35em}
+.comprador p{font-size:.88em;color:color-mix(in srgb,var(--c-secundario) 70%,transparent)}
+.comprador .pildora{display:inline-block;margin-top:1em;font-size:.74em;font-weight:600;border-radius:99px;padding:.35em .9em;background:color-mix(in srgb,var(--c-acento) 80%,#000);color:#fff}
+.sub-k{margin-top:clamp(56px,8vw,96px)}
+
+/* plan · embudo */
+.emb-cab{display:flex;flex-wrap:wrap;align-items:baseline;gap:.6em 1.2em;margin-top:clamp(18px,2vw,26px)}
+.emb-cab h3{font-size:clamp(1.9rem,3.8vw,3.2rem);line-height:1.08}
+.de-ejemplo{font-size:.74em;letter-spacing:.06em;border:1px dashed color-mix(in srgb,var(--c-secundario) 45%,transparent);border-radius:99px;padding:.3em .95em;white-space:nowrap;color:color-mix(in srgb,var(--c-secundario) 80%,transparent)}
+.emb{list-style:none;display:grid;gap:10px;margin-top:clamp(30px,4vw,48px)}
+.emb-paso{display:grid;grid-template-columns:minmax(0,1fr) 180px;gap:20px;align-items:center}
+.emb-barra{width:var(--w);min-width:min(210px,100%);margin:0 auto;height:58px;border-radius:12px;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:0 18px;background:color-mix(in srgb,var(--c-secundario) 9%,transparent);border:1px solid color-mix(in srgb,var(--c-secundario) 16%,transparent);transform-origin:center;transition:transform .9s var(--ease),opacity .9s var(--ease)}
+.emb-barra span{font-size:.9em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.emb-barra strong{font-family:var(--f-titulos);font-weight:400;font-size:1.6em;line-height:1;white-space:nowrap}
+.emb-paso.final .emb-barra{background:color-mix(in srgb,var(--c-acento) 80%,#000);border-color:color-mix(in srgb,var(--c-acento) 80%,#000);color:#fff}
+.emb-d{font-size:.85em;line-height:1.35;color:color-mix(in srgb,var(--c-secundario) 55%,transparent)}
+.emb.anim .emb-barra{transform:scaleX(.2);opacity:0}
+.emb.anim.in .emb-barra{transform:none;opacity:1}
+.oscura .nota{color:color-mix(in srgb,var(--c-secundario) 62%,transparent)}
+.emb-nota{font-size:.8em;max-width:60ch}
+
+/* calendario · Gantt */
+.gantt-pista{display:none;font-size:.8em;color:var(--suave);margin:clamp(28px,4vw,44px) 0 10px}
+.gantt-caja{overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:20px;border:1px solid var(--linea);background:#fff;margin-top:clamp(30px,4vw,48px)}
+.gantt{display:grid;grid-template-columns:170px repeat(var(--sem),minmax(0,1fr));min-width:960px;row-gap:8px;padding:0 14px 18px 0;font-size:16px}
+.g-esq,.g-carril{position:sticky;left:0;background:#fff;z-index:2}
+.g-fase{font-size:.68em;letter-spacing:.16em;text-transform:uppercase;font-weight:700;color:color-mix(in srgb,var(--c-acento) 80%,#000);background:color-mix(in srgb,var(--c-acento) 6%,#fff);border-left:1px solid color-mix(in srgb,var(--c-acento) 22%,#fff);padding:12px 10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.g-sem{font-size:.75em;color:var(--suave);text-align:center;padding:2px 0 4px}
+.g-carril{padding:10px 14px 10px 18px;font-weight:600;font-size:.9em;line-height:1.2;align-self:stretch;display:flex;flex-direction:column;justify-content:center}
+.g-carril small{display:block;font-weight:400;color:var(--suave);font-size:.84em;margin-top:2px}
+.g-linea{grid-column:2 / -1;align-self:center;height:1px;background:var(--linea)}
+.g-bar{position:relative;z-index:1;align-self:center;margin:0 3px;border-radius:10px;padding:8px 10px;font-size:.78em;line-height:1.25;overflow:hidden;min-width:0;transform-origin:left;transition:transform .9s var(--ease)}
+.g-bar.corta{padding:8px 3px;margin:0 2px;font-size:.68em;text-align:center;-webkit-hyphens:auto;hyphens:auto;overflow-wrap:anywhere}
+.g-bar.principal{background:var(--c-principal);color:var(--c-secundario)}
+.g-bar.acento{background:color-mix(in srgb,var(--c-acento) 80%,#000);color:#fff}
+.g-bar.suave{background:color-mix(in srgb,var(--c-acento) 16%,var(--papel))}
+.g-bar.claro{background:#fff;border:1px solid var(--linea)}
+.g-hito{justify-self:center;align-self:center;width:9px;height:9px;border-radius:50%;background:var(--c-acento)}
+.gantt.anim .g-bar{transform:scaleX(0)}
+.gantt.anim.in .g-bar{transform:none}
+.g-ley{display:flex;flex-wrap:wrap;gap:8px 20px;font-size:.8em;color:var(--suave);margin-top:14px}
+.g-ley span{display:inline-flex;align-items:center;gap:8px}
+.g-ley i{width:9px;height:9px;border-radius:50%;background:var(--c-acento)}
+
+/* mockups */
+.mock-pista{display:none;font-size:.8em;color:var(--suave);margin:clamp(28px,4vw,44px) 0 0}
+.mock-fila{display:flex;gap:clamp(16px,2.4vw,28px);justify-content:center;margin-top:clamp(36px,5vw,60px)}
+.mock{flex:0 0 min(250px,76vw);min-width:0;scroll-snap-align:center}
+.mock-pie{text-align:center;font-size:.8em;color:var(--suave);margin-top:14px}
+.movil{aspect-ratio:9/19.5;border-radius:38px;background:#111;padding:10px;box-shadow:0 40px 80px -36px rgba(0,0,0,.45)}
+.pantalla{height:100%;border-radius:30px;overflow:hidden;background:#fff;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#111;display:flex;flex-direction:column;position:relative;font-size:12px;line-height:1.35}
+.pantalla svg{width:20px;height:20px;flex:none}
+.p-barra{display:flex;justify-content:space-between;align-items:center;padding:12px 14px 9px;font-size:12px;font-weight:700;border-bottom:1px solid #eee}
+.p-foto{aspect-ratio:4/3;background:#ddd center/cover no-repeat;position:relative;flex:none}
+.p-foto i{position:absolute;right:8px;bottom:8px;background:rgba(0,0,0,.6);color:#fff;font-style:normal;font-size:10px;padding:2px 7px;border-radius:5px}
+.p-ficha{padding:12px 14px;display:flex;flex-direction:column;gap:7px;flex:1;min-height:0}
+.p-precio{font-size:19px;font-weight:800;letter-spacing:-.01em}
+.p-precio.vacio{color:#767676;font-weight:700;font-size:15px}
+.p-tit{font-size:13px;font-weight:600;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.p-tags{display:flex;flex-wrap:wrap;gap:5px}
+.p-tags span{background:#f2f2f2;border-radius:6px;padding:3px 7px;font-size:10.5px}
+.p-txt{font-size:11px;color:#555;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.p-btn{margin-top:auto;background:color-mix(in srgb,var(--c-acento) 80%,#000);color:#fff;text-align:center;font-weight:700;padding:10px;border-radius:10px;font-size:12.5px}
+.av{width:28px;height:28px;border-radius:50%;background:var(--c-acento);color:#fff;display:grid;place-items:center;font-size:11px;font-weight:700;overflow:hidden;flex:none}
+.av img{width:100%;height:100%;object-fit:cover}
+.po-cab{display:flex;align-items:center;gap:8px;padding:12px;font-weight:700;font-size:12px}
+.po-cab .us{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.po-foto{aspect-ratio:4/5;background:#ddd center/cover no-repeat;position:relative;flex:none}
+.po-foto::after{content:"";position:absolute;inset:45% 0 0 0;background:linear-gradient(transparent,rgba(0,0,0,.55))}
+.po-foto b{position:absolute;left:12px;right:12px;bottom:12px;z-index:1;color:#fff;font-family:var(--f-titulos);font-weight:400;font-size:21px;line-height:1.08;text-shadow:0 2px 14px rgba(0,0,0,.45)}
+.po-ico{display:flex;gap:12px;padding:10px 12px 6px}
+.po-ico svg:last-child{margin-left:auto}
+.po-txt{padding:0 12px;font-size:11.5px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.st{flex:1;background:#333 center/cover no-repeat;color:#fff;display:flex;flex-direction:column;position:relative}
+.st::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.35) 0%,rgba(0,0,0,0) 22%,rgba(0,0,0,0) 45%,rgba(0,0,0,.65) 100%)}
+.st>*{position:relative;z-index:1}
+.st-prog{display:flex;gap:4px;padding:12px 12px 8px}
+.st-prog i{flex:1;height:2.5px;border-radius:2px;background:rgba(255,255,255,.4)}
+.st-prog i:first-child{background:#fff}
+.st-cab{display:flex;align-items:center;gap:8px;padding:0 12px;font-size:12px;font-weight:700}
+.st-cab small{font-weight:400;opacity:.75}
+.st-txt{margin-top:auto;padding:0 18px;font-family:var(--f-titulos);font-size:27px;line-height:1.08;text-shadow:0 2px 16px rgba(0,0,0,.4)}
+.st-peg{align-self:center;margin:18px 0 34px;display:flex;align-items:center;gap:7px;background:#fff;color:var(--c-principal);border-radius:12px;padding:9px 14px;font-weight:700;font-size:12.5px;box-shadow:0 8px 20px -8px rgba(0,0,0,.4)}
+.st-peg svg{width:16px;height:16px}
+.vi{flex:1;background:#333 center/cover no-repeat;color:#fff;display:flex;flex-direction:column;position:relative;padding:18px}
+.vi::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,color-mix(in srgb,var(--c-principal) 30%,transparent) 0%,transparent 30%,transparent 42%,color-mix(in srgb,var(--c-principal) 90%,transparent) 100%)}
+.vi>*{position:relative;z-index:1}
+.vi-et{align-self:flex-start;font-size:10px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.35);border-radius:99px;padding:5px 10px;backdrop-filter:blur(6px)}
+.vi-play{position:absolute;left:50%;top:44%;transform:translate(-50%,-50%);width:58px;height:58px;border-radius:50%;background:rgba(255,255,255,.85);box-shadow:0 10px 30px -10px rgba(0,0,0,.5)}
+.vi-play::before{content:"";position:absolute;left:23px;top:18px;width:18px;height:22px;background:var(--c-principal);clip-path:polygon(0 0,100% 50%,0 100%)}
+.vi-tit{margin-top:auto;font-family:var(--f-titulos);font-size:28px;line-height:1.05}
+.vi-det{display:flex;gap:8px;align-items:center;margin-top:10px;font-size:12px;opacity:.92}
+.vi-det::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--c-acento);flex:none}
+.mock-nota{text-align:center;margin:24px auto 0;font-size:.84em;color:var(--suave);max-width:52ch}
+
 /* aparición */
 .rv{opacity:0;transform:translateY(26px);transition:opacity 1s var(--ease),transform 1s var(--ease)}
 .rv.in{opacity:1;transform:none}
-@media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}.hero .bg{transform:none!important}html{scroll-behavior:auto}}
+@media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}.hero .bg{transform:none!important}html{scroll-behavior:auto}.emb.anim .emb-barra,.gantt.anim .g-bar{transform:none;opacity:1;transition:none}}
+@media (max-width:1180px){
+  .mock-pista{display:block}
+  .mock-pista+.mock-fila{margin-top:12px}
+  .mock-fila{overflow-x:auto;scroll-snap-type:x mandatory;justify-content:flex-start;padding:0 var(--gutter) 20px;margin-left:calc(var(--gutter)*-1);margin-right:calc(var(--gutter)*-1);-webkit-overflow-scrolling:touch}
+}
 
 /* móvil */
 @media (max-width:860px){
@@ -218,7 +385,11 @@ section{position:relative}
   .zona-grid{grid-template-columns:1fr 1fr}
   .metodo li{grid-template-columns:52px 1fr;}
   .metodo li p{grid-column:2}
-  .pista figure{width:80vw}
+  .visor{grid-template-columns:1fr}
+  .minis{grid-template-columns:repeat(5,minmax(0,1fr));grid-template-rows:none;grid-auto-rows:auto;height:auto;min-height:0}
+  .mini{aspect-ratio:1}
+  .mini i{height:2px}
+  .esc-nav{opacity:1;width:38px;height:38px;margin-top:-19px;font-size:18px}
   .papeles ul{columns:1}
   .barra{grid-template-columns:96px 1fr 64px;gap:10px;font-size:.8em}
   .fin{grid-template-columns:1fr}
@@ -226,13 +397,35 @@ section{position:relative}
   .partida{flex-wrap:wrap;gap:6px 14px;padding:14px 0}
   .partida i{font-size:.72em}
   .contacto{justify-content:flex-start}
+  .pilares{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .gantt-pista{display:block}
+  .gantt-pista+.gantt-caja{margin-top:0}
+  .gantt{grid-template-columns:132px repeat(var(--sem),minmax(0,1fr));min-width:780px}
+  .g-carril{padding:10px 10px 10px 14px}
   .top .cita{font-size:.92em;padding:.38em .8em}
   .agente small{display:none}
   .bajar{display:none}
 }
+@media (max-width:860px){.compradores{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:640px){
+  .emb-paso{grid-template-columns:minmax(0,1fr);gap:6px}
+  .emb-d{width:var(--w);min-width:min(210px,100%);margin:0 auto;padding:0 4px 6px}
+  .emb-barra{height:52px;padding:0 14px}
+  .emb-barra strong{font-size:1.4em}
+}
+@media (max-width:560px){.pilares{grid-template-columns:minmax(0,1fr)}}
 @media (max-width:420px){.zona-grid{grid-template-columns:1fr}.top .agente span.nom{display:none}}
 @media print{.top,.progreso,.bajar{display:none}.rv{opacity:1;transform:none}}
+
+/* opción F: selector de vistas del plan */
+.pf-barra{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:18px 0 22px}
+.pf-k{font-size:13px;letter-spacing:.18em;text-transform:uppercase;font-weight:700;opacity:.7;margin-right:6px}
+.pf-barra button{font:600 15px/1 var(--f-texto,system-ui);padding:11px 16px;border-radius:99px;border:1.5px solid color-mix(in srgb,var(--c-secundario) 35%,transparent);background:transparent;color:var(--c-secundario);cursor:pointer;min-height:44px}
+.pf-barra button.on{background:var(--c-acento);border-color:var(--c-acento);color:#fff}
+.pf-marco{display:block;width:100%;height:600px;border:0;border-radius:22px;background:transparent}
+@media(max-width:760px){.pf-barra{flex-wrap:nowrap;overflow-x:auto;margin-left:-16px;margin-right:-16px;padding:0 16px 4px;scrollbar-width:none}.pf-barra button{flex:none;font-size:14px}.pf-k{display:none}}
 </style>
+<link rel="stylesheet" href="premium.css">
 </head>
 <body>
 <div class="progreso" id="progreso"></div>
@@ -271,13 +464,98 @@ section{position:relative}
 </section>
 
 <section class="galeria" id="galeria">
-  <div class="pin">
-    <div class="wrap cab"><div class="kicker">La casa</div><h2 id="hGal"></h2></div>
-    <div class="pista" id="pista"></div>
+  <div class="wrap">
+    <div class="cab"><div class="kicker">La casa</div><h2 id="hGal"></h2></div>
+    <div class="visor">
+      <div class="escena" id="escena" role="region" aria-label="Foto ampliada">
+        <img id="escA" alt=""><img id="escB" alt="">
+        <button type="button" class="esc-nav ant" id="escAnt" aria-label="Foto anterior">‹</button>
+        <button type="button" class="esc-nav sig" id="escSig" aria-label="Foto siguiente">›</button>
+        <div class="esc-pie"><b id="escN"></b><span id="escT"></span></div>
+      </div>
+      <div class="minis" id="minis"></div>
+    </div>
+  </div>
+  <div class="ampliada" id="ampliada" role="dialog" aria-label="Foto a pantalla completa"><img id="ampImg" alt=""><button type="button" id="ampCerrar" aria-label="Cerrar">×</button></div>
+</section>
+
+<section class="m3" id="plano-3d">
+  <div class="m3-wrap">
+    <div class="m3-top">
+      <div>
+        <span class="m3-eyebrow" id="kPlano"></span>
+        <h2 id="hPlano"></h2>
+        <p class="m3-sub" id="pPlano"></p>
+      </div>
+      <div class="m3-ctls">
+        <div class="m3-ctl"><span class="m3-k">Muebles</span>
+          <button type="button" data-muebles="vacio" class="on">Sin muebles</button>
+          <button type="button" data-muebles="nordico">Nórdico</button>
+          <button type="button" data-muebles="moderno">Moderno</button>
+        </div>
+        <div class="m3-ctl"><span class="m3-k">Vista</span>
+          <button type="button" data-vista="maqueta" class="on">Maqueta</button>
+          <button type="button" data-vista="aerea">Desde arriba</button>
+          <button type="button" data-vista="baja">A ras de suelo</button>
+          <button type="button" data-giro class="on">↻ Girar</button>
+        </div>
+      </div>
+    </div>
+    <div id="maqueta"><div class="m3-hint">Arrastra para girar · pellizca o haz clic y usa la rueda para acercar</div></div>
+    <p class="m3-nota" id="nPlano"></p>
   </div>
 </section>
 
 <section class="sec" id="angulo"></section>
+
+<section class="sec oscura" id="plan">
+  <div class="wrap">
+    <div class="pf-barra" aria-label="Ver el plan como">
+      <span class="pf-k">Ver el plan como</span>
+      <button type="button" class="on" data-pv="A">Portal vs. nosotros</button>
+      <button type="button" data-pv="B">Radar</button>
+      <button type="button" data-pv="C">Camino del comprador</button>
+      <button type="button" data-pv="D">Embudo</button>
+      <button type="button" data-pv="E">90 días</button>
+    </div>
+    <iframe id="pfMarco" class="pf-marco" src="plan-vistas.html#A" title="Plan de marketing" scrolling="no"></iframe>
+    <div hidden>
+    <div class="kicker rv" id="kPlan"></div>
+    <h2 class="rv" id="hPlan"></h2>
+    <p class="lead rv" id="pPlan"></p>
+    <div class="pilares rv" id="pilares"></div>
+    <div id="compradores"></div>
+    <div class="sub-k">
+      <div class="kicker rv">Los números</div>
+      <div class="emb-cab rv"><h3 id="hEmb"></h3><span class="de-ejemplo" id="ejEmb">Cifras de ejemplo</span></div>
+      <p class="lead rv" id="pEmb" style="margin-top:.8em"></p>
+      <ol class="emb anim" id="emb"></ol>
+      <p class="nota emb-nota rv" id="nEmb"></p>
+    </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="calendario">
+  <div class="wrap">
+    <div class="kicker rv" id="kCal"></div>
+    <h2 class="rv" id="hCal"></h2>
+    <p class="lead rv" id="pCal"></p>
+    <p class="gantt-pista" id="pistaCal"></p>
+    <div class="gantt-caja rv"><div class="gantt anim" id="gantt"></div></div>
+    <div class="g-ley" id="leyCal"></div>
+  </div>
+</section>
+
+<section class="sec val" id="mockups">
+  <div class="wrap">
+    <div class="kicker rv" id="kMock"></div>
+    <h2 class="rv" id="hMock"></h2>
+    <p class="mock-pista">Desliza para ver las cuatro piezas →</p>
+    <div class="mock-fila rv" id="mockFila"></div>
+    <p class="mock-nota" id="nMock"></p>
+  </div>
+</section>
 
 <section class="sec oscura" id="zona">
   <div class="wrap">
@@ -296,20 +574,7 @@ section{position:relative}
   </div>
 </section>
 
-<section class="sec val" id="valoracion">
-  <div class="wrap">
-    <div class="kicker rv">La valoración</div>
-    <h2 class="rv" id="hVal"></h2>
-    <div class="cerrada rv" id="cerrada">
-      <div class="fantasma" aria-hidden="true"><div></div><div></div><div></div></div>
-      <div class="candado"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="10" width="16" height="11" rx="2.5"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></div>
-      <h3 id="hCerrada"></h3>
-      <p id="pCerrada"></p>
-      <button class="boton" id="abrir" type="button">Abrir la valoración <span aria-hidden="true">→</span></button>
-    </div>
-    <div class="abierta" id="abierta"></div>
-  </div>
-</section>
+<section class="vx" id="valoracion"></section>
 
 <section class="sec oscura" id="siguientes">
   <div class="wrap">
@@ -341,9 +606,9 @@ section{position:relative}
 
   // portada
   $('heroBg').style.backgroundImage=`url("${C.foto_portada||(C.fotos&&C.fotos[0]&&C.fotos[0].src)||''}")`;
-  $('heroKicker').textContent=`Preparado para ${(D.propietarios||{}).nombres||''}`;
+  $('heroKicker').textContent=(D.propietarios||{}).nombres?`Preparado para ${D.propietarios.nombres}`:'Preparado para el propietario';
   $('heroTitulo').innerHTML=`${esc(suCasa())} <span style="white-space:nowrap">${deLa(C.direccion_corta)}</span><em>${esc(C.direccion_corta||C.direccion||'')}</em>`;
-  $('heroDir').innerHTML=[C.direccion,[C.barrio,C.ciudad].filter(Boolean).join(', '),`${Ci.fecha_texto||''} · ${Ci.hora||''}`].filter(Boolean).map(s=>`<span>${esc(s)}</span>`).join('');
+  $('heroDir').innerHTML=[C.direccion,[C.barrio,C.ciudad].filter(Boolean).join(', '),[Ci.fecha_texto,Ci.hora].filter(Boolean).join(' · ')].filter(Boolean).map(s=>`<span>${esc(s)}</span>`).join('');
 
   // triaje
   $('kTriaje').textContent=T('Lo que me contasteis','Lo que me contaste');
@@ -356,6 +621,7 @@ section{position:relative}
   $('descCasa').textContent=C.descripcion||'';
   const cif=[];
   if(C.m2_construidos) cif.push([C.m2_construidos,'m²','construidos']);
+  else if(C.m2_utiles) cif.push([C.m2_utiles,'m²','útiles']);
   if(C.habitaciones) cif.push([C.habitaciones,'','habitaciones']);
   if(C.banos) cif.push([C.banos,'',C.banos==1?'baño':'baños']);
   if(C.parcela_m2) cif.push([C.parcela_m2,'m²','de parcela']);
@@ -366,9 +632,52 @@ section{position:relative}
   // galería
   const fotos=C.fotos||[];
   $('hGal').innerHTML=`${fotos.length} fotos, <em>${T('las que me mandasteis','las que me mandaste')}</em>`;
-  $('pista').innerHTML=fotos.map((f,i)=>`<figure><img src="${esc(f.src)}" alt="${esc(f.pie||'')}" loading="${i<2?'eager':'lazy'}"><figcaption><b>${String(i+1).padStart(2,'0')}</b>${esc(f.pie||'')}</figcaption></figure>`).join('');
-  const gal=$('galeria'), pista=$('pista');
-  const altoGal=()=>{ const extra=Math.max(0,pista.scrollWidth-innerWidth); gal.style.height=(innerHeight+extra)+'px'; };
+  (function(){
+    if(!fotos.length){ $('galeria').hidden=true; return; }
+    const minis=$('minis'), capas=[$('escA'),$('escB')], DUR=5000;
+    const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+    minis.innerHTML=fotos.map((f,i)=>`<button type="button" class="mini" data-i="${i}" aria-label="${esc(f.pie||'Foto '+(i+1))}"><img src="${esc(f.src)}" alt="" loading="lazy"><i></i></button>`).join('');
+    minis.style.setProperty('--dur',DUR+'ms');
+    let actual=-1, capa=0, auto=!reduce, temp=null, visible=false;
+    const pad=n=>String(n).padStart(2,'0');
+    function ver(i){
+      i=(i+fotos.length)%fotos.length; if(i===actual) return;
+      actual=i; capa^=1;
+      const img=capas[capa], vieja=capas[capa^1];
+      img.src=fotos[i].src; img.alt=fotos[i].pie||'';
+      requestAnimationFrame(()=>{ img.classList.add('on'); vieja.classList.remove('on'); });
+      $('escN').textContent=`${pad(i+1)} / ${pad(fotos.length)}`;
+      $('escT').textContent=fotos[i].pie||'';
+      minis.querySelectorAll('.mini').forEach((m,k)=>{ m.classList.toggle('on',k===i); m.classList.remove('corre'); });
+      programar();
+    }
+    function programar(){
+      clearTimeout(temp);
+      if(!auto||!visible) return;
+      const m=minis.children[actual]; void m.offsetWidth; m.classList.add('corre');
+      temp=setTimeout(()=>ver(actual+1),DUR);
+    }
+    const parar=()=>{ auto=false; clearTimeout(temp); minis.querySelectorAll('.mini').forEach(m=>m.classList.remove('corre')); };
+    minis.addEventListener('click',e=>{ const b=e.target.closest('.mini'); if(b){ parar(); ver(+b.dataset.i); } });
+    $('escAnt').addEventListener('click',e=>{ e.stopPropagation(); parar(); ver(actual-1); });
+    $('escSig').addEventListener('click',e=>{ e.stopPropagation(); parar(); ver(actual+1); });
+    // deslizar con el dedo
+    let x0=null;
+    $('escena').addEventListener('touchstart',e=>{ x0=e.touches[0].clientX; },{passive:true});
+    $('escena').addEventListener('touchend',e=>{ if(x0===null) return; const dx=e.changedTouches[0].clientX-x0; x0=null; if(Math.abs(dx)>40){ parar(); ver(actual+(dx<0?1:-1)); } });
+    // pantalla completa al tocar la foto
+    const amp=$('ampliada');
+    $('escena').addEventListener('click',()=>{ $('ampImg').src=fotos[actual].src; $('ampImg').alt=fotos[actual].pie||''; amp.classList.add('on'); parar(); });
+    amp.addEventListener('click',()=>amp.classList.remove('on'));
+    addEventListener('keydown',e=>{
+      if(e.key==='Escape') amp.classList.remove('on');
+      const b=$('galeria').getBoundingClientRect(); if(b.bottom<0||b.top>innerHeight) return;
+      if(e.key==='ArrowRight'){ parar(); ver(actual+1); } if(e.key==='ArrowLeft'){ parar(); ver(actual-1); }
+    });
+    // solo avanza sola mientras se ve
+    new IntersectionObserver(es=>{ visible=es[0].isIntersecting; if(visible) programar(); else clearTimeout(temp); },{threshold:.35}).observe($('escena'));
+    ver(0);
+  })();
 
   // ángulo
   const A=D.angulo||{tipo:'tarjetas',items:[]};
@@ -388,6 +697,98 @@ section{position:relative}
   }
   $('angulo').innerHTML=cuerpo;
 
+  // iconos de trazo (24 px)
+  const IC={
+    camara:'<path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="4"/>',
+    sofa:'<path d="M4 11V8a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3"/><path d="M2 12a2 2 0 0 1 4 0v2h12v-2a2 2 0 0 1 4 0v6H2z"/><path d="M5 18v2M19 18v2"/>',
+    megafono:'<path d="M3 10v4h4l7 4V6L7 10z"/><path d="M17 9a4 4 0 0 1 0 6M7 14l1 5h3"/>',
+    personas:'<circle cx="9" cy="8" r="3.5"/><path d="M2 20c0-4 3-6 7-6s7 2 7 6"/><circle cx="17" cy="9" r="2.5"/><path d="M17 14c3 0 5 2 5 5"/>',
+    puerta:'<path d="M5 21V4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v17"/><path d="M3 21h18"/><circle cx="15" cy="12" r="1"/>',
+    informe:'<path d="M4 20V4h16v16z"/><path d="M8 16v-4M12 16V8M16 16v-6"/>',
+    cubo:'<path d="M12 2 3 7v10l9 5 9-5V7z"/><path d="M3 7l9 5 9-5M12 12v10"/>',
+    precio:'<path d="M3 12V4h8l10 10-8 8z"/><circle cx="7.5" cy="7.5" r="1.5"/>',
+    corazon:'<path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/>',
+    comentar:'<path d="M20 12a8 8 0 0 1-11.8 7L4 20l1.1-4A8 8 0 1 1 20 12z"/>',
+    enviar:'<path d="M21 3 10 14M21 3l-7 18-4-7-7-4z"/>',
+    guardar:'<path d="M6 3h12v18l-6-4-6 4z"/>',
+    enlace:'<path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/>'
+  };
+  const ico=(n,cls='ico')=>`<svg class="${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${IC[n]||IC.cubo}</svg>`;
+
+  // plano 3D (solo si hay plano: si no, la sección no existe y no se carga nada)
+  const PL=D.plano||{};
+  if(PL.activo){
+    $('kPlano').textContent=T('Vuestra casa en 3D','Tu casa en 3D');
+    $('hPlano').innerHTML=PL.titulo||'Entra antes de <em>entrar</em>';
+    $('pPlano').textContent=PL.texto||'Así entiende la distribución quien la vea antes de pedir la visita. Gírala, acércate y amuéblala con un toque.';
+    $('nPlano').textContent=PL.nota||'Maqueta hecha a partir del plano. Medidas aproximadas y mobiliario orientativo.';
+    const cargar=(src)=>new Promise((ok,ko)=>{ const s=document.createElement('script'); s.src=src; s.onload=ok; s.onerror=()=>ko(new Error('No se ha podido cargar '+src)); document.body.appendChild(s); });
+    ['https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js',
+     'https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js',
+     'https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/environments/RoomEnvironment.js',
+     'https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/geometries/RoundedBoxGeometry.js',
+     'plano-data.js?v=1','plano3d.js?v=1'].reduce((p,src)=>p.then(()=>{
+       if(src.startsWith('plano3d.js')&&window.PLANO_DATA&&PL.estilo_inicial) window.PLANO_DATA.estiloInicial=PL.estilo_inicial;
+       return cargar(src);
+     }),Promise.resolve()).catch(e=>console.warn(e.message));
+    // aria-pressed al día con la clase «on» que pone el motor
+    const botones=$('plano-3d').querySelectorAll('[data-muebles],[data-vista],[data-giro]');
+    const aria=()=>botones.forEach(b=>b.setAttribute('aria-pressed',b.classList.contains('on')));
+    aria(); new MutationObserver(aria).observe($('plano-3d'),{subtree:true,attributes:true,attributeFilter:['class']});
+  } else $('plano-3d').remove();
+
+  // plan: pilares, compradores y embudo
+  const P=UT.plan();
+  if(P){
+    $('kPlan').textContent=P.kicker||'El plan';
+    $('hPlan').innerHTML=P.titulo||'';
+    $('pPlan').textContent=P.entradilla||'';
+    $('pilares').innerHTML=(P.pilares||[]).map(p=>`<div class="pilar">${ico(p.icono)}<h3>${esc(p.t)}</h3><p>${esc(p.d||'')}</p></div>`).join('');
+    if((P.compradores||[]).length) $('compradores').innerHTML=`<div class="kicker rv sub-k">Quién la va a comprar</div><div class="compradores">${P.compradores.map((c,i)=>`<div class="comprador rv" style="transition-delay:${i*90}ms"><h3>${esc(c.t)}</h3><p>${esc(c.d||'')}</p>${c.argumento?`<span class="pildora">${esc(c.argumento)}</span>`:''}</div>`).join('')}</div>`;
+    const E=P.embudo||{}, ps=E.pasos||[];
+    $('hEmb').innerHTML=E.titulo||'';
+    if(E.de_ejemplo===false) $('ejEmb').remove();
+    $('pEmb').textContent=E.texto||'';
+    $('emb').innerHTML=ps.map((s,i)=>{ const w=ps.length>1?100-i*76/(ps.length-1):100; return `<li class="emb-paso${s.final?' final':''}" style="--w:${w.toFixed(2)}%"><div class="emb-barra" style="transition-delay:${i*90}ms"><span>${esc(s.t)}</span><strong>${esc(s.n)}</strong></div><div class="emb-d">${esc(s.d||'')}</div></li>`; }).join('');
+    if(E.de_ejemplo!==false&&E.nota) $('nEmb').textContent=E.nota; else $('nEmb').remove();
+
+    // calendario (Gantt)
+    const G=P.gantt||{}, N=Math.max(1,+G.semanas||13), col=(d,h)=>`grid-column:${d+2} / ${h+3}`;
+    $('kCal').textContent=G.kicker||'El calendario';
+    $('hCal').innerHTML=G.titulo||'';
+    $('pCal').textContent=G.texto||'';
+    $('pistaCal').textContent=`Desliza para ver las ${N} semanas →`;
+    let g=`<div class="g-esq" style="grid-row:1;grid-column:1"></div>`;
+    g+=(G.fases||[]).map(f=>`<div class="g-fase" style="grid-row:1;${col(f.desde,f.hasta)}">${esc(f.t)}</div>`).join('');
+    g+=`<div class="g-esq" style="grid-row:2;grid-column:1"></div>`;
+    for(let s=0;s<N;s++) g+=`<div class="g-sem" style="grid-row:2;grid-column:${s+2}">S${s}</div>`;
+    (G.carriles||[]).forEach((c,k)=>{
+      const fila=k+3, barras=c.barras||[];
+      g+=`<div class="g-carril" style="grid-row:${fila};grid-column:1">${esc(c.t)}${c.sub?`<small>${esc(c.sub)}</small>`:''}</div><div class="g-linea" style="grid-row:${fila}"></div>`;
+      (c.hitos||[]).filter(h=>!barras.some(b=>h>=b.desde&&h<=b.hasta)).forEach(h=>{ g+=`<i class="g-hito" style="grid-row:${fila};grid-column:${h+2}" title="Informe del lunes"></i>`; });
+      g+=barras.map((b,j)=>`<div class="g-bar ${esc(b.tono||'suave')}${b.hasta-b.desde<1?' corta':''}" style="grid-row:${fila};${col(b.desde,b.hasta)};transition-delay:${(k*2+j)*70}ms">${esc(b.t)}</div>`).join('');
+    });
+    const ga=$('gantt'); ga.style.setProperty('--sem',N); ga.innerHTML=g;
+    if((G.carriles||[]).some(c=>(c.hitos||[]).length)) $('leyCal').innerHTML='<span><i></i>Informe del lunes</span>';
+  } else { $('plan').remove(); $('calendario').remove(); }
+
+  // mockups: así la verán los compradores (sin precio hasta abrir la valoración)
+  const MK=UT.mockups();
+  if(MK){
+    $('kMock').textContent=MK.kicker; $('hMock').innerHTML=MK.titulo; $('nMock').textContent=MK.texto||'';
+    const us=esc(UT.usuario()), bg=(f)=>`background-image:url(&quot;${esc(f)}&quot;)`;
+    const av=M.foto?`<span class="av"><img src="${esc(M.foto)}" alt=""></span>`:`<span class="av">${esc(iniciales(M.nombre))}</span>`;
+    const tags=[C.m2_construidos&&`${C.m2_construidos} m²`,C.habitaciones&&`${C.habitaciones} hab.`,C.banos&&`${C.banos} ${C.banos==1?'baño':'baños'}`,C.planta&&`${C.planta} planta`].filter(Boolean);
+    const tel=(cont)=>`<div class="movil"><div class="pantalla">${cont}</div></div>`;
+    const piezas=[
+      ['Ficha en el portal',tel(`<div class="p-barra"><span>Portal inmobiliario</span><span aria-hidden="true">♡</span></div><div class="p-foto" style="${bg(MK.portal.foto)}"><i>1/${Math.max(fotos.length,1)}</i></div><div class="p-ficha"><div class="p-precio vacio" data-precio-salida>Lo vemos juntos</div><div class="p-tit">${esc(MK.portal.titular)}</div><div class="p-tags">${tags.map(x=>`<span>${esc(x)}</span>`).join('')}</div><div class="p-txt">${esc(MK.portal.texto)}</div><div class="p-btn">Pedir visita</div></div>`)],
+      ['Post',tel(`<div class="po-cab">${av}<span class="us">${us}</span><span aria-hidden="true" style="flex:none">···</span></div><div class="po-foto" style="${bg(MK.post.foto)}"><b>${esc(MK.post.gancho)}</b></div><div class="po-ico">${ico('corazon','')}${ico('comentar','')}${ico('enviar','')}${ico('guardar','')}</div><div class="po-txt"><b>${us}</b> ${esc(MK.post.texto)}</div>`)],
+      ['Story',tel(`<div class="st" style="${bg(MK.story.foto)};background-position:${esc(MK.story.posicion)}"><div class="st-prog"><i></i><i></i><i></i></div><div class="st-cab">${av}<span>${us}</span><small>ahora</small></div><div class="st-txt">${esc(MK.story.texto)}</div><div class="st-peg">${ico('enlace','')}${esc(MK.story.boton)}</div></div>`)],
+      ['Portada del vídeo',tel(`<div class="vi" style="${bg(MK.portada.foto)}"><span class="vi-et">${esc([MK.portada.etiqueta,C.barrio||C.ciudad].filter(Boolean).join(' · '))}</span><span class="vi-play" aria-hidden="true"></span><div class="vi-tit">${esc(MK.portada.titulo)}</div>${MK.portada.detalle?`<div class="vi-det">${esc(MK.portada.detalle)}</div>`:''}</div>`)]
+    ];
+    $('mockFila').innerHTML=piezas.map(p=>`<figure class="mock">${p[1]}<figcaption class="mock-pie">${p[0]}</figcaption></figure>`).join('');
+  } else $('mockups').remove();
+
   // zona
   const Z=D.zona||{};
   $('hZona').innerHTML=Z.titulo||'La zona';
@@ -396,38 +797,14 @@ section{position:relative}
   if(V){
     const st=[[V.testigos.length,'viviendas comparables estudiadas'],[V.testigos.filter(t=>t.vendido).length,'ya vendidas cerca']];
     if(V.dias_vendidos) st.push([V.dias_vendidos,'días de media hasta venderse']);
-    $('zstats').innerHTML=st.map(s=>`<div><strong class="cuenta" data-n="${s[0]}">0</strong><span>${s[1]}</span></div>`).join('');
+    $('zstats').innerHTML=st.filter(s=>s[0]>0).map(s=>`<div><strong class="cuenta" data-n="${s[0]}">0</strong><span>${s[1]}</span></div>`).join('');
   }
 
   // método
   $('metodoLista').innerHTML=(D.metodo||[]).map((m,i)=>`<li class="rv"><span class="n">${String(i+1).padStart(2,'0')}</span><h3>${esc(m.titulo)}</h3><p>${esc(m.texto||'')}</p></li>`).join('');
 
-  // valoración (solo se pinta al abrirla)
-  $('hVal').innerHTML=T('Lo que vale <em>vuestra casa</em>','Lo que vale <em>tu casa</em>');
-  $('hCerrada').textContent='Esto lo vemos juntos';
-  $('pCerrada').textContent=T('El precio no es una cifra suelta: os quiero explicar de dónde sale, con las casas que se han vendido cerca de la vuestra.','El precio no es una cifra suelta: te quiero explicar de dónde sale, con las casas que se han vendido cerca de la tuya.');
-  if(!V){ $('abrir').style.display='none'; $('pCerrada').textContent='La valoración se prepara con los testigos de la zona antes de la llamada.'; }
-  $('abrir').addEventListener('click',()=>{
-    if(!V) return;
-    const cs=V.testigos.map(t=>t.corr), lo=Math.min(...cs)*0.9, hi=Math.max(...cs)*1.03, pc=(v)=>((v-lo)/(hi-lo)*100).toFixed(1);
-    const filas=V.testigos.slice().sort((a,b)=>b.corr-a.corr).map(t=>`<div class="barra ${t.vendido?'vendido':''} ${t.motivo?'fuera':''}" title="${esc(t.nota||'')}"><div class="et">${esc(t.id)} · ${esc(t.direccion||'')}<br><small>${t.vendido?'Vendido':'En venta'}${t.dias?` · ${t.dias} días`:''}${t.bajadas?` · ${t.bajadas} bajada${t.bajadas>1?'s':''}`:''}${t.motivo?' · fuera del cálculo':''}</small></div><div class="pista-b"><div class="relleno-b" data-w="${pc(t.corr)}"></div><div class="ref" style="left:${pc(V.eurm2)}%"></div></div><div class="v">${num(t.corr)} €/m²</div></div>`).join('');
-    const dr=V.dato_real;
-    $('abierta').innerHTML=`
-      <div class="precios">
-        <div class="precio"><b>Salida recomendada</b><strong>${eur(V.salida)}</strong><p>Lo que se publica. Entra en los filtros de búsqueda y deja margen.</p></div>
-        <div class="precio top1"><b>Objetivo de cierre</b><strong>${eur(V.cierre)}</strong><p>Lo que esperamos firmar en arras: ${num(V.eurm2)} €/m² × ${num(C.m2_construidos)} m².</p></div>
-        <div class="precio"><b>Mínimo razonable</b><strong>${eur(V.minimo)}</strong><p>Por debajo de aquí, mejor esperar.</p></div>
-      </div>
-      <div class="barras"><h3>Las casas que lo explican</h3><p class="sub">€/m² de cada una, ya corregido por sus diferencias con ${T('la vuestra','la tuya')} y por la negociación. La línea es ${T('vuestra','tu')} casa: ${num(V.eurm2)} €/m².</p>${filas}
-        <div class="leyenda"><span style="--c:var(--c-acento)">Vendidas (precio real)</span><span style="--c:color-mix(in srgb,var(--c-principal) 55%,transparent)">En venta (precio pedido)</span></div></div>
-      ${dr?`<div class="dato-real"><strong>${dr.dias||'—'}</strong><div><b>días lleva publicada la de ${esc(dr.direccion||dr.id)}</b>${dr.bajadas?`, con ${dr.bajadas} bajada${dr.bajadas>1?'s':''}`:''}. Salió por encima del mercado y quien la ve ahora piensa que algo falla. Es lo que no queremos para ${T('la vuestra','la tuya')}.</div></div>`:''}
-      ${V.debil?'<p class="aviso">Hay menos de 4 testigos válidos: la valoración es orientativa y se afina con más datos.</p>':''}
-      <p class="aviso">Estimación orientativa de mercado a partir de ${V.validos.length} testigos. No es una tasación oficial.</p>`;
-    $('cerrada').style.display='none';
-    const ab=$('abierta'); ab.classList.add('si');
-    requestAnimationFrame(()=>setTimeout(()=>ab.querySelectorAll('.relleno-b').forEach(b=>b.style.width=b.dataset.w+'%'),120));
-    ab.scrollIntoView({behavior:'smooth',block:'start'});
-  });
+  // valoración: escáner 3D de testigos, regla de precios y notaría (valoracion.js)
+  montarValoracion({T,esc});
 
   // siguientes y contacto
   $('sig').innerHTML=(D.siguientes||[]).map(s=>`<div><b>${esc(s.titulo)}</b><p>${esc(s.texto)}</p></div>`).join('');
@@ -437,11 +814,13 @@ section{position:relative}
   if(M.telefono) ct.push(`<a class="linea-b" href="tel:${esc(String(M.telefono).replace(/\s/g,''))}">${esc(M.telefono)}</a>`);
   if(M.email) ct.push(`<a class="linea-b" href="mailto:${esc(M.email)}">${esc(M.email)}</a>`);
   $('contacto').innerHTML=ct.join('');
-  $('pie').textContent=`Preparado por ${M.nombre||''} para ${(D.propietarios||{}).nombres||''} · ${Ci.fecha_texto||''}. Documento personal: no es una oferta ni una tasación.`;
+  // modo muestra (datos.muestra = true): sin la barra del agente ni la firma y los contactos del final
+  if(D.muestra){ $('top').remove(); document.querySelector('#siguientes .fin').remove(); $('pie').remove(); }
+  else $('pie').textContent=`Preparado por ${M.nombre||''} para ${(D.propietarios||{}).nombres||''} · ${Ci.fecha_texto||''}. Documento personal: no es una oferta ni una tasación.`;
 
   // animaciones
   const io=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} }),{threshold:.14});
-  document.querySelectorAll('.rv').forEach(el=>io.observe(el));
+  document.querySelectorAll('.rv,.anim').forEach(el=>io.observe(el));
   const cuenta=(el)=>{ const n=+el.dataset.n; if(!n) return; const t0=performance.now(), d=1300; const f=(t)=>{ const p=Math.min(1,(t-t0)/d); el.textContent=Math.round(n*(1-Math.pow(1-p,3))); if(p<1) requestAnimationFrame(f); }; requestAnimationFrame(f); };
   const ioN=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ cuenta(e.target); ioN.unobserve(e.target);} }),{threshold:.6});
   document.querySelectorAll('.cuenta').forEach(el=>ioN.observe(el));
@@ -453,13 +832,9 @@ section{position:relative}
     const y=scrollY, h=document.documentElement.scrollHeight-innerHeight;
     prog.style.width=(h>0?y/h*100:0)+'%';
     // Respaldo del IntersectionObserver (saltos de scroll, pestañas en segundo plano)
-    document.querySelectorAll('.rv:not(.in)').forEach(el=>{ const b=el.getBoundingClientRect(); if(b.top<innerHeight*.92&&b.bottom>0) el.classList.add('in'); });
-    top.classList.toggle('solida',y>innerHeight*.8);
+    document.querySelectorAll('.rv:not(.in),.anim:not(.in)').forEach(el=>{ const b=el.getBoundingClientRect(); if(b.top<innerHeight*.92&&b.bottom>0) el.classList.add('in'); });
+    if(top) top.classList.toggle('solida',y>innerHeight*.8);
     if(!reducido && y<innerHeight) bg.style.transform=`translateY(${y*.28}px) scale(1.08)`;
-    // galería horizontal
-    const r=gal.getBoundingClientRect(), recorrido=gal.offsetHeight-innerHeight;
-    const p=Math.min(1,Math.max(0,-r.top/(recorrido||1)));
-    pista.style.transform=`translateX(${-p*Math.max(0,pista.scrollWidth-innerWidth)}px)`;
     // línea de tiempo
     if(tl){
       const tr=tl.getBoundingClientRect(), final=tr.bottom<innerHeight*.92;
@@ -470,10 +845,23 @@ section{position:relative}
     }
   }
   addEventListener('scroll',scroll,{passive:true});
-  addEventListener('resize',()=>{altoGal();scroll();});
-  addEventListener('load',()=>{altoGal();scroll();});
-  altoGal(); scroll();
+  addEventListener('resize',scroll);
+  addEventListener('load',scroll);
+  scroll();
 })();
 </script>
+<script>
+(function(){
+  var f=document.getElementById('pfMarco');
+  addEventListener('message',function(e){ if(e.data&&e.data.planAlto) f.style.height=e.data.planAlto+'px'; });
+  document.querySelectorAll('[data-pv]').forEach(function(b){
+    b.addEventListener('click',function(){
+      document.querySelectorAll('[data-pv]').forEach(function(x){x.classList.toggle('on',x===b);}); b.scrollIntoView({inline:'nearest',block:'nearest'});
+      try{ f.contentWindow.verPlan(b.dataset.pv); }catch(_){ f.src='plan-vistas.html#'+b.dataset.pv; }
+    });
+  });
+})();
+</script>
+<script src="acabado.js"></script>
 </body>
 </html>

@@ -42,6 +42,28 @@ window.DATOS = {
       { titulo: 'Todo claro antes de salir', texto: 'Precio, plazo y cómo os llega a cada uno el dinero, acordado por escrito antes de publicar.' },
     ],
   },
+  // Sin plano: la sección del 3D no sale.
+  plano: { activo: false },
+  // Plan estándar salvo el pilar de las visitas (perfil 4): al escribir `pilares`, se sustituyen los seis.
+  plan: {
+    pilares: [
+      { icono: 'camara', t: 'Fotos y vídeo que paran el scroll', d: 'Sesión con luz natural, gran angular y un vídeo corto en vertical para redes. La primera foto decide el clic.' },
+      { icono: 'sofa', t: 'Decoración virtual', d: 'Las estancias vacías o anticuadas se decoran en digital para que quien la vea se imagine viviendo allí. Siempre avisado como «decoración virtual».' },
+      { icono: 'megafono', t: 'Portales y redes, bien dirigidos', d: 'Anuncio destacado en los portales y campañas en redes para quien busca en la zona y en ese rango de precio.' },
+      { icono: 'personas', t: 'Compradores filtrados', d: 'Cada contacto se llama el mismo día y se comprueba si puede comprar (financiación y plazos) antes de enseñarle la casa.' },
+      { icono: 'puerta', t: 'Visitas filtradas y discretas', d: 'Solo compradores con financiación comprobada, con cita y sin puertas abiertas. Cada novedad, a los dos a la vez y por escrito.' },
+      { icono: 'informe', t: 'Informe cada lunes', d: 'Cuánta gente la ha visto, cuántos han preguntado, quién la ha visitado y qué opinan. Sin tener que llamar para preguntar.' },
+    ],
+  },
+
+  // Mockups: textos para COMPRADORES, con datos reales de la casa y sin precio.
+  mockups: {
+    portal: { titular: 'Piso de 4 dormitorios con garaje y trastero en Universidad' },
+    post: { gancho: 'Cuatro dormitorios y plaza de garaje', texto: 'Edificio de 2004, para entrar a vivir: dos baños, ascensor, trastero y calefacción central. Visitas con cita previa.' },
+    story: { texto: 'Cuatro dormitorios, para entrar a vivir' },
+    portada: { detalle: '105 m², dos baños y garaje' },
+  },
+
   zona: {
     titulo: 'Universidad, <em>visto por quien compra</em>',
     datos: [
@@ -73,7 +95,7 @@ window.DATOS = {
     { titulo: 'Si os encaja', texto: 'Firmáis los dos el encargo y dejamos por escrito precio y plazo.' },
     { titulo: 'En diez días', texto: 'La casa sale a la venta, con las visitas ya organizadas.' },
   ],
-  falta: ['Quién paga la hipoteca hasta la venta (lo decide su acuerdo, no la agencia).', 'Fotos de los baños y la cocina.', 'Horario en que Elena prefiere las visitas.'],
+  falta: ['Plano: sin plano, la presentación sale sin maqueta 3D.', 'Quién paga la hipoteca hasta la venta (lo decide su acuerdo, no la agencia).', 'Fotos de los baños y la cocina.', 'Horario en que Elena prefiere las visitas.'],
   adelanto: {
     etiqueta: 'Un plan claro para los dos',
     frase: 'Os he preparado un plan con visitas filtradas y la misma información para los dos.',

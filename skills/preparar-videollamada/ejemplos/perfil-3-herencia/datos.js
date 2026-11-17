@@ -45,6 +45,17 @@ window.DATOS = {
     ],
     papeles: ['Escritura de la casa', 'Certificado de defunción y de últimas voluntades', 'Testamento o declaración de herederos', 'Aceptación de la herencia (cuando esté firmada)', 'Último recibo del IBI', 'Certificado energético'],
   },
+  // Sin plano: la sección del 3D no sale. El plan va estándar (comun.js).
+  plano: { activo: false },
+
+  // Mockups: textos para COMPRADORES, con datos reales de la casa y sin precio.
+  mockups: {
+    portal: { titular: 'Chalet con piscina y parcela de 600 m² en Mijas Costa' },
+    post: { gancho: 'Piscina al sur y 600 m² de parcela', texto: 'Cuatro dormitorios, tres baños, garaje para dos coches y barbacoa, listo para actualizarlo a tu gusto. Pide tu visita.' },
+    story: { texto: 'Salón con salida al porche' },
+    portada: { detalle: 'Cuatro dormitorios, piscina y garaje' },
+  },
+
   zona: {
     titulo: 'Mijas Costa, <em>visto por quien compra</em>',
     datos: [
@@ -76,7 +87,7 @@ window.DATOS = {
     { titulo: 'Si os encaja', texto: 'Dejamos por escrito el precio mínimo y el plazo, y preparo la casa.' },
     { titulo: 'Con la herencia firmada', texto: 'La casa sale a la venta con todo listo.' },
   ],
-  falta: ['Fecha prevista de la firma de la aceptación de la herencia.', 'Certificado energético (no lo tienen).', 'Gastos de comunidad de la urbanización.'],
+  falta: ['Plano: sin plano, la presentación sale sin maqueta 3D.', 'Fecha prevista de la firma de la aceptación de la herencia.', 'Certificado energético (no lo tienen).', 'Gastos de comunidad de la urbanización.'],
   adelanto: {
     etiqueta: 'Los pasos para vender la casa entre los tres',
     frase: 'He preparado los pasos para que los tres lo veáis igual de claro.',

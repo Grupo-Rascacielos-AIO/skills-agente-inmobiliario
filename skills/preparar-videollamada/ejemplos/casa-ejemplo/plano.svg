@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1240 1100" width="1240" height="1100" font-family="Helvetica, Arial, sans-serif">
+<rect width="1240" height="1100" fill="#ffffff"/>
+<rect x="70" y="70" width="370" height="340" fill="#f6f1ea"/>
+<rect x="450" y="70" width="130" height="340" fill="#e6e8ea"/>
+<rect x="590" y="70" width="300" height="340" fill="#f6f1ea"/>
+<rect x="900" y="70" width="270" height="340" fill="#f6f1ea"/>
+<rect x="330" y="420" width="680" height="90" fill="#f6f1ea"/>
+<rect x="70" y="520" width="570" height="310" fill="#f6f1ea"/>
+<rect x="70" y="420" width="250" height="100" fill="#f6f1ea"/>
+<rect x="650" y="520" width="120" height="310" fill="#e6e8ea"/>
+<rect x="780" y="520" width="130" height="310" fill="#f6f1ea"/>
+<rect x="920" y="520" width="250" height="310" fill="#eef0f1"/>
+<rect x="1020" y="420" width="150" height="100" fill="#eef0f1"/>
+<rect x="100" y="850" width="400" height="200" fill="#eef0f1"/>
+<rect x="50" y="50" width="100" height="20" fill="#111"/>
+<rect x="350" y="50" width="300" height="20" fill="#111"/>
+<rect x="830" y="50" width="120" height="20" fill="#111"/>
+<rect x="1110" y="50" width="80" height="20" fill="#111"/>
+<rect x="50" y="70" width="20" height="760" fill="#111"/>
+<rect x="1170" y="70" width="20" height="480" fill="#111"/>
+<rect x="1170" y="750" width="20" height="80" fill="#111"/>
+<rect x="50" y="830" width="100" height="20" fill="#111"/>
+<rect x="450" y="830" width="350" height="20" fill="#111"/>
+<rect x="890" y="830" width="300" height="20" fill="#111"/>
+<rect x="70" y="410" width="270" height="10" fill="#111"/>
+<rect x="420" y="410" width="370" height="10" fill="#111"/>
+<rect x="870" y="410" width="50" height="10" fill="#111"/>
+<rect x="1000" y="410" width="170" height="10" fill="#111"/>
+<rect x="440" y="70" width="10" height="250" fill="#111"/>
+<rect x="440" y="390" width="10" height="20" fill="#111"/>
+<rect x="580" y="70" width="10" height="340" fill="#111"/>
+<rect x="890" y="70" width="10" height="340" fill="#111"/>
+<rect x="320" y="420" width="10" height="90" fill="#111"/>
+<rect x="1010" y="420" width="10" height="100" fill="#111"/>
+<rect x="320" y="510" width="210" height="10" fill="#111"/>
+<rect x="620" y="510" width="50" height="10" fill="#111"/>
+<rect x="740" y="510" width="50" height="10" fill="#111"/>
+<rect x="900" y="510" width="120" height="10" fill="#111"/>
+<rect x="640" y="520" width="10" height="310" fill="#111"/>
+<rect x="770" y="520" width="10" height="310" fill="#111"/>
+<rect x="910" y="520" width="10" height="70" fill="#111"/>
+<rect x="910" y="670" width="10" height="160" fill="#111"/>
+<rect x="100" y="850" width="10" height="200" fill="#111"/>
+<rect x="100" y="1040" width="400" height="10" fill="#111"/>
+<rect x="490" y="850" width="10" height="200" fill="#111"/>
+<rect x="150" y="50" width="200" height="20" fill="#fff" stroke="#111" stroke-width="2"/>
+<line x1="150" y1="60.0" x2="350" y2="60.0" stroke="#111" stroke-width="1.5"/>
+<rect x="650" y="50" width="180" height="20" fill="#fff" stroke="#111" stroke-width="2"/>
+<line x1="650" y1="60.0" x2="830" y2="60.0" stroke="#111" stroke-width="1.5"/>
+<rect x="950" y="50" width="160" height="20" fill="#fff" stroke="#111" stroke-width="2"/>
+<line x1="950" y1="60.0" x2="1110" y2="60.0" stroke="#111" stroke-width="1.5"/>
+<rect x="1170" y="550" width="20" height="200" fill="#fff" stroke="#111" stroke-width="2"/>
+<line x1="1180.0" y1="550" x2="1180.0" y2="750" stroke="#111" stroke-width="1.5"/>
+<line x1="150" y1="836" x2="310" y2="836" stroke="#111" stroke-width="1.5"/><line x1="290" y1="844" x2="450" y2="844" stroke="#111" stroke-width="1.5"/>
+<path d="M420 410 L420 330 A80 80 0 0 0 340 410" fill="none" stroke="#111" stroke-width="1.2"/>
+<path d="M450 390 L520 390 A70 70 0 0 0 450 320" fill="none" stroke="#111" stroke-width="1.2"/>
+<path d="M870 410 L870 330 A80 80 0 0 0 790 410" fill="none" stroke="#111" stroke-width="1.2"/>
+<path d="M920 410 L920 330 A80 80 0 0 1 1000 410" fill="none" stroke="#111" stroke-width="1.2"/>
+<path d="M620 520 L620 610 A90 90 0 0 1 530 520" fill="none" stroke="#111" stroke-width="1.2"/>
+<path d="M740 520 L740 590 A70 70 0 0 1 670 520" fill="none" stroke="#111" stroke-width="1.2"/>
+<path d="M920 670 L1000 670 A80 80 0 0 0 920 590" fill="none" stroke="#111" stroke-width="1.2"/>
+<path d="M890 830 L890 740 A90 90 0 0 0 800 830" fill="none" stroke="#111" stroke-width="1.2"/>
+<text x="255" y="240" font-size="15" font-weight="700" fill="#222" text-anchor="middle">Dormitorio</text><text x="255" y="259" font-size="15" font-weight="700" fill="#222" text-anchor="middle">principal</text><text x="255" y="280" font-size="13" fill="#555" text-anchor="middle">12,6 m²</text>
+<text x="515" y="175" font-size="15" font-weight="700" fill="#222" text-anchor="middle">Baño 1</text><text x="515" y="195" font-size="13" fill="#555" text-anchor="middle">4,4 m²</text>
+<text x="740" y="230" font-size="15" font-weight="700" fill="#222" text-anchor="middle">Dormitorio 2</text><text x="740" y="250" font-size="13" fill="#555" text-anchor="middle">10,2 m²</text>
+<text x="1035" y="230" font-size="15" font-weight="700" fill="#222" text-anchor="middle">Dormitorio 3</text><text x="1035" y="250" font-size="13" fill="#555" text-anchor="middle">9,2 m²</text>
+<text x="640" y="470" font-size="15" font-weight="700" fill="#222" text-anchor="middle">Pasillo</text><text x="640" y="490" font-size="13" fill="#555" text-anchor="middle">6,1 m²</text>
+<text x="440" y="640" font-size="17" font-weight="700" fill="#222" text-anchor="middle">Salón-comedor</text><text x="440" y="660" font-size="13" fill="#555" text-anchor="middle">20,0 m²</text>
+<text x="710" y="600" font-size="15" font-weight="700" fill="#222" text-anchor="middle">Baño 2</text><text x="710" y="620" font-size="13" fill="#555" text-anchor="middle">3,7 m²</text>
+<text x="845" y="700" font-size="15" font-weight="700" fill="#222" text-anchor="middle">Recibidor</text><text x="845" y="720" font-size="13" fill="#555" text-anchor="middle">4,0 m²</text>
+<text x="1030" y="660" font-size="15" font-weight="700" fill="#222" text-anchor="middle">Cocina</text><text x="1030" y="680" font-size="13" fill="#555" text-anchor="middle">9,1 m²</text>
+<text x="300" y="960" font-size="15" font-weight="700" fill="#222" text-anchor="middle">Terraza</text><text x="300" y="980" font-size="13" fill="#555" text-anchor="middle">8,0 m²</text>
+<g stroke="#c8643b" stroke-width="1.5"><line x1="70" y1="790" x2="640" y2="790"/><line x1="70" y1="780" x2="70" y2="800"/><line x1="640" y1="780" x2="640" y2="800"/></g>
+<rect x="318" y="779" width="74" height="22" fill="#f6f1ea"/><text x="355" y="795" font-size="14" font-weight="700" fill="#c8643b" text-anchor="middle">5,70 m</text>
+<g transform="translate(1120 960)"><circle r="26" fill="none" stroke="#111" stroke-width="1.5"/><path d="M0 -20 L8 8 L0 2 L-8 8 Z" fill="#111"/><text y="-32" font-size="14" font-weight="700" text-anchor="middle" fill="#111">N</text></g>
+<text x="1190" y="1060" font-size="13" fill="#777" text-anchor="end">Calle del Almendro, 7 · 3.º A · 92 m² construidos · Escala 1:100 aprox.</text>
+</svg>

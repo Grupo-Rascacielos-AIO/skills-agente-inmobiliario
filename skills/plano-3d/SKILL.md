@@ -1,6 +1,6 @@
 ---
 name: plano-3d
-description: Convierte el plano 2D de una vivienda (foto, PDF, captura de un portal como Idealista o Fotocasa, plano de Matterport o de catastro) en una maqueta 3D interactiva para web, con paredes que se levantan, suelos de madera, baldosa y gres, etiquetas con los m² de cada estancia y un botón para amueblarla en estilo nórdico o moderno. Úsala siempre que el agente diga «plano 3D», «pasa el plano a 3D», «hazme el plano en 3D», «maqueta 3D», «maqueta de la casa», «distribución en 3D», «amuebla el plano», «decoración virtual del plano», «home staging del plano», «quiero que el comprador vea la casa en 3D», «pon el plano en la web», «plano interactivo», «vista 3D del piso», o cuando una landing, ficha, dossier o presentación de un inmueble tenga plano y se pueda enseñar en 3D. Solo hace la maqueta (una sección HTML que se pega en cualquier página); la landing completa para el propietario la hace la skill landing-propietario.
+description: Convierte el plano 2D de una vivienda (foto, PDF, captura de un portal como Idealista o Fotocasa, plano de Matterport o de catastro) en una maqueta 3D interactiva para web, con paredes que se levantan, suelos de madera, baldosa y gres, etiquetas con los m² de cada estancia y un botón para amueblarla en estilo nórdico o moderno. Úsala siempre que el agente diga «plano 3D», «pasa el plano a 3D», «hazme el plano en 3D», «maqueta 3D», «maqueta de la casa», «distribución en 3D», «amuebla el plano», «decoración virtual del plano», «home staging del plano», «quiero que el comprador vea la casa en 3D», «pon el plano en la web», «plano interactivo», «vista 3D del piso», o cuando una landing, ficha, dossier o presentación de un inmueble tenga plano y se pueda enseñar en 3D. Solo hace la maqueta (una sección HTML que se pega en cualquier página); la presentación completa para el propietario la hace la skill preparar-videollamada.
 ---
 
 # Plano 3D · del plano plano a una maqueta que se puede girar
@@ -23,7 +23,7 @@ Funciona en ordenador y en móvil, sin instalar nada y sin pagar nada: usa three
 ## Qué necesito del agente
 1. **El plano**, lo más grande y nítido posible (imagen o PDF). Si solo tiene el link del portal, abrirlo con el
    navegador integrado y buscar la imagen del plano. Si el anuncio no tiene plano: pedírselo al propietario
-   (escrituras, plano de obra, catastro) o hacer la landing solo con fotos.
+   (escrituras, plano de obra, catastro) o hacer la presentación solo con fotos.
 2. **Una medida real** de alguna estancia (viene escrita en muchos planos: «Salón 5,20 × 4,00»). Si no hay ninguna,
    usar una puerta (≈ 0,80 m de hueco) o la superficie total del anuncio.
 3. Opcional: la **marca** del agente (`~/.claude/mi-marca-inmobiliaria.md`) para que la sección use sus colores.
@@ -31,7 +31,7 @@ Funciona en ordenador y en móvil, sin instalar nada y sin pagar nada: usa three
 ## Flujo (20-30 minutos por vivienda)
 
 ### 1 · Preparar la carpeta
-Crear una carpeta para la vivienda (o usar la de la landing) y copiar dentro:
+Crear una carpeta para la vivienda (o usar la de la presentación) y copiar dentro:
 `motor/plano3d.js`, `plantilla/plano-data.js` y la imagen del plano (`plano.jpg` o `plano.png`).
 Mirar el plano a tamaño completo con `Read` antes de trazar. Anotar su ancho y alto en píxeles
 (`sips -g pixelWidth -g pixelHeight plano.jpg` en Mac, o `file plano.png`).

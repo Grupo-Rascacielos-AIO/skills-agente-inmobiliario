@@ -105,7 +105,7 @@ ol.pq li::after{content:"";width:11px;height:11px;border:1.3px solid color-mix(i
   $('marco').textContent=K.marco||'';
   $('preguntas').innerHTML=(K.preguntas||[]).map(q=>`<li>${esc(q)}</li>`).join('');
   $('objeciones').innerHTML=(K.objeciones||[]).map(o=>`<div class="ob"><b>${esc(o.dice)}</b><p>${esc(o.respondes)}</p></div>`).join('');
-  const casa=[['Dirección',C.direccion],['Superficie',C.m2_construidos?`${C.m2_construidos} m² construidos`:''],['Distribución',[C.habitaciones&&`${C.habitaciones} hab.`,C.banos&&`${C.banos} ${C.banos==1?'baño':'baños'}`].filter(Boolean).join(' · ')],['Parcela',C.parcela_m2?`${C.parcela_m2} m²`:''],['Planta',C.planta?[C.planta,C.ascensor?'con ascensor':'sin ascensor'].join(', '):''],['Año',C.anio],['Estado',C.estado]].filter(x=>x[1]);
+  const casa=[['Dirección',C.direccion],['Superficie',[C.m2_construidos&&`${C.m2_construidos} m² construidos`,C.m2_utiles&&`${C.m2_utiles} m² útiles`].filter(Boolean).join(' · ')],['Distribución',[C.habitaciones&&`${C.habitaciones} hab.`,C.banos&&`${C.banos} ${C.banos==1?'baño':'baños'}`].filter(Boolean).join(' · ')],['Parcela',C.parcela_m2?`${C.parcela_m2} m²`:''],['Planta',C.planta?[C.planta,C.ascensor?'con ascensor':'sin ascensor'].join(', '):''],['Año',C.anio],['Estado',C.estado],['Plano 3D',(D.plano||{}).activo?'Sí':'No (falta)'],['En el portal',(()=>{ const Po=C.portal||{}; return [Po.publicado_desde&&`desde ${Po.publicado_desde}`,Po.precio_publicado&&`pide ${eur(Po.precio_publicado)}`].filter(Boolean).join(' · '); })()]].filter(x=>x[1]);
   $('casa').innerHTML=casa.map(c=>`<dt>${c[0]}</dt><dd>${esc(c[1])}</dd>`).join('');
   const V=valorar();
   if(V&&V.cierre){

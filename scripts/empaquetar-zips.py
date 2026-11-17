@@ -10,15 +10,14 @@ RAIZ = pathlib.Path(__file__).resolve().parent.parent
 CORTAS = {
     "mi-marca": "Configura tu marca de agente inmobiliario (colores, tipografía, estilo, datos) la primera vez y la usan todas las demás skills. Úsala con «configura mi marca» o «cambia mis colores».",
     "presentacion-scroll": "Crea presentaciones web de scroll inmersivo con tu marca: preséntate a un propietario, tu servicio, un inmueble o un informe de zona. «Hazme una presentación de scroll».",
-    "landing-propietario": "Landing de captación para un propietario a partir del link del portal o de fotos y datos: fotos, plano 3D si hay plano y plan de marketing. «Hazme la landing de esta casa».",
     "plano-3d": "Convierte el plano 2D de una vivienda en una maqueta 3D interactiva para web, con muebles nórdicos o modernos. «Pasa este plano a 3D».",
     "copywriter-inmobiliario": "Copywriter para agentes inmobiliarios: anuncios de portal, posts, guiones de reel, WhatsApp y emails a propietarios, objeciones. «Escríbeme el anuncio de este piso».",
     "informe-valoracion": "Informe de valoración para el propietario a partir de testigos: €/m², homogeneización y 3 precios con estrategia. Orientativo, no tasación. «Valora este piso con estos testigos».",
     "edificio-interactivo": "Convierte la foto de un edificio de obra nueva en una web: cada planta se pulsa y abre su vivienda en 3D con 6 estilos, precios y fotos. Para promotoras. «Hazme el edificio interactivo».",
-    "preparar-videollamada": "Prepara la videollamada con un propietario según su perfil: presentación con la valoración aparte, imagen y mensaje para WhatsApp y chuleta de la llamada. «Prepara la videollamada».",
+    "preparar-videollamada": "Prepara la videollamada con un propietario: presentación con su casa, plano 3D, plan de marketing y valoración con mapa 3D, adelanto para WhatsApp y chuleta. «Prepara la videollamada».",
     "equipo-inmobiliario": "Organiza un equipo de especialistas (estratega, copy, diseño, mercado, revisor) para tareas grandes del negocio. «Prepara la captación de este piso con el equipo».",
 }
-FUERA = {".DS_Store", "_capturas", "node_modules"}
+FUERA = {".DS_Store", "_capturas", "node_modules", "CONTRATO-UNIFICACION.md"}
 
 salida = RAIZ / "zips"
 salida.mkdir(exist_ok=True)

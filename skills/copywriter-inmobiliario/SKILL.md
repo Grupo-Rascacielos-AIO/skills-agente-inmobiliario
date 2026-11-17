@@ -53,7 +53,7 @@ Detalle y plantillas de cada uno en [referencias/frameworks.md](referencias/fram
 | **Captación tras valoración** | Mensaje del mismo día + seguimiento a los 3 y a los 7 días. Ver ejemplos. |
 | **Respuesta a objeción** | Qué hay detrás de la objeción + respuesta hablada (para decir) + versión escrita (WhatsApp). Ver [referencias/objeciones.md](referencias/objeciones.md). |
 | **Bio de Instagram** | 3 opciones de ≤ 150 caracteres: quién eres + zona + qué consigues + CTA. |
-| **Landing de propietario** | Titular + subtítulo + 3 beneficios + cómo trabajas en 3-4 pasos + 3 preguntas frecuentes + CTA único. Si existe la skill `landing-propietario`, entrega el texto para que ella lo maquete. |
+| **Landing de propietario** | Titular + subtítulo + 3 beneficios + cómo trabajas en 3-4 pasos + 3 preguntas frecuentes + CTA único. Si existe la skill `presentacion-scroll`, entrega el texto para que ella lo maquete. |
 
 Entrega siempre la **versión final lista para copiar** y, en piezas cortas, **2 alternativas** del titular o del gancho.
 
