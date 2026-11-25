@@ -109,6 +109,7 @@ Del perfil salen `angulo` (tipo de sección y contenido), el ajuste del `plan` s
   - Las fotos de cada pieza salen solas de `casa.fotos` (post = 2.ª, story = 3.ª, portada = la del adelanto); cámbialas con `post.foto`, `story.foto`… si encaja mejor otra. `story.posicion` mueve el recorte vertical.
 - La ficha del portal del mockup enseña el precio de salida de la valoración.
 - El plan sale en un marco con 5 vistas que se eligen arriba (portal vs. tú, radar, camino del comprador, embudo y 90 días). Usa las fotos de la casa y tu agencia: no hay que tocar nada.
+- El marco del plan se carga como `src="plan-vistas.html"`, **sin `#` detrás**: con `plan-vistas.html#A` el navegador baja solo hasta el plan al abrir la presentación y el propietario no ve la portada. Para cambiar de vista ya están los botones.
 
 ## Paso 6 · La imagen del adelanto
 
@@ -154,4 +155,5 @@ No puedes ejecutar el script ni copiar carpetas. Si no existe `~/.claude/mi-marc
 - [ ] Mockups: textos para compradores, con datos reales.
 - [ ] La valoración se ve entera (mapa 3D, regla, testigos) y dice «estimación orientativa, no tasación».
 - [ ] Se ve bien en el móvil (sin desbordes laterales; el calendario y los mockups se deslizan dentro de su caja).
+- [ ] Al abrirla se queda en la portada (no baja sola hasta el plan).
 - [ ] Si las fotos son del portal, el agente sabe que son solo para esta propuesta.
